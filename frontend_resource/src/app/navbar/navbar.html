@@ -1,0 +1,118 @@
+<div class="eo-navbar">
+    <!--index页面-->
+    <div class="nav nav-0" ng-if="navbarCtrl.check.currentState=='0'">
+        <header class="nav-header">
+            <ul>
+                <li class="logo-li"> <img alt="logo" src="app/assets/images/eolinker_sim.png" ui-sref="index" /></li>
+                <li class="active"><a ui-sref="index" class="nav-li">首页</a></li>
+                <li><a class="nav-li" href="https://bbs.eolinker.com/#/dashboard">社区</a></li>
+                <li><a class="nav-li" target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=208b23b73761039b9994d71378ccbf7c84c872d5577d557e45168b37fd290c12">讨论Q群</a>
+                </li>
+                <li class="list-function" ng-class="{'hidden':!navbarCtrl.check.hadLogin}">
+                    <a class="api-center" ui-sref="home.news">
+                        <span class="iconfont icon-notice"></span>消息
+                        <span class="unread-msg-num-span" data-ng-class="{'hidden':navbarCtrl.info.unreadMsgNum==0}">{{navbarCtrl.info.unreadMsgNum}}</span>
+                    </a>
+                    <div class="list nav-li">
+                        <span class="iconfont icon-list first-icon"></span>
+                        <div class="list-function-wrap">
+                            <ul class="logout-btn">
+                                <li class="title">
+                                    <p class="nickname-p">{{navbarCtrl.info.userNickName}}</p>
+                                    <p class="username-p">{{navbarCtrl.info.userName}}</p>
+                                </li>
+                                <li class="list-function-detail">
+                                    <ul>
+                                        <a ui-sref="home.user">
+                                            <li>账户管理 <span class="iconfont icon-myline"></span></li>
+                                        </a>
+                                        <a ui-sref="home.news">
+                                            <li>
+                                                消息提醒
+                                                <span class="unread-msg-num-span" data-ng-class="{'hidden':navbarCtrl.info.unreadMsgNum==0}">{{navbarCtrl.info.unreadMsgNum}}</span>
+                                                <span class="iconfont icon-notice"></span></li>
+                                        </a>
+                                        <a href="https://bbs.eolinker.com/#/dashboard" target="view_window">
+                                            <li>交流社区<span class="iconfont icon-index-bubble"></span></li>
+                                        </a>
+                                        <a>
+                                            <li data-ng-click="navbarCtrl.update()">版本更新
+                                                <span class="iconfont icon-gengxin"></span></li>
+                                        </a>
+                                        <a>
+                                            <li data-ng-click="navbarCtrl.logout()">退出登录</li>
+                                        </a>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="register-function " ng-class="{'hidden':navbarCtrl.check.hadLogin}">
+                    <a class="goto-register nav-li" ui-sref="register.content">注册</a>
+                </li>
+            </ul>
+        </header>
+    </div>
+    <!--register-->
+    <div class="nav nav-1" ng-if="navbarCtrl.check.currentState=='1'">
+        <header class="nav-header register-nav-header logo-li">
+            <img alt="logo" src="app/assets/images/eolinker_sim.png" ui-sref="index" />
+        </header>
+    </div>
+    <!--home/project/database-->
+    <div class="nav nav-2" ng-if="navbarCtrl.check.currentState=='2'">
+        <header class="nav-header">
+            <ul>
+                <li ui-sref="home.project.api" class="go-index-btn logo-li"><img alt="logo" src="app/assets/images/eolinker_sim.png" ui-sref="index" /></li>
+                <li><a class="nav-li" ng-class="{'active':navbarCtrl.check.isProject}" data-ng-click="navbarCtrl.goProject()"><span class="iconfont icon-inbox first-icon" ui-sref="home.project"></span>项目管理</a></li>
+                <li><a class="tips-button nav-li" ui-sref="home.news" ui-sref-active='active'><span class="iconfont icon-notice first-icon"></span>消息提醒
+                <span class="eo-status-warning unread-num" ng-class="{'hidden':navbarCtrl.info.unreadMsgNum==0}">{{navbarCtrl.info.unreadMsgNum}}</span></a> </li>
+                <li class="list-function">
+                    <div class="list nav-li">
+                        <span class="iconfont icon-list first-icon"></span>
+                        <div class="list-function-wrap">
+                            <ul class="logout-btn">
+                                <li class="title">
+                                    <p class="nickname-p">{{navbarCtrl.info.userNickName}}</p>
+                                    <p class="username-p">{{navbarCtrl.info.userName}}</p>
+                                </li>
+                                <li class="list-function-detail">
+                                    <ul>
+                                        <a ui-sref="home.user">
+                                            <li>账户管理 <span class="iconfont icon-myline"></span></li>
+                                        </a>
+                                        <a ui-sref="home.news">
+                                            <li>
+                                                消息提醒
+                                                <span class="unread-msg-num-span" data-ng-class="{'hidden':navbarCtrl.info.unreadMsgNum==0}">{{navbarCtrl.info.unreadMsgNum}}</span>
+                                                <span class="iconfont icon-notice"></span></li>
+                                        </a>
+                                        <a href="https://bbs.eolinker.com/#/dashboard" target="view_window">
+                                            <li>交流社区<span class="iconfont icon-index-bubble"></span></li>
+                                        </a>
+                                        <a>
+                                            <li data-ng-click="navbarCtrl.update()">版本更新
+                                                <span class="iconfont icon-gengxin"></span></li>
+                                        </a>
+                                        <a>
+                                            <li data-ng-click="navbarCtrl.logout()">退出登录</li>
+                                        </a>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="user">
+                    <a data-ng-click="navbarCtrl.tips()">
+                        <span class="iconfont icon-creative"></span>技巧
+                    </a>
+                </li>
+            </ul>
+        </header>
+    </div>
+    <!--guide-->
+    <div class="nav nav-1" ng-if="navbarCtrl.check.currentState=='3'">
+    </div>
+</div>

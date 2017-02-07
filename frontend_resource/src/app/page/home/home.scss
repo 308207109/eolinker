@@ -1,0 +1,107 @@
+home,
+project,
+database,
+.home {
+    .home-sidebar-mask {
+        background: #3f3f3f;
+        width: 221px;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+    .home-sidebar {
+        background: #3f3f3f;
+        width: 221px;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        header {
+            color: #888;
+            font-size: 12px;
+            margin-top: 43px;
+            margin-left: 20px;
+            font-weight: bold;
+        }
+        content {
+            ul {
+                margin-top: 3px;
+                li {
+                    color: #e1e1e1;
+                    @include eo-line(38px);
+                    padding-left: 20px;
+                    font-size: 14px;
+                    cursor: pointer;
+                    .iconfont {
+                        color: #e1e1e1;
+                        font-size: 14px;
+                        margin-right: 5px;
+                        cursor: pointer;
+                    }
+                    &:hover {
+                        background: $buttonSuccessBgColor;
+                        color: #fff;
+                        .iconfont {
+                            color: #fff;
+                        }
+                    }
+                }
+                .active {
+                    background: $buttonSuccessBgColor;
+                    color: #fff;
+                    .iconfont {
+                        color: #fff;
+                    }
+                }
+            }
+        }
+        footer {
+            background: #353535;
+            padding: 10px 20px;
+            line-height: 20px;
+            position: fixed;
+            bottom: 0;
+            width: 181px;
+            text-align: left;
+            p {
+                color: #888;
+                font-size: 12px;
+            }
+        }
+    }
+    .home-content {
+        background: #f8f8f8;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        .home-div {
+            margin: 53px 15px 0 15px;
+            header {
+                /*li:first-child {
+                    background: #fff;
+                    border: 1px solid #e5e5e5;
+                    text-indent: 8px;
+                    @include eo-line(30px);
+                    font-size: 14px;
+                    border-radius: 3px;
+                }*/
+                li {
+                    button {
+                        width: 100px;
+                        @include eo-line(30px);
+                        margin-top: 15px;
+                        span {
+                            //color: #fff;
+                            font-size: 14px;
+                            margin-right: 5px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

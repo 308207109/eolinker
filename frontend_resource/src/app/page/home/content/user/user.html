@@ -1,0 +1,68 @@
+<div class="home-content home-content-user">
+    <div class="home-div">
+        <article>
+            <div class="second-part">
+                <header>
+                    <span>基本信息</span>
+                    <span>用户体验基本信息</span>
+                </header>
+                <div class="content">
+                    <ul>
+                        <li class="pull-left ">
+                            <ng-form name="basicForm">
+                                <p>
+                                    用户昵称
+                                </p>
+                                <p>
+                                    <input class="eo-input" type="text" name="" placeholder="用户昵称" data-ng-model="homeUserCtrl.basic.nickName" required>
+                                </p>
+                                <p>
+                                    <button ng-class="{'eo-button-success':basicForm.$valid,'eo-button-default':basicForm.$invalid}" data-ng-click="homeUserCtrl.confirm()">保存</button>
+                                </p>
+                            </ng-form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="third-part">
+                <header>
+                    <span>修改密码</span>
+                    <span>修改账户登录密码</span>
+                </header>
+                <div class="content">
+                    <ng-form name="passwordForm">
+                        <ul>
+                            <li>
+                                <p>
+                                    旧密码
+                                </p>
+                                <p>
+                                    <input class="eo-input" ng-class="{'eo-input-error':homeUserCtrl.info.error}" type="password" name="oldPassword" placeholder="旧密码" data-ng-model="homeUserCtrl.info.oldPassword" data-ng-change="homeUserCtrl.oldChange()" required />
+                                </p>
+                                <p>
+                                    新密码
+                                </p>
+                                <p>
+                                    <input class="eo-input" ng-class="{'eo-input-error':passwordForm.password.$invalid&&(passwordForm.password.$dirty)}" type="password" name="password" placeholder="新密码" ng-pattern="/^[\x21-\x7E]{6,15}$/" uib-popover="6~15位，可使用英文、数字、半角符号" popover-placement="right" popover-trigger="focus" data-ng-model="homeUserCtrl.info.newPassword" required />
+                                </p>
+                                <p>
+                                    确认新密码
+                                </p>
+                                <p>
+                                    <input class="eo-input" ng-class="{'eo-input-error':passwordForm.confirmPassword.$invalid&&(passwordForm.confirmPassword.$dirty)}" type="password" name="confirmPassword" placeholder="确认密码" pw-check="password" data-ng-model="homeUserCtrl.info.confirmPassword" required />
+                                </p>
+                                <p>
+                                    <button ng-class="{'eo-button-success':passwordForm.$valid,'eo-button-default':passwordForm.$invalid}" data-ng-click="homeUserCtrl.changePassword()">保存</button>
+                                </p>
+                            </li>
+                        </ul>
+                    </ng-form>
+                </div>
+            </div>
+        </article>
+        <footer>
+            <div load-directive is-end="homeUserCtrl.loadingIsEnd">
+            </div>
+        </footer>
+    </div>
+</div>

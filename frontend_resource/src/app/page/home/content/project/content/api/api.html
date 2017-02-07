@@ -1,0 +1,42 @@
+<div>
+    <header>
+        <ul>
+            <!--<li>项目列表</li>-->
+            <li class="pull-left add-project-li">
+                <button class="eo-button-success" data-ng-click="homeProjectApiCtrl.edit(false)"><span class="iconfont icon-add"></span>新增项目</button>
+            </li>
+            <li class="import-project-li">
+                <button class="eo-button-success" data-ng-click="homeProjectApiCtrl.importFile()"><span class="iconfont icon-index-cloudupload"></span>导入项目</button>
+            </li>
+        </ul>
+    </header>
+    <article>
+        <table>
+            <thead>
+                <tr>
+                    <th class="first-th">项目名称</th>
+                    <th class="second-th">版本号</th>
+                    <th class="second-th">类型</th>
+                    <th class="third-th">项目最后修改时间</th>
+                    <th class="forth-th">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat='list in homeProjectApiCtrl.query' data-ng-click="homeProjectApiCtrl.enterProject(list.projectID)">
+                    <th>{{list.projectName}}</th>
+                    <td><span class="eo-color-success">V&nbsp;{{list.projectVersion}}</span></td>
+                    <td><span ng-class="{'eo-color-default':list.projectType=='0','eo-color-success':list.projectType==1,'eo-color-danger':list.projectType==2,'eo-color-warning':list.projectType==3}">{{list.type}}</span></td>
+                    <td>{{list.projectUpdateTime}}</td>
+                    <td>
+                        <div ng-class="{'hidden':list.userType=='1'}"><a class="home-function-edit" data-ng-click="homeProjectApiCtrl.edit(list)"><span class="iconfont icon-write"></span>修改</a>
+                            <a class="home-function-delete" data-ng-click="homeProjectApiCtrl.delete(list.projectID,$index)"><span class="iconfont icon-delete"></span>删除</a></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </article>
+    <footer>
+        <div load-directive is-end="homeProjectApiCtrl.loadingIsEnd">
+        </div>
+    </footer>
+</div>

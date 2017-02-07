@@ -1,0 +1,676 @@
+project-api-detail {
+    .project-detail {
+        margin: 63px 5px 0 247px;
+        z-index: 0;
+        .popover {
+            .arrow {
+                border-color: #333 transparent transparent transparent;
+                border-width: 10px 10px 0 10px;
+                bottom: -8px;
+                position: absolute;
+                left: 35%;
+            }
+            td {
+                max-width: 170px;
+            }
+            .popover-inner {
+                width: auto;
+            }
+            .popover-inner .popover-content {
+                font-weight: initial;
+                color: #a3a3a3;
+                font-size: 12px;
+                white-space: normal;
+            }
+        }
+       header {
+            @include eo-line(32px);
+            .go-back, 
+            .go-more,
+            .switch-detail,
+            .switch-test {
+                border-radius: 3px;
+                @include eo-line(30px);
+                font-size: 14px;
+                width: 82px;
+                text-align: center;
+                background: #fff;
+                border: 1px solid #e5e5e5;
+                text-align: center;
+                cursor: pointer;
+                color: #999;
+                .icon-back {
+                    color: #999;
+                    font-size: 12px;
+                }
+                &:hover {
+                    color: #333;
+                    .icon-back {
+                        color: #333;
+                    }
+                }
+            }
+            .switch-detail,
+            .switch-test {
+                .iconfont {
+                    cursor: pointer;
+                    font-size: 13px;
+                    margin: 0 2px;
+                }
+                &:hover {
+                    color: #fff;
+                    background: $buttonSuccessBgColor;
+                    .iconfont {
+                        color: #fff;
+                    }
+                }
+            }
+            .switch-detail {
+                background: $buttonSuccessBgColor;
+                border-radius: 3px;
+                color: #fff;
+                .iconfont {
+                    color: #fff;
+                }
+            }
+            .switch-test {
+                color: #333;
+                border-radius: 3px;
+                .iconfont {
+                    color: #333;
+                }
+            }
+            .go-back,
+            .switch-test,
+            .switch-detail {
+                margin-right: 5px;
+            }
+            .nav-btn {
+                @include eo-line(30px);
+                display: inline-table;
+                .go-more {
+                    @include eo-line(30px);
+                    width: 82px;
+                    font-size: 14px;
+                    .iconfont {
+                        color: #999;
+                        font-size: 13px;
+                    }
+                    .list-function-wrap {
+                        position: absolute;
+                        cursor: default;
+                        margin-top: -1px;
+                    }
+                    .nav-function {
+                        display: none;
+                        .iconfont {
+                            margin-right: 3px;
+                        }
+                    }
+                    &:hover {
+                        .iconfont {
+                            height: 30px;
+                            color: #333;
+                        }
+                        .nav-function {
+                            display: block;
+                        }
+                    }
+                }
+            }
+            .nav-function {
+                width: 134px;
+                margin-left: 0;
+                background-color: #fff;
+                border: 1px solid #e5e5e5;
+                border-radius: 3px;
+                margin-top: 5px;
+                li {
+                    cursor: pointer;
+                    text-align: left;
+                    text-indent: 18px;
+                    @include eo-line(33px);
+                    &:hover,
+                    &:focus,
+                    &:active {
+                        @include eo-button($buttonDefaultFocusBgColor, $buttonDefaultFocusColor, $buttonDefaultBorderColor);
+                        border: none;
+                        border-radius: 0;
+                        line-height: 33px;
+                    }
+                }
+            }
+        }
+        article {
+            .first-part,
+            .second-part,
+            .third-part,
+            .forth-part {
+                padding: 6px 5px;
+                min-height: 48px;
+                background-color: #fff;
+                margin-top: 10px;
+                border: 1px solid #e5e5e5;
+                border-radius: 3px;
+                table {
+                    tbody {
+                        tr:last-child {
+                            td,
+                            th {
+                                border: none;
+                            }
+                        }
+                    }
+                }
+            }
+            .fifth-part {
+                padding: 6px 5px;
+                min-height: 48px;
+                background-color: #fff;
+                margin-top: 10px;
+                border: 1px solid #e5e5e5;
+                border-radius: 3px;
+                margin-bottom: 20px;
+                .header {
+                    width: 100%;
+                    text-align: left;
+                    font-size: 14px;
+                    border-spacing: 0;
+                    th,
+                    td {
+                        vertical-align: top;
+                    }
+                    thead {
+                        @include eo-line(35px);
+                        td,
+                        th {
+                            border-bottom: 1px solid #e5e5e5;
+                        }
+                        td {
+                            color: #a3a3a3;
+                        }
+                        th {
+                            width: 88px;
+                        }
+                    }
+                }
+                article {
+                    margin-top: 5px;
+                    border: 1px solid #e5e5e5;
+                    border-radius: 3px;
+                }
+                .wangEditor-container,
+                .wangEditor-container * {
+                    cursor: default;
+                    .wangEditor-txt {
+                        img {
+                            cursor: default;
+                        }
+                    }
+                }
+            }
+            .first-part {
+                .api-status {
+                    width: 48px;
+                    @include eo-line(48px);
+                    color: #fff;
+                    font-size: 18px;
+                    text-align: center;
+                    border: none;
+                    border-radius: 3px;
+                }
+                .api-detail {
+                    margin-left: 53px;
+                    ul:first-child {
+                        @include eo-line(21px);
+                        margin-bottom: 6px;
+                    }
+                    ul:last-child {
+                        @include eo-line(21px);
+                    }
+                    label {
+                        width: 54px;
+                        @include eo-line(21px);
+                        color: #fff;
+                        display: block;
+                        text-align: center;
+                        font-size: 14px;
+                        margin-right: 10px;
+                        border-radius: 3px;
+                    }
+                    .send-protocol {
+                        background-color: #28c59a;
+                        border: none;
+                    }
+                    .send-function {
+                        border: none;
+                    }
+                    .api-url,
+                    .api-name {
+                        font-weight: bold;
+                        font-size: 16px;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                    }
+                    .api-url {
+                        width: 88%;
+                    }
+                    .api-name {
+                        width: 78%;
+                    }
+                    .pull-right {
+                        margin-right: 10px;
+                        color: #a3a3a3;
+                        font-size: 14px;
+                        .iconfont {
+                            color: #ccc;
+                            cursor: pointer;
+                        }
+                        .icon-favorfill {
+                            color: #f48932;
+                        }
+                    }
+                }
+            }
+            .second-part,
+            .third-part {
+                tbody {
+                    td {
+                        label {
+                            display: inline-block;
+                        }
+                    }
+                }
+            }
+            .second-part,
+            .third-part,
+            .forth-part {
+                table {
+                    width: 100%;
+                    text-align: left;
+                    font-size: 14px;
+                    border-spacing: 0;
+                    th,
+                    td {
+                        vertical-align: top;
+                    }
+                    thead {
+                        @include eo-line(35px);
+                        td,
+                        th {
+                            border-bottom: 1px solid #e5e5e5;
+                        }
+                        td {
+                            color: #a3a3a3;
+                        }
+                        th {
+                            width: 35px;
+                        }
+                    }
+                    tbody {
+                        tr {
+                            @include eo-line(30px);
+                            .param-value {
+                                @include eo-line(32px);
+                            }
+                            th,
+                            td {
+                                max-width: 25%;
+                                word-break: break-all;
+                            }
+                            .request-info-param-value {
+                                max-width: 300px;
+                                word-break: break-all;
+                            }
+                            td,
+                            th {
+                                border-bottom: 1px dotted #e5e5e5;
+                                cursor: default;
+                            }
+                            th {
+                                span {
+                                    width: 100%;
+                                    height: 100%;
+                                    display: inline-block;
+                                }
+                            }
+                        }
+                    }
+                }
+                .detail-num {
+                    label {
+                        text-align: center;
+                        border: 1px solid #fff;
+                    }
+                    label:first-child {
+                        width: 25px;
+                        @include eo-line(25px);
+                        border-radius: 3px;
+                        background-color: #f2f2f2;
+                        color: #9e9e9e;
+                        display: inline-block;
+                    }
+                    .necessity {
+                        width: 50px;
+                        @include eo-line(25px);
+                        display: inline-block;
+                        border-radius: 3px;
+                    }
+                    .unnecessary {
+                        background-color: #f2f2f2;
+                        color: #9e9e9e;
+                    }
+                    .necessary {
+                        background-color: $buttonSuccessBgColor;
+                        color: #fff;
+                    }
+                }
+            }
+            .third-part {
+                margin-bottom: 10px;
+                header {
+                    .change-type-btn {
+                        width: 135px;
+                        @include eo-line(24px);
+                        border: none;
+                    }
+                    .icon-magic {
+                        color: #fff;
+                        padding: 0;
+                        padding-right: 5px;
+                        font-size: 13px;
+                    }
+                    .send-format {
+                        color: #fff;
+                        text-align: center;
+                        font-size: 14px;
+                        margin-left: 5px;
+                        font-weight: initial;
+                        //display: inline-block;
+                    }
+                    .test-nav-li {
+                        margin-top: -2px;
+                        text-align: center;
+                        width: 80px;
+                        font-weight: initial;
+                        font-size: 14px;
+                        &:hover {
+                            border-bottom: 2px solid #cddeba;
+                            cursor: pointer;
+                        }
+                    }
+                    .active {
+                        border-bottom: 2px solid #66BB6A;
+                    }
+                }
+                article {
+                    min-height: 137px;
+                    line-height: 0;
+                    .test-header-ul {
+                        margin-left: 15px;
+                        margin-top: 10px;
+                        li {
+                            font-size: 14px;
+                            line-height: 30px;
+                            .test-header-key {
+                                color: #9e9e9e;
+                            }
+                        }
+                    }
+                    .copy-url-box {
+                        margin-top: 10px;
+                        input {
+                            width: 100%;
+                            cursor: pointer;
+                        }
+                        .copy-tips {
+                            margin-top: -35px;
+                            padding-right: 10px;
+                            position: relative;
+                            font-size: 12px;
+                            color: #999;
+                            @include eo-line(35px);
+                            cursor: pointer;
+                        }
+                        .copy-success {
+                            color: $buttonSuccessBgColor;
+                        }
+                        .copy-error {
+                            color: #c6533b;
+                        }
+                    }
+                    .back-result-content {
+                        min-height: 130px;
+                        max-height: 500px;
+                        overflow-x: hidden;
+                        overflow-y: scroll;
+                        background-color: #f8f8f8;
+                        border: 1px solid #e5e5e5;
+                        margin-top: 5px;
+                        border-radius: 5px;
+                        padding: 5px;
+                        line-height: 20px;
+                        font-size: 12px;
+                        max-width: 100%;
+                        @include eo-width(100%, 12px);
+                        word-break: break-all;
+                        .iconfont {
+                            color: #ff4400;
+                            font-size: 13px;
+                            padding: 0 5px;
+                        }
+                    }
+                }
+            }
+            .forth-part {
+                margin-bottom: 10px;
+                table {
+                    table-layout: fixed;
+                    thead {
+                        .zero-td {
+                            width: 90px;
+                        }
+                        .first-td {
+                            width: 15%;
+                        }
+                        .second-td {
+                            width: 16%;
+                        }
+                        .third-td {
+                            width: 17%;
+                        }
+                    }
+                }
+                .result-param-posible {
+                    li {
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        @include eo-line(32px);
+                        table {
+                            width: auto;
+                        }
+                        label:first-child {
+                            display: inline-block;
+                        }
+                        label:nth-child(2) {
+                            cursor: help;
+                        }
+                    }
+                }
+                .value-desc {
+                    max-width: 300px;
+                    li {
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        table {
+                            width: auto;
+                        }
+                        label:nth-child(2) {
+                            cursor: help;
+                        }
+                    }
+                }
+                .result-param-header {
+                    .iconfont {
+                        font-size: 12px;
+                        color: $buttonSuccessBgColor;
+                        display: initial;
+                    }
+                    .result-param-name {
+                        color: #999;
+                        font-weight: initial;
+                    }
+                }
+            }
+            .request-header {
+                table {
+                    thead {
+                        th {
+                            width: 35px;
+                        }
+                        .request-header-label {
+                            width: 16.5%;
+                        }
+                        .request-header-content {}
+                    }
+                    tbody {}
+                }
+            }
+            .request-param-part {
+                thead {
+                    th,
+                    td {
+                        cursor: default;
+                    }
+                    .request-param-thead-num {
+                        width: 90px;
+                    }
+                    .request-param-thead-header {
+                        width: 20%;
+                    }
+                    .request-param-thead-type {
+                        width: 23%;
+                    }
+                    .request-param-thead-value {
+                        width: 80px;
+                    }
+                    .request-param-thead-posible {
+                        width: 14%;
+                    }
+                }
+                * {
+                    font-size: 14px;
+                }
+                .request-param-info {
+                    display: inline-block;
+                    width: 100%;
+                    border-bottom: 1px dotted #e5e5e5;
+                    padding: 5px 0;
+                    .request-param-num {
+                        width: 90px;
+                    }
+                    .request-param-header {
+                        width: 19.5%;
+                        padding-right: 0.5%;
+                        display: inline-table;
+                        @include eo-line(27px);
+                        font-weight: bold;
+                        .iconfont {
+                            font-size: 12px;
+                            color: $buttonSuccessBgColor;
+                        }
+                        .request-param-name {
+                            font-weight: initial;
+                            color: #999;
+                        }
+                    }
+                    .request-param-type {
+                        width: 23%;
+                        display: inline-table;
+                        @include eo-line(27px);
+                        .request-param-limit {
+                            color: #999;
+                        }
+                    }
+                    .request-param-value {
+                        width: 80px;
+                        display: inline-block;
+                        @include eo-line(27px);
+                        .limit-btn {
+                            background: #fdfdfd;
+                            color: #ccc;
+                            border: 1px solid $buttonDefaultBorderColor;
+                            cursor: default;
+                        }
+                        button {
+                            width: 50px;
+                            font-size: 13px;
+                            @include eo-line(25px);
+                            line-height: 20px;
+                            margin-top: 2px;
+                            margin-left: 2px;
+                        }
+                    }
+                    .request-param-posible {
+                        width: 13.5%;
+                        display: inline-block;
+                        padding-right: 0.5%;
+                        label:nth-child(2) {
+                            //display: initial;
+                            cursor: help;
+                        }
+                        li {
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            @include eo-line(27px);
+                        }
+                    }
+                    .value-desc {
+                        display: inline-block;
+                        width: 14.5%;
+                        li {
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            @include eo-line(27px);
+                            label:first-child {
+                                cursor: help;
+                            }
+                        }
+                    }
+                }
+                .request-param-raw-form {
+                    padding-top: 5px;
+                    padding-bottom: 0;
+                    .request-param-raw-content {
+                        min-height: 130px;
+                        background-color: #f8f8f8;
+                        border: 1px solid #e5e5e5;
+                        overflow: auto;
+                        max-height: 400px;
+                        border-radius: 5px;
+                        padding: 5px;
+                        line-height: 20px;
+                        font-size: 12px;
+                        max-width: 100%;
+                        @include eo-width(100%, 12px);
+                        word-break: break-all;
+                        display: block;
+                        .iconfont {
+                            color: #ff4400;
+                            font-size: 13px;
+                            padding: 0 5px;
+                        }
+                    }
+                }
+                .request-param-info:last-child {
+                    border: none;
+                }
+            }
+        }
+    }
+}

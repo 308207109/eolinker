@@ -1,0 +1,36 @@
+<div>
+    <header>
+        <ul>
+            <li>
+                <button class="eo-button-success" data-ng-click="homeProjectDatabaseCtrl.edit(false)"><span class="iconfont icon-add"></span>新增数据库</button>
+            </li>
+        </ul>
+    </header>
+    <article>
+        <table>
+            <thead>
+                <tr>
+                    <th class="first-th">数据库名称</th>
+                    <th class="second-th">版本号</th>
+                    <th class="third-th">数据库最后修改时间</th>
+                    <th class="forth-th">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat='list in homeProjectDatabaseCtrl.query' data-ng-click="homeProjectDatabaseCtrl.enterDatabase(list.dbID)">
+                    <th>{{list.dbName}}</th>
+                    <td><span class="eo-color-success">V&nbsp;{{list.dbVersion}}</span></td>
+                    <td>{{list.dbUpdateTime}}</td>
+                    <td>
+                        <a class="home-function-edit" data-ng-click="homeProjectDatabaseCtrl.edit(list)"><span class="iconfont icon-write"></span>修改</a>
+                        <a class="home-function-delete" data-ng-click="homeProjectDatabaseCtrl.delete(list.dbID,$index)"><span class="iconfont icon-delete"></span>删除</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </article>
+    <footer>
+        <div load-directive is-end="homeProjectDatabaseCtrl.loadingIsEnd">
+        </div>
+    </footer>
+</div>

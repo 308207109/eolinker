@@ -1,0 +1,634 @@
+$defaultFontFamily: "Microsoft YaHei",
+"Hiragino Sans GB",
+"PingFang SC",
+"SimHei",
+"宋体",
+"Arial Unicode MS";
+$defaultFontSize: 14px;
+$defaultColor: #333;
+$defaultWidth: 1920px;
+$bodyWidth:1170px;
+$scale:$bodyWidth / $defaultWidth; //尺寸比例
+$buttonSuccessBgColor:#4CAF50;
+$buttonSuccessColor:#fff;
+$buttonSuccessFocusBgColor:#43A047;
+$buttonSuccessBorderColor:#43A047;
+$buttonSuccessFocusBorderColor:#4CAF50;
+$buttonSuccessFocusColor:#fff;
+$buttonDefaultBgColor:#f5f5f5;
+$buttonDefaultColor:#444;
+$buttonDefaultFocusBgColor:#fafafa;
+$buttonDefaultFocusColor:#444;
+$buttonDefaultBorderColor:rgba(0, 0, 0, .06);
+$buttonInfoBgColor:#2196F3;
+$buttonInfoColor:#fff;
+$buttonInfoFocusBgColor:#1E88E5;
+$buttonInfoFocusColor:#fff;
+$buttonInfoBorderColor:rgba(0, 0, 0, .21);
+$buttonDangerBgColor:#D32F2F;
+$buttonDangerColor:#fff;
+$buttonDangerBorderColor:#C62828;
+$buttonDangerFocusBgColor:#C62828;
+$buttonDangerFocusColor:#fff;
+$buttonDangerFocusBorderColor:#D32F2F;
+$buttonWarningBgColor:#FFB300;
+$buttonWarningColor:#fff;
+$buttonWarningBorderColor:#FFA000;
+$buttonWarningFocusBgColor:#D84A4A;
+$buttonWarningFocusColor:#fff;
+$buttonWarningFocusBorderColor:#D32F2F;
+$buttonPrimaryBgColor:#008dc5;
+$buttonPrimaryColor:#fff;
+$buttonPrimaryBorderColor:#009dd8;
+$buttonPrimaryFocusBgColor:#009dd8;
+$buttonPrimaryFocusColor:#fff;
+$buttonPrimaryFocusBorderColor:#008dc5;
+* {
+    font-family: $defaultFontFamily;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    outline: none;
+    color: #333;
+    word-break: break-all;
+}
+
+span,
+li,
+thead th {
+    cursor: default;
+}
+
+body {
+    position: absolute;
+    background: #fff;
+    min-width: $bodyWidth + 178px;
+    width: 100%;
+    height: 100%;
+}
+
+a {
+    cursor: pointer;
+    text-decoration: none;
+    * {
+        cursor: pointer;
+    }
+}
+
+textarea {
+    resize: none;
+}
+
+button {
+    cursor: pointer;
+    * {
+        cursor: pointer;
+    }
+}
+
+input::-ms-clear {
+    display: none;
+}
+
+input::-ms-reveal {
+    display: none;
+}
+
+select {
+    font: small-caption;
+    font-size: 14px;
+    padding: 0 5px;
+    cursor: pointer;
+}
+
+@mixin eo-line ($height,
+$line-height:$height) {
+    height: $height;
+    line-height: $line-height;
+}
+
+#particles-js {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    overflow-y: hidden;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.pull-left {
+    float: left;
+}
+
+.pull-right {
+    float: right;
+}
+
+.hidden {
+    display: none;
+}
+
+.wrap {
+    width: $bodyWidth;
+    height: auto;
+    margin: 0 auto;
+}
+
+.mask {
+    position: fixed;
+    z-index: -1;
+    background: #f8f8f8;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.eo-sv-handle {
+    cursor: move;
+}
+
+.eo-pre {
+    white-space: pre-line;
+}
+
+.eo-blod {
+    font-weight: bold;
+}
+
+.eo-input {
+    width: 250px;
+    height: 33px;
+    border: 1px solid #ddd;
+    text-indent: 10px;
+    background-color: #fff;
+    border-radius: 3px;
+}
+
+.eo-link {
+    color: #2196F3;
+}
+
+@mixin eo-button ($bgColor,
+$color,
+$borderColor) {
+    background: $bgColor;
+    color: $color;
+    border: 1px solid $borderColor;
+    height: 33px;
+    line-height: 31px;
+    cursor: pointer;
+    border-radius: 3px;
+    .iconfont {
+        color: $color;
+    }
+}
+
+.eo-button-success {
+    @include eo-button($buttonSuccessBgColor,
+    $buttonSuccessColor,
+    $buttonSuccessBorderColor);
+    &:hover {
+        @include eo-button($buttonSuccessFocusBgColor,
+        $buttonSuccessFocusColor,
+        $buttonSuccessFocusBorderColor);
+    }
+}
+
+.eo-button-default {
+    @include eo-button($buttonDefaultBgColor,
+    $buttonDefaultColor,
+    $buttonDefaultBorderColor);
+    &:hover,
+    &:focus,
+    &:active {
+        @include eo-button($buttonDefaultFocusBgColor,
+        $buttonDefaultFocusColor,
+        $buttonDefaultBorderColor);
+    }
+}
+
+.eo-button-info {
+    @include eo-button($buttonInfoBgColor,
+    $buttonInfoColor,
+    $buttonInfoBorderColor);
+    &:hover,
+    &:focus,
+    &:active {
+        @include eo-button($buttonInfoFocusBgColor,
+        $buttonInfoFocusColor,
+        $buttonInfoBorderColor);
+    }
+}
+
+.eo-button-warning {
+    @include eo-button($buttonDangerBgColor,
+    $buttonDangerColor,
+    $buttonDangerBorderColor);
+    &:hover,
+    &:focus,
+    &:active {
+        @include eo-button($buttonDangerFocusBgColor,
+        $buttonDangerFocusColor,
+        $buttonDangerFocusBorderColor);
+    }
+}
+
+.eo-button-primary {
+    @include eo-button($buttonPrimaryBgColor,
+    $buttonPrimaryColor,
+    $buttonPrimaryBorderColor);
+    &:hover,
+    &:focus,
+    &:active {
+        @include eo-button($buttonPrimaryFocusBgColor,
+        $buttonPrimaryFocusColor,
+        $buttonPrimaryFocusBorderColor);
+    }
+}
+
+@mixin eo-color ($color,
+$borderColor) {
+    color: #fff;
+    background-color: $color;
+    border: 1px solid $borderColor;
+    border-radius: 3px;
+}
+
+@mixin eo-table ($oddBgColor:#fafafa,
+$evenBgColor:#fff,
+$hoverBgColor:#f0f0f0) {
+    tr:nth-child(odd) {
+        background: $oddBgColor;
+    }
+    tr:nth-child(even) {
+        background: $evenBgColor;
+    }
+    tr {
+        &:hover {
+            background: $hoverBgColor;
+            cursor: pointer;
+        }
+    }
+}
+
+@mixin eo-button ($bgColor,
+$color,
+$borderColor) {
+    background: $bgColor;
+    color: $color;
+    border: 1px solid $borderColor;
+    @include eo-line(33px,
+    31px);
+    cursor: pointer;
+    border-radius: 3px;
+    .iconfont {
+        color: $color;
+    }
+}
+
+.eo-color-default {
+    @include eo-color(#2196F3,
+    #1E88E5);
+}
+
+.eo-color-success {
+    @include eo-color($buttonSuccessBgColor,
+    $buttonSuccessBorderColor);
+}
+
+.eo-color-warning {
+    @include eo-color(#FFB300,
+    #FFA000);
+}
+
+.eo-color-danger {
+    @include eo-color(#D32F2F,
+    #C62828);
+}
+
+.eo-color-disable {
+    @include eo-color(#333,
+    #000);
+}
+
+.eo-color-info {
+    @include eo-color(rgb(153,
+    153,
+    153),
+    rgb(119,
+    119,
+    119));
+}
+
+.eo-color-others {
+    @include eo-color(#795548,
+    #6D4C41);
+}
+
+.eo-color-options {
+    @include eo-color(#607D8B,
+    #546E7A);
+}
+
+.eo-color-unuse {
+    @include eo-color(#9E9E9E,
+    rgb(198,
+    62,
+    33));
+}
+
+.eo-status-default {
+    color: rgb(39, 107, 225);
+}
+
+.eo-status-success {
+    color: $buttonSuccessBgColor;
+}
+
+.eo-status-warning {
+    color: #FF9800;
+}
+
+.eo-status-danger {
+    color: #9E9E9E;
+}
+
+@mixin eo-model-color ($color,
+$bgColor) {
+    background-color: $bgColor;
+    border: 1px solid $color;
+    span {
+        color: $color;
+        .iconfont {
+            color: $color;
+        }
+    }
+}
+
+.opacity-none {
+    opacity: 0;
+}
+
+.eo-input-error {
+    border: 1px solid #d85030;
+}
+
+.eo-input-success {
+    border: 1px solid #4CAF50;
+}
+
+//popover
+.popover {
+    position: absolute;
+    table {
+        border-spacing: 0;
+    }
+}
+
+.arrow {
+    border-style: solid;
+    border-width: 5px 10px 5px 0;
+    border-color: transparent #333 transparent transparent;
+}
+
+.popover-inner {
+    background-color: #333;
+    padding: 5px 10px;
+    width: 150px;
+    max-width: 150px;
+    .popover-content {
+        color: #fff;
+        font-size: 12px;
+        line-height: 20px;
+    }
+}
+
+//加载动画
+@keyframes load {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes load {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@-o-keyframes load {
+    0% {
+        -o-transform: rotate(0deg);
+    }
+    100% {
+        -o-transform: rotate(360deg);
+    }
+}
+
+@-moz-keyframes load {
+    0% {
+        -moz-transform: rotate(0deg);
+    }
+    100% {
+        -moz-transform: rotate(360deg);
+    }
+}
+
+.loading-content {
+    top: 0;
+    left: 0;
+    position: fixed;
+    width: 100%;
+    z-index: 10;
+    .loading {
+        min-width: 350px;
+        max-width: 500px;
+        margin: 109px auto;
+        border-radius: 3px;
+        @include eo-model-color(#e5e5e5,
+        #fff);
+        box-shadow: 0px 10px 29px #ccc;
+        li {
+            @include eo-line(50px);
+            text-align: center;
+            color: #555;
+            font-size: 14px;
+            .iconfont {
+                font-size: 18px;
+                color: #555;
+                font-size: 14px;
+            }
+            div {
+                -webkit-animation: load 1.7s infinite ease;
+                animation: load 1.7s infinite ease;
+                display: inline-block;
+                margin-right: 10px;
+            }
+        }
+    }
+}
+
+//百分比-数字
+@mixin eo-height ($percent,
+$height) {
+    height: -webkit-calc(#{$percent} - #{$height});
+    height: -ms-calc(#{$percent} - #{$height});
+    height: -moz-calc(#{$percent} - #{$height});
+    height: calc(#{$percent} - #{$height});
+}
+
+@mixin eo-width ($percent,
+$width) {
+    width: -webkit-calc(#{$percent} - #{$width});
+    width: -ms-calc(#{$percent} - #{$width});
+    width: -moz-calc(#{$percent} - #{$width});
+    width: calc(#{$percent} - #{$width});
+}
+
+//scrollbar
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+
+/* Track */
+
+::-webkit-scrollbar-track {
+    //-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    //-webkit-border-radius: 10px;
+    //border-radius: 10px;
+    background: #fff;
+}
+
+
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: #ccc;
+    //-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+    background: #ddd;
+}
+
+/*分页*/
+
+.pageFooter {
+    text-align: center;
+    margin-bottom: 20px;
+    .pagination > li > a,
+    .pagination > li > span {
+        color: $buttonDefaultFocusColor;
+        //height: 34px;
+        width: 35px;
+    }
+    .pagination > .disabled > a {
+        color: #e5e5e5;
+        cursor: default;
+    }
+    .pagination-prev,
+    .pagination-next {
+        border-radius: 3px;
+    }
+    .pagination > .active,
+    .pagination > .active:hover,
+    .pagination > .active:focus,
+    .pagination > .active,
+    .pagination > .active:hover,
+    .pagination > .active:focus {
+        background-color: $buttonSuccessFocusBgColor;
+        a {
+            color: #fff;
+        }
+    }
+    .pagination-jump {
+        margin: 20px 0;
+        color: $buttonDefaultFocusColor;
+        margin-top: 37px;
+        margin-left: 10px;
+        display: inline-block;
+        li {
+            @include eo-line(37px);
+            display: inline-block;
+            input {
+                @include eo-line(33px);
+                margin: 0 8px;
+                width: 55px;
+                border: 1px solid #dfdfdf;
+                background-color: #fff;
+            }
+            button {
+                width: 50px;
+            }
+            input {
+                text-indent: 1em;
+            }
+        }
+    }
+    .pagination-sm {
+        margin-top: 35px;
+        display: inline-block;
+        li {
+            width: 35px;
+            @include eo-line(35px,
+            36px);
+            background-color: #fff;
+            border: 1px solid $buttonDefaultBorderColor;
+            border-left: none;
+            text-align: center;
+            display: inline-flex;
+        }
+        .pagination-prev {
+            margin-right: 10px;
+            border-left: 1px solid $buttonDefaultBorderColor;
+        }
+        .pagination-next {
+            margin-left: 10px;
+            border-left: 1px solid $buttonDefaultBorderColor;
+        }
+        li:nth-child(2) {
+            border-left: 1px solid $buttonDefaultBorderColor;
+        }
+    }
+    .first-page {
+        border-radius: 3px 0 0 3px;
+    }
+    .last-page {
+        border-radius: 0 3px 3px 0;
+    }
+    .only-page {
+        border-radius: 3px;
+    }
+}
+
+//wangeditor
+.wangEditor-container {
+    .wangEditor-txt {
+        ol {
+            li {
+                list-style-type: decimal;
+            }
+        }
+        ul {
+            li {
+                list-style-type: initial;
+            }
+        }
+    }
+}

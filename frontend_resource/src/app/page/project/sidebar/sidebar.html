@@ -1,0 +1,85 @@
+<div>
+    <div class="second-navbar">
+        <header>
+            <ul>
+                <li class="ui-sref-li" data-ng-class="{'active':projectSidebarCtrl.info.state==0}" data-ng-click="projectSidebarCtrl.change(0)"><a><span class="iconfont icon-api"></span>接口文档</a></li>
+                <li class="ui-sref-li" data-ng-class="{'active':projectSidebarCtrl.info.state==1}" data-ng-click="projectSidebarCtrl.change(1)"><a><span class="iconfont icon-icocode"></span>状态码文档</a></li>
+            </ul>
+        </header>
+    </div>
+    <div class="project-sidebar ">
+        <header ng-class="{'hidden':projectSidebarCtrl.info.state==2}">
+            <ul>
+                <li class="shrink-function eo-button-default" data-ng-class="{'border-bottom-none':projectSidebarCtrl.search.isSpread||!isShrink}" data-ng-click="isShrink=!isShrink;projectSidebarCtrl.info.manualShrink=isShrink?true:false">
+                    <span class="iconfont icon-more"></span>
+                </li>
+            </ul>
+            <form name="searchForm">
+                <ul class="search-function-ul" data-ng-class="{'hidden':!projectSidebarCtrl.search.isSpread&&isShrink}">
+                    <li class="search-input-li" data-ng-mouseleave="projectSidebarCtrl.shrinkMouseLeave()" data-ng-mouseenter="projectSidebarCtrl.shrinkMouseEnter()">
+                        <input id="search_input_js" class="eo-input" type="text" placeholder="{{projectSidebarCtrl.info.state==1?'搜索状态码':'搜索接口'}}" data-ng-model="projectSidebarCtrl.info.tips" data-ng-focus="projectSidebarCtrl.isFocus=true" data-ng-blur="projectSidebarCtrl.isFocus=false" data-ng-class="{'eo-input-success':projectSidebarCtrl.isFocus}" required>
+                    </li>
+                    <li class="search-btn-li">
+                        <button class="iconfont icon-search" data-ng-click="projectSidebarCtrl.search()"></button>
+                    </li>
+                </ul>
+            </form>
+            <ul data-ng-class="{'hidden':projectSidebarCtrl.search.isSpread||!isShrink}">
+                <li class="shrink-search-li">
+                    <label class="iconfont icon-search" data-ng-click="projectSidebarCtrl.spreadUp()" for="search_input_js"></label>
+                </li>
+            </ul>
+        </header>
+        <!--api/code sidebar article-->
+        <article class="sidebar-article-0" ng-class="{'hidden':projectSidebarCtrl.info.state>1}">
+            <ul>
+                <li class="title">
+                    <span class="pull-left icon">分组</span>
+                    <span class="pull-right">
+                        <a data-ng-click="projectSidebarCtrl.edit(false)">
+                            <span class="iconfont icon-add" ></span>添加
+                    </a>
+                    </span>
+                </li>
+            </ul>
+            <ul class="group-ul">
+                <li class="background-group-li" ng-class="{'elem-active':query.isClick}" data-ng-repeat='query in projectSidebarCtrl.query'>
+                    <div class="group-li" data-ng-click="projectSidebarCtrl.click(query.groupID,query,$index)">
+                        <span class="title-icon iconfont " ng-class="{'icon-sort':$index==0,'icon-delete':query.groupID==-2,'icon-trianglerightfill':query.groupID>0&&!query.isClick&&query.childGroupList.length>0,'icon-triangledownfill':query.groupID>0&&query.isClick&&query.childGroupList.length>0}">   
+                        </span>
+                        <span class="group-name" ng-class="{'pull-left':query.groupID>0,'is-no-child':query.childGroupList.length<=0}">
+                            {{query.groupName}}
+                        </span>
+                        <span class="active " ng-if="query.groupID>0">
+                            <a class="iconfont icon-list" data-ng-click="query.listIsClick=true;" data-ng-mouseleave="query.listIsClick=false">
+                                <ul class="sidebar-function" data-ng-class="{'hidden':!query.listIsClick,'envFirst':$first}">
+                                    <li class="add-child-btn" data-ng-click="projectSidebarCtrl.editChildGroup(query,null,false)">添加子分组</li>
+                                    <li data-ng-click="projectSidebarCtrl.edit(query)">修改</li>
+                                    <li data-ng-click="projectSidebarCtrl.delete(query,$index)">删除</li>
+                                </ul>
+                            </a>
+                        </span>
+                    </div>
+                    <div class="api-list-div" ng-class="{'hidden':!query.isClick}">
+                        <ul>
+                            <li class="group-li api-list-li" data-ng-repeat='list in query.childGroupList' ng-class="{'elem-active':list.isClick}" data-ng-click="projectSidebarCtrl.childClick(list,query)">
+                                <span class="group-name pull-left">
+                                    {{list.groupName}}
+                                </span>
+                                <span class="active ">
+                            <a class="iconfont icon-list" data-ng-click="query.listIsClick=true" data-ng-mouseleave="query.listIsClick=false">
+                                <ul class="sidebar-function" data-ng-class="{'hidden':!query.listIsClick,'envFirst':$first}">
+                                    <li data-ng-click="projectSidebarCtrl.editChildGroup(query,list,true)">修改</li>
+                                    <li data-ng-click="projectSidebarCtrl.deleteChildGroup(query,list,$index)">删除</li>
+                                </ul>
+                            </a>
+                        </span>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </article>
+        <footer></footer>
+    </div>
+</div>

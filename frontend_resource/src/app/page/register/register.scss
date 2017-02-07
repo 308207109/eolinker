@@ -1,0 +1,206 @@
+register {
+    position: absolute;
+    height: 100%;
+    display: table;
+    width: 100%;
+    top: 0;
+    left: 0;
+    .register-content-wrap {
+        display: table-cell;
+        vertical-align: middle;
+    }
+    .protocol-mask {
+        position: absolute;
+        top: 60px;
+        width: 100%;
+        #particles-js {
+            height: auto;
+            background-color: #fff;
+        }
+    }
+}
+
+.register-content {
+    width: 435px;
+    margin: auto;
+    text-align: left;
+    margin-top: -20px;
+    font-size: 15px;
+    header {
+        p {
+            margin-bottom: 10px;
+            label {
+                font-weight: bold;
+                width: 75px;
+                text-align: right;
+                display: inline-block;
+                margin-right: 20px;
+            }
+        }
+    }
+    article {
+        .register-function {
+            margin-left: -10px;
+            button {
+                width: 153px;
+                margin-right: 15px;
+                @include eo-button($buttonDefaultBgColor, $buttonDefaultColor, #ccc);
+                .iconfont {
+                    font-size: 14px;
+                    margin-right: 5px;
+                    color: $buttonDefaultColor;
+                }
+            }
+            .active {
+                @include eo-button($buttonSuccessFocusBgColor, $buttonSuccessFocusColor, $buttonSuccessBorderColor);
+                .iconfont {
+                    color: #fff;
+                }
+            }
+            button:last-child {
+                margin-right: 0;
+            }
+        }
+        .icon-style {
+                        position: absolute;
+                        @include eo-line(35px,37px);
+                        margin-left: -30px;
+                        .iconfont {
+                            color: #999;
+                            &:hover,
+                            &:focus,
+                            &:active {
+                                color: #333;
+                            }
+                        }
+                    }
+        li {
+            margin-bottom: 15px;
+            height: 37px;
+            line-height: 37px;
+            label {
+                width: 75px;
+                text-align: right;
+                display: inline-block;
+                margin-right: 20px;
+            }
+        }
+        li:first-child {
+            margin-top: 20px;
+        }
+        li:nth-child(n+4) {
+            margin-bottom: 25px;
+        }
+        li:last-child {
+            text-align: center;
+        }
+        .eo-input,
+        .eo-button-success,
+        .eo-button-default {
+            width: 323px;
+        }
+        .message-check-code-input {
+            width: 223px;
+        }
+        .get-code-btn {
+            width: 95px;
+        }
+    }
+    footer {
+        clear: both;
+        text-align: center;
+        border-top: 1px solid #e5e5e5;
+        padding-top: 15px;
+    }
+    .eo-footer {
+        .siteseal {
+            display: none;
+        }
+    }
+}
+
+.register-protocol {
+    margin-top: 60px;
+    display: block;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-weight: 300;
+        font-style: normal;
+        color: inherit;
+        text-rendering: optimizeLegibility;
+        line-height: 1.3;
+        margin-bottom: 1.2rem;
+    }
+    h1 {
+        font-size: 3rem;
+        text-align: center;
+        margin-bottom: 64px;
+    }
+    .fix-nav {
+        width: 100%;
+        position: fixed;
+        top: 0;
+    }
+    .eo-footer {
+        position: initial;
+        .siteseal {
+            display: none;
+        }
+    }
+    nav {
+        height: 50px;
+        background-color: #fcfcfc;
+        border-top: 1px solid #e0e0e0;
+        border-bottom: 1px solid #e0e0e0;
+        .row {
+            width: $bodyWidth;
+            margin: 0 auto;
+            a {
+                color: #616161;
+                padding: 1rem 1.2rem;
+                text-transform: uppercase;
+                font-weight: 500;
+                font-size: .8125rem;
+                letter-spacing: .012rem;
+                line-height: 1.125rem;
+                display: block;
+                &:hover {
+                    color: #1198b4;
+                }
+            }
+        }
+    }
+    .content {
+        background-color: #fefefe;
+        article {
+            width: 900px;
+            margin: 0 auto;
+        }
+        h2 {
+            font-size: 2.125rem;
+            font-weight: 200;
+        }
+        h3 {
+            margin-top: 3rem;
+            font-weight: 200;
+            font-size: 1.75rem;
+        }
+        h4 {
+            margin-top: 2rem 0;
+            font-weight: 200;
+            font-size: 1.5rem;
+        }
+        .user-service-protocol-info {
+            padding: 5rem 0;
+        }
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+    }
+}

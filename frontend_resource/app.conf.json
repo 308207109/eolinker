@@ -1,0 +1,25 @@
+{
+  "development": {
+    "serverUrl": "/eolinker/server/index.php",
+    "isDebug":true,
+    "assetUrl":"app/",
+    "cookieConfig":{ 
+      "domain":"localhost"
+    }
+  },
+  "production": {
+    "serverUrl": "./server/index.php",
+    "isDebug":false,
+    "assetUrl":"",
+    "cookieConfig":{
+      "domain":"../"
+    }
+  },
+  "test": {
+    "serverUrl": "http://localhost:8080",
+    "isDebug":false,
+    "cookieConfig":{
+      "domain":""
+    }
+  }
+}

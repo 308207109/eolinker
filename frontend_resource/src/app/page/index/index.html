@@ -1,0 +1,56 @@
+<!--首页-->
+<div>
+    <div class="index-content-wrap">
+        <div class="eo-index-wrap">
+            <div class="eo-index">
+                <div class="index-info">
+                    <ul>
+                        <li><img src="" data-ng-src="{{indexCtrl.logo}}"></li>
+                    </ul>
+                </div>
+                <div class="index-content " ng-class="{'hidden':indexCtrl.hadLogin}">
+                    <article>
+                        <form name="loginForm">
+                            <ul>
+                                <li>
+                                    <input class="eo-input" id="username_input_js" name="username" data-ng-class="{'eo-input-error':indexCtrl.submitted&&loginForm.username.$invalid}" type="text" placeholder="用户名" data-ng-model="indexCtrl.info.loginName" maxlength="32" autofocus="autofocus" required />
+                                </li>
+                                <li>
+                                    <input class="eo-input" name="password" ng-if="!indexCtrl.eye" data-ng-class="{'eo-input-error':indexCtrl.submitted&&loginForm.password.$invalid}" type="password" placeholder="密码" data-ng-model="indexCtrl.templatePassword" required maxlength="32" />
+                                    <input class="eo-input" name="eyepassword" ng-if="indexCtrl.eye" data-ng-class="{'eo-input-error':indexCtrl.submitted&&loginForm.eyepassword.$invalid}" type="text" placeholder="密码" data-ng-model="indexCtrl.templatePassword" required maxlength="32" />
+                                    <span class="icon-style">
+                                <a class="iconfont" data-ng-class="{'icon-attention':indexCtrl.eye,'icon-attentionfill':!indexCtrl.eye}" data-ng-click="indexCtrl.changeView()" ></a>
+                                </span>
+                                </li>
+                                <li>
+                                    <button class="eo-button-success index-btn" data-ng-click="indexCtrl.login()">登录<span class="iconfont icon-right pull-right"></span></button>
+                                </li>
+                                <li class="remember-password-li pull-left">
+                                    <input class="hidden" type="checkbox" id="remember-password-js" data-ng-model="indexCtrl.isRemember">
+                                    <label for="remember-password-js" class="checkbox pull-left iconfont" data-ng-class="{'icon-check':indexCtrl.isRemember}"></label>
+                                    <label for="remember-password-js" class="pull-left">记住密码</label>
+                                </li>
+                            </ul>
+                        </form>
+                    </article>
+                    <footer></footer>
+                </div>
+                <div class="index-content enter-home-content" ng-class="{'hidden':!indexCtrl.hadLogin}">
+                    <header></header>
+                    <article>
+                        <ng-form name="Form">
+                            <ul>
+                                <li>
+                                    <button class="eo-button-info enter-btn" data-ng-click="indexCtrl.enter()">查看项目列表</button>
+                                </li>
+                            </ul>
+                        </ng-form>
+                    </article>
+                    <footer></footer>
+                </div>
+            </div>
+            <div id="particles-js"></div>
+        </div>
+    </div>
+    <eo-footer></eo-footer>
+</div>

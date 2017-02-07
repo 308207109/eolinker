@@ -1,0 +1,47 @@
+<div class="project-list project-code-list project-div">
+    <a class="hidden" id="dump_js" ></a>
+    <header>
+        <ul>
+            <li class="pull-left eo-button-success" data-ng-click="projectCodeListCtrl.edit()">
+                <span class="iconfont icon-add"></span> 添加状态码
+            </li>
+            <li class="pull-left eo-button-success" data-ng-click="projectCodeListCtrl.team()">
+                <span class="iconfont icon-index-users"></span> 协作管理
+            </li>
+            <li class="pull-left eo-button-success" dump-directive project-id="{{projectApiListCtrl.info.projectID}}">
+                <span class="iconfont icon-index-clouddownload"></span> 导出项目
+            </li>
+        </ul>
+    </header>
+    <article>
+        <table>
+            <thead>
+                <tr>
+                    <th class="first-th">状态码</th>
+                    <th class="third-th" >
+                        描述
+                    </th>
+                    <th class="second-th">分组</th>
+                    <th class="forth-th">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="query in projectCodeListCtrl.query" >
+                    <td>
+                        {{query.code}}
+                    </td>
+                    <td>{{query.codeDescription}}</td>
+                    <td>{{query.groupName}}</td>
+                    <td>
+                        <a class="project-function-edit" data-ng-click="projectCodeListCtrl.edit(query,query.groupID)"><span class="iconfont icon-write"></span>修改</a>
+                        <a class="project-function-delete" data-ng-click="projectCodeListCtrl.delete(query.codeID,$index)"><span class="iconfont icon-delete"></span>删除</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </article>
+    <footer>
+        <div load-directive is-end="projectCodeListCtrl.loadingIsEnd">
+        </div>
+    </footer>
+</div>

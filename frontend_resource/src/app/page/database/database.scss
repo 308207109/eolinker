@@ -1,0 +1,168 @@
+database {
+    .database {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        .database-sidebar {
+            margin: 51px 20px 0 0;
+            width: 240px;
+            position: fixed;
+            z-index: 1;
+            border-right: 1px solid #dcdcdc;
+            @include eo-height(100%, 60px);
+            background-color: #fff;
+            header {
+                .shrink-function {
+                    @include eo-line(38px);
+                    padding: 0 10px;
+                    font-size: 14px;
+                    cursor: pointer;
+                    text-align: center;
+                    border: none;
+                    border-bottom: 1px solid #dcdcdc;
+                    border-radius: 0;
+                    span {
+                        color: #555;
+                        cursor: pointer;
+                    }
+                }
+            }
+            article {
+                .group-ul {
+                    @include eo-height(100%, 83px);
+                    overflow-y: auto;
+                    overflow-x: hidden;
+                    position: absolute;
+                    width: 100%;
+                }
+                .group-li {
+                    font-size: 12px;
+                    @include eo-line(43px);
+                    padding-left: 10px;
+                    color: #555;
+                    cursor: pointer;
+                    .group-name {
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        width: 86%;
+                        cursor: pointer;
+                        display: inline-block;
+                    }
+                    .title-icon {
+                        font-size: 13px;
+                        color: #555;
+                    }
+                    .active {
+                        display: none;
+                    }
+                    &:hover {
+                        background: #eee;
+                        color: #333;
+                        .iconfont {
+                            color: #333;
+                        }
+                        .active {
+                            display: initial;
+                            float: right;
+                            .iconfont {
+                                color: #555;
+                                font-size: 14px;
+                                display: inline-block;
+                                padding-right: 10px;
+                            }
+                        }
+                    }
+                    .sidebar-function {
+                        background-color: #fff;
+                        text-align: center;
+                        position: absolute;
+                        margin-top: -87px;
+                        margin-left: -78px;
+                        border: 1px solid #dcdcdc;
+                        box-shadow: -5px 5px 15px #ededed;
+                        border-radius: 3px;
+                        li {
+                            color: #555;
+                            font-weight: initial;
+                            width: 100px;
+                            cursor: pointer;
+                            &:hover {
+                                background-color: #eee;
+                                color: #333;
+                            }
+                        }
+                    }
+                    .first-sidebar-function {
+                        margin-top: -39px;
+                    }
+                }
+                .title {
+                    @include eo-line(43px);
+                    padding: 0 10px;
+                    font-size: 14px;
+                    cursor: default;
+                    border-bottom: 1px solid #dcdcdc;
+                    span {
+                        color: #555;
+                    }
+                    .icon {
+                        font-weight: bold;
+                    }
+                    .pull-right {
+                        a {
+                            color: $buttonSuccessBgColor;
+                            .icon-add {
+                                color: $buttonSuccessBgColor;
+                            }
+                            &:hover {
+                                color: $buttonSuccessFocusBgColor;
+                                .icon-add {
+                                    color: $buttonSuccessFocusBgColor;
+                                }
+                            }
+                        }
+                    }
+                    .icon-add {
+                        color: #555;
+                        font-size: 13px;
+                    }
+                }
+                .elem-active {
+                    background: #eee;
+                    color: #555;
+                    .iconfont {
+                        color: #555;
+                    }
+                }
+            }
+        }
+        .database-content {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            background: #fafafa;
+        }
+    }
+    .shrink-database {
+        .database-sidebar {
+            width: 36px;
+            header {
+                .border-bottom-none {
+                    border-bottom: none;
+                }
+            }
+            article {
+                display: none;
+            }
+        }
+        .database-list {
+            margin-left: 43px;
+        }
+    }
+}

@@ -1,0 +1,57 @@
+<div class="project-trash project-div">
+    <header>
+        <ul>
+            <li class="pull-left eo-button-warning" data-ng-click="projectApiTrashCtrl.clean()">
+                <span class="iconfont icon-hotfill"></span> 全部删除
+            </li>
+        </ul>
+    </header>
+    <article>
+        <table>
+            <thead>
+                <tr>
+                    <th data-ng-click="projectApiTrashCtrl.sort(0)" class="first-th">
+                        <label class="iconfont icon-favorfill"></label>
+                    </th>
+                    <th class="api-name second-th" ng-class="{'active':projectApiTrashCtrl.sortInfo.name}" data-ng-click="projectApiTrashCtrl.sort(1)">
+                        接口名称
+                        <label class="iconfont " ng-class="{'icon-triangledownfill':!projectApiTrashCtrl.sortInfo.nameAsc,'icon-triangleupfill':projectApiTrashCtrl.sortInfo.nameAsc}"></label>
+                    </th>
+                    <th class="third-th">接口URI</th>
+                    <th class="forth-th">所在分组</th>
+                    <th class="api-time fifth-th" ng-class="{'active':projectApiTrashCtrl.sortInfo.time}" data-ng-click="projectApiTrashCtrl.sort(2)">
+                        删除日期
+                        <label class="iconfont " ng-class="{'icon-triangledownfill':!projectApiTrashCtrl.sortInfo.timeAsc,'icon-triangleupfill':projectApiTrashCtrl.sortInfo.timeAsc}"></label>
+                    </th>
+                    <th class="sixth-th">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="query in projectApiTrashCtrl.query" data-ng-click="projectApiTrashCtrl.enterApi(query.apiID)">
+                    <th>
+                        <a data-ng-click="projectApiTrashCtrl.storage(query)">
+                            <label class="iconfont" ng-class="{'icon-favor':query.starred=='0','icon-favorfill':query.starred=='1'}"></label>
+                        </a>
+                    </th>
+                    <td>
+                        <label class="iconfont icon-circle " ng-class="{'eo-status-success':query.apiStatus==0,'eo-status-warning':query.apiStatus==1,'eo-status-danger':query.apiStatus==2}"></label>
+                        {{query.apiName}}
+                    </td>
+                    <td>
+                        <span class="get-label" ng-class="{'eo-color-success':query.apiRequestType==0,'eo-color-default':query.apiRequestType==1,'eo-color-others':query.apiRequestType==2,'eo-color-warning':query.apiRequestType==6,'eo-color-danger':query.apiRequestType==3,'eo-color-info':query.apiRequestType==4,'eo-color-options':query.apiRequestType==5}">{{query.type}}</span> {{query.apiURI}}
+                    </td>
+                    <td>{{query.groupName}}</td>
+                    <td>{{query.removeTime}}</td>
+                    <td>
+                        <a class="project-function-edit" data-ng-click="projectApiTrashCtrl.recover(query.apiID,$index)"><span class="iconfont icon-refresh"></span>恢复</a>
+                        <a class="project-function-delete" data-ng-click="projectApiTrashCtrl.delete(query.apiID,$index)"><span class="iconfont icon-close"></span>彻底删除</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </article>
+    <footer>
+        <div load-directive is-end="projectApiTrashCtrl.loadingIsEnd">
+        </div>
+    </footer>
+</div>

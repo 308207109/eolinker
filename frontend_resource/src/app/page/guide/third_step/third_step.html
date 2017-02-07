@@ -1,0 +1,33 @@
+<div class="guide-third-step">
+    <div class="pro-install" ng-class="{'hidden':thirdCtrl.installing}">
+        <div class="install-head">
+            <p>1.项目目录读写权限....<span ng-class="{'error':!thirdCtrl.query.fileWrite,'ok':!!thirdCtrl.query.fileWrite}">{{thirdCtrl.check.fileWrite}}</span></p>
+            <p ng-class="{'hidden':!!thirdCtrl.query.fileWrite}" class="errorTips">请为项目所在路径以及该路径下所有子文件夹赋予读写权限，写入配置文件以及在线更新将会需要这些权限。</p>
+            <p>2.检测数据库连接....<span ng-class="{'error':!thirdCtrl.query.db,'ok':!!thirdCtrl.query.db}">{{thirdCtrl.check.db}}</span></p>
+            <p ng-class="{'hidden':!!thirdCtrl.query.db}" class="errorTips">请检查是否已经创建了数据库，并且保证数据库可以连接。并且保证php的PDO模块已经开启。</p>
+            <p>3.检测CURL以及自动更新....<span ng-class="{'error':!thirdCtrl.query.curl,'ok':!!thirdCtrl.query.curl}">{{thirdCtrl.check.curl}}</span></p>
+            <p ng-class="{'hidden':!!thirdCtrl.query.curl}" class="errorTips">请开启php的CURL模块。</p>
+        </div>
+        <div ng-class="{'hidden':!thirdCtrl.query.curl||!thirdCtrl.query.db||!thirdCtrl.query.fileWrite}">
+            <button class="eo-button-success guide-button" data-ng-click='thirdCtrl.install()'>安装
+                <span class="iconfont icon-right pull-right"></span>
+            </button>
+        </div>
+        <div class="failCheck" ng-class="{'hidden':thirdCtrl.query.curl&&thirdCtrl.query.db&&thirdCtrl.query.fileWrite}">
+            <button class="eo-button-success" data-ng-click='thirdCtrl.check()'>重新检测
+                <span class="iconfont icon-gengxin pull-right"></span>
+            </button>
+            <button class="eo-button-success" data-ng-click='thirdCtrl.enterSecond()'>返回上一步
+                <span class="iconfont icon-back pull-right"></span>
+            </button>
+        </div>
+    </div>
+    <div class="installing" ng-class="{'hidden':!thirdCtrl.installing}">
+        <div class="installing-wrap">
+            <div class="icon-wrap">
+                <span class="iconfont icon-loading"></span>
+            </div>
+            <p>安装中...</p>
+        </div>
+    </div>
+</div>

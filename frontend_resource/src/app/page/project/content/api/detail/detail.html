@@ -1,0 +1,251 @@
+<div class="project-detail project-div">
+    <header>
+        <ul>
+            <li class="pull-left go-back" data-ng-click="projectApiDetailCtrl.back()">
+                <span class="iconfont icon-back"></span>接口列表
+            </li>
+            <li class="pull-left switch-detail">
+                <span class="iconfont icon-i-copy"></span>详情
+            </li>
+            <li class="pull-left switch-test" data-ng-click="projectApiDetailCtrl.goTest()">
+                <span class="iconfont icon-lightfill"></span>测试
+            </li>
+            <li class="pull-left nav-btn">
+                <div class="go-more">
+                    <span class="iconfont icon-list"></span> 更多
+                    <div class="list-function-wrap">
+                        <ul class="nav-function" ng-if="!projectApiDetailCtrl.trash">
+                            <li data-ng-click="projectApiDetailCtrl.edit()"><span class="iconfont icon-write"></span>修改</li>
+                            <li data-ng-click="projectApiDetailCtrl.saveTo()">
+                                <span class="iconfont icon-copy"></span>另存为(复制)
+                            </li>
+                            <li data-ng-click="projectApiDetailCtrl.delete(projectApiDetailCtrl.info.apiID)">
+                                <span class="iconfont icon-delete"></span>删除
+                            </li>
+                        </ul>
+                        <ul class="nav-function" ng-if="projectApiDetailCtrl.trash">
+                            <li data-ng-click="projectApiDetailCtrl.recover(projectApiDetailCtrl.info.apiID)">
+                                <span class="iconfont icon-refresh"></span>恢复
+                            </li>
+                            <li data-ng-click="projectApiDetailCtrl.deleteCompletely(projectApiDetailCtrl.info.apiID)">
+                                <span class="iconfont icon-delete"></span>彻底删除
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <li en-v is-env-uri="projectApiDetailCtrl.envInfo.envURI"></li> 
+        </ul>
+    </header>
+    <article>
+        <div class="first-part">
+            <ul>
+                <li class="pull-left api-status" ng-class="{'eo-color-success':projectApiDetailCtrl.detail.baseInfo.apiStatus==0,'eo-color-warning':projectApiDetailCtrl.detail.baseInfo.apiStatus==1,'eo-color-unuse':projectApiDetailCtrl.detail.baseInfo.apiStatus==2}">{{projectApiDetailCtrl.detail.baseInfo.status}}</li>
+                <li class="api-detail">
+                    <ul>
+                        <li class="pull-left">
+                            <label class="send-protocol">{{projectApiDetailCtrl.detail.baseInfo.protocol}}</label>
+                        </li>
+                        <li class="pull-left api-url">{{projectApiDetailCtrl.envInfo.envURI}}{{projectApiDetailCtrl.detail.baseInfo.apiURI}}
+                        </li>
+                        <li class="pull-right"><a data-ng-click="projectApiDetailCtrl.storage()"><span class="iconfont " ng-class="{'icon-favor':projectApiDetailCtrl.detail.baseInfo.starred==0,'icon-favorfill':projectApiDetailCtrl.detail.baseInfo.starred==1}"></span></a></li>
+                    </ul>
+                    <ul>
+                        <li class="pull-left">
+                            <label class="send-function" ng-class="{'eo-color-success':projectApiDetailCtrl.detail.baseInfo.apiRequestType==0,'eo-color-default':projectApiDetailCtrl.detail.baseInfo.apiRequestType==1,'eo-color-others':projectApiDetailCtrl.detail.baseInfo.apiRequestType==2,'eo-color-warning':projectApiDetailCtrl.detail.baseInfo.apiRequestType==6,'eo-color-danger':projectApiDetailCtrl.detail.baseInfo.apiRequestType==3,'eo-color-info':projectApiDetailCtrl.detail.baseInfo.apiRequestType==4,'eo-color-options':projectApiDetailCtrl.detail.baseInfo.apiRequestType==5}">{{projectApiDetailCtrl.detail.baseInfo.type}}</label>
+                        </li>
+                        <li class="pull-left api-name">{{projectApiDetailCtrl.detail.baseInfo.apiName}}</li>
+                        <li class="pull-right">{{projectApiDetailCtrl.detail.baseInfo.apiUpdateTime}}</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="second-part request-header" ng-class="{'hidden':projectApiDetailCtrl.detail.headerInfo.length<1}">
+            <table>
+                <thead>
+                    <tr>
+                        <th>头部</th>
+                        <td class="request-header-label">标签</td>
+                        <td class="request-header-content">内容</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="query in projectApiDetailCtrl.detail.headerInfo">
+                        <td class="detail-num">
+                            <label>{{$index+1}}</label>
+                        </td>
+                        <th>
+                            <span>{{query.headerName}}</span>
+                        </th>
+                        <td>{{query.headerValue}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="second-part request-param-part" ng-class="{'hidden':projectApiDetailCtrl.detail.baseInfo.apiRequestParamType!=0||projectApiDetailCtrl.detail.requestInfo.length<1}">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="request-param-thead-num">请求</th>
+                        <td class="request-param-thead-header">参数</td>
+                        <td class="request-param-thead-type">[类型]/限制</td>
+                        <td class="request-param-thead-value">示例</td>
+                        <td class="request-param-thead-posible">值可能性</td>
+                        <td>值说明</td>
+                    </tr>
+                </thead>
+            </table>
+            <div class="request-param-form">
+                <ul class="request-param-info" data-ng-repeat="query in projectApiDetailCtrl.detail.requestInfo">
+                    <li class="request-param-num pull-left detail-num">
+                        <label>{{$index+1}}</label>
+                        <label class="necessity" ng-class="{'necessary':query.paramNotNull==0,'unnecessary':query.paramNotNull==1}">{{query.paramNotNull==0?'必填':'非必填'}}</label>
+                    </li>
+                    <li class="request-param-header pull-left">
+                        <p ng-bind-html="query.paramKeyHtml"></p>
+                        <p class="request-param-name">{{query.paramName}}</p>
+                    </li>
+                    <li class="request-param-type pull-left">
+                        <p>{{query.paramType==0?"[text]":query.paramType==1?"[file]":query.paramType==2?"[json]":query.paramType==3?"[int]":query.paramType==4?"[float]":query.paramType==5?"[double]":query.paramType==6?"[date]":query.paramType==7?"[datetime]":query.paramType==8?"[boolean]":query.paramType==9?"[yte]":query.paramType==10?"[short]":"[long]"}}</p>
+                        <p class="request-param-limit">{{query.paramLimit}}</p>
+                    </li>
+                    <li class="request-param-value pull-left">
+                        <button ng-class="{'eo-button-default':!!query.paramValue,'limit-btn':!query.paramValue}" data-ng-click="projectApiDetailCtrl.showRequestValue(query)" ng-disabled="!query.paramValue">{{!!query.paramValue?'查看':'无'}}</button>
+                    </li>
+                    <li class="request-param-posible pull-left detail-num">
+                        <ul>
+                            <li data-ng-repeat="list in query.paramValueList">
+                                <label>{{$index+1}}</label>
+                                <label uib-popover="{{list.value}}" popover-trigger="mouseenter" popover-placement="top-left" ng-class="{'hidden':!list.isOverflow}">{{list.value}}</label>
+                                <label check-overflow is-overflow="list.isOverflow" ng-class="{'hidden':list.isOverflow}">{{list.value}}</label>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="value-desc">
+                        <ul data-ng-repeat="list in query.paramValueList">
+                            <li class="param-value">
+                                <label uib-popover="{{list.valueDescription}}" popover-trigger="mouseenter" popover-placement="top-left" ng-class="{'hidden':!list.isValueDescOverflow}">{{list.valueDescription}}</label>
+                                <label check-overflow is-overflow="list.isValueDescOverflow" class="param-value" ng-class="{'hidden':list.isValueDescOverflow}">
+                                    {{list.valueDescription}}
+                                </label>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="second-part request-param-part" ng-class="{'hidden':projectApiDetailCtrl.detail.baseInfo.apiRequestParamType==0}">
+            <table>
+                <thead>
+                    <tr>
+                        <th arrange-json only-one-time="request-param-div-js" ng-model="projectApiDetailCtrl.detail.baseInfo.apiRequestRaw" is-json="" result-type="">请求参数</th>
+                    </tr>
+                </thead>
+            </table>
+            <div class="request-param-form request-param-raw-form" id="request-param-div-js">
+            </div>
+        </div>
+        <div class="third-part">
+            <header>
+                <ul>
+                    <li class="pull-left test-nav-li " ng-class="{'active':!projectApiDetailCtrl.isSuccess}" data-ng-click="projectApiDetailCtrl.changeMockStatus()">成功结果</li>
+                    <li class="pull-left test-nav-li" ng-class="{'active':projectApiDetailCtrl.isSuccess}" data-ng-click="projectApiDetailCtrl.changeMockStatus()">失败结果</li>
+                    <li class="pull-right" ng-class="{'hidden':projectApiDetailCtrl.isSuccess}">
+                        <button class="change-type-btn send-format others-btn" ng-class="{'hidden':!(projectApiDetailCtrl.detail.baseInfo.apiSuccessMockType==3)}">{{projectApiDetailCtrl.detail.baseInfo.successMockType}}</button>
+                        <button class="eo-button-info change-type-btn send-format" arrange-json="apiResult_js" ng-model="projectApiDetailCtrl.detail.baseInfo.apiSuccessMock" is-json="projectApiDetailCtrl.format.successMock" result-type="projectApiDetailCtrl.detail.baseInfo.apiSuccessMockType" textarea-json="textarea_js" ng-class="{'hidden':projectApiDetailCtrl.detail.baseInfo.apiSuccessMockType==3}">{{projectApiDetailCtrl.detail.baseInfo.successMockType}}|<span class="iconfont icon-magic"></span>格式整理</button>
+                    </li>
+                    <li class="pull-right" ng-class="{'hidden':!projectApiDetailCtrl.isSuccess}">
+                        <button class="change-type-btn send-format others-btn" ng-class="{'hidden':!(projectApiDetailCtrl.detail.baseInfo.apiFailureMockType==3)}">{{projectApiDetailCtrl.detail.baseInfo.failureMockType}}</button>
+                        <button class="eo-button-info change-type-btn send-format" arrange-json="apiResult_js_1" ng-model="projectApiDetailCtrl.detail.baseInfo.apiFailureMock" is-json="projectApiDetailCtrl.format.failureMock" result-type="projectApiDetailCtrl.detail.baseInfo.apiFailureMockType" textarea-json="textarea_js_1" ng-class="{'hidden':projectApiDetailCtrl.detail.baseInfo.apiFailureMockType==3}">{{projectApiDetailCtrl.detail.baseInfo.failureMockType}}|<span class="iconfont icon-magic"></span>格式整理</button>
+                    </li>
+                </ul>
+            </header>
+            <article ng-class="{'hidden':projectApiDetailCtrl.isSuccess}">
+                <div class="copy-url-box">
+                    <ul>
+                        <li copy-directive copy-id="mock-success-js" copy-class="mock-success" copy-model="projectApiDetailCtrl.detail.baseInfo.successMockCode" ng-model="projectApiDetailCtrl.isSuccess" is-double="true">
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="back-result-content " id="apiResult_js">
+                    </div>
+                    <pre class="back-result-content eo-pre hidden" id="textarea_js" readonly></pre>
+                </div>
+            </article>
+            <article ng-class="{'hidden':!projectApiDetailCtrl.isSuccess}">
+                <div class="copy-url-box">
+                    <ul>
+                        <li copy-directive copy-id="mock-failure-js" copy-class="mock-failure" copy-model="projectApiDetailCtrl.detail.baseInfo.failureMockCode" ng-model="projectApiDetailCtrl.isSuccess" is-double="true">
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="back-result-content " id="apiResult_js_1">
+                    </div>
+                    <pre class="back-result-content eo-pre hidden" id="textarea_js_1" readonly></pre>
+                </div>
+            </article>
+        </div>
+        <div class="forth-part" ng-class="{'hidden':projectApiDetailCtrl.detail.resultInfo.length<1}">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="zero-td">返回</th>
+                        <td class="first-td">参数</td>
+                        <td class="third-td">值可能性</td>
+                        <td class="forth-td">值说明</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="query in projectApiDetailCtrl.detail.resultInfo">
+                        <td class="detail-num ">
+                            <label>{{$index+1}}</label>
+                            <label class="necessity" ng-class="{'necessary':query.paramNotNull==0,'unnecessary':query.paramNotNull==1}">{{query.paramNotNull==0?'必含':'非必含'}}</label>
+                        </td>
+                        <th class="result-param-header">
+                            <p ng-bind-html="query.paramKeyHtml"></p>
+                            <p class="result-param-name">{{query.paramName}}</p>
+                        </th>
+                        <td class="result-param-posible detail-num">
+                            <ul>
+                                <li data-ng-repeat="list in query.paramValueList">
+                                    <label>{{$index+1}}</label>
+                                    <label uib-popover="{{list.value}}" popover-trigger="mouseenter" popover-placement="top-left" ng-class="{'hidden':!list.isOverflow}">{{list.value}}</label>
+                                    <label check-overflow is-overflow="list.isOverflow" ng-class="{'hidden':list.isOverflow}">{{list.value}}</label>
+                                </li>
+                            </ul>
+                        </td>
+                        <td class="value-desc">
+                            <ul data-ng-repeat="list in query.paramValueList">
+                                <li class="param-value">
+                                    <label uib-popover="{{list.valueDescription}}" popover-trigger="mouseenter" popover-placement="top-left" ng-class="{'hidden':!list.isValueDescOverflow}">{{list.valueDescription}}</label>
+                                    <label check-overflow is-overflow="list.isValueDescOverflow" ng-class="{'hidden':list.isValueDescOverflow}">
+                                        {{list.valueDescription}}
+                                    </label>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="fifth-part" ng-class="{'hidden':!projectApiDetailCtrl.detail.baseInfo.apiNote}">
+            <table class="header">
+                <thead>
+                    <tr>
+                        <th>备注</th>
+                    </tr>
+                </thead>
+            </table>
+            <article class="wangEditor-container">
+                <div class="wangEditor-txt" ng-class="{'markdown-body editormd-preview-container':projectApiDetailCtrl.detail.baseInfo.apiNoteType=='1'}" ng-bind-html="projectApiDetailCtrl.detail.baseInfo.apiNote">
+                </div>
+            </article>
+        </div>
+    </article>
+    <footer>
+        <div load-directive is-end="projectApiDetailCtrl.loadingIsEnd">
+        </div>
+    </footer>
+</div>

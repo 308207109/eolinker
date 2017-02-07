@@ -1,0 +1,53 @@
+<div class="database-list">
+    <header>
+        <ul>
+            <li class="pull-left eo-button-success" data-ng-click="databaseListCtrl.edit()">
+                <span class="iconfont icon-add"></span> 添加字段
+            </li>
+            <li class="database-list-api-message">
+                字段总数： {{databaseListCtrl.queryLength}}
+            </li>
+        </ul>
+    </header>
+    <article>
+        <table>
+            <thead>
+                <tr>
+                    <th class="first-th">
+                        <label class="iconfont icon-keyicon1"></label>
+                    </th>
+                    <th class="sixth-th">必填</th>
+                    <th class="second-th">字段名</th>
+                    <th class="third-th">类型</th>
+                    <th class="forth-th">长度</th>
+                    <th class="fifth-th">描述</th>
+                    <th class="seventh-th">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="query in databaseListCtrl.query">
+                    <td>
+                        <label class="iconfont" ng-class="{'icon-keyicon1':!!query.isPrimaryKey}"></label>
+                    </td>
+                    <td class="field-null-td">
+                        <label class="iconfont" data-ng-class="{'icon-check':!!query.isNotNull}"></label>
+                    </td>
+                    <td>{{query.fieldName}}</td>
+                    <td>{{query.fieldType}}</td>
+                    <td>{{query.fieldLength}}</td>
+                    <td class="field-desc-td">
+                        <button ng-class="{'eo-button-default':!!query.fieldDescription,'limit-btn':!query.fieldDescription}" data-ng-click="databaseListCtrl.showDesc(query)" ng-disabled="!query.fieldDescription">{{!!query.fieldDescription?'查看':'无'}}</button>
+                    </td>
+                    <td>
+                        <a class="database-function-edit" data-ng-click="databaseListCtrl.edit(query)"><span class="iconfont icon-write"></span>修改</a>
+                        <a class="database-function-delete" data-ng-click="databaseListCtrl.delete(query.fieldID,$index)"><span class="iconfont icon-delete"></span>删除</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </article>
+    <footer>
+        <div load-directive is-end="databaseListCtrl.loadingIsEnd">
+        </div>
+    </footer>
+</div>

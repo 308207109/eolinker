@@ -1,0 +1,439 @@
+<div class="project-edit project-div">
+    <header>
+        <ul>
+            <li class="pull-left go-back" data-ng-click="projectApiEditCtrl.back()">
+                <span class="iconfont icon-back"></span>{{!projectApiEditCtrl.detail.apiID?'接口列表':'返回详情'}}</li>
+            <li ng-class="{'pull-left':!projectApiEditCtrl.detail.apiID}">
+                <button class="eo-button-success" data-ng-click="projectApiEditCtrl.edit()">保存</button>
+            </li>
+            <li ng-class="{'hidden':!!projectApiEditCtrl.detail.apiID}">
+                <button class="eo-button-info keep-btn" data-ng-click="projectApiEditCtrl.keep()">继续添加</button>
+            </li>
+        </ul>
+    </header>
+    <article>
+        <div class="first-part">
+            <ng-form name="editForm">
+                <ul>
+                    <li>
+                        <ul class="api-message-send">
+                            <li class="pull-left">
+                                <select class="eo-input" data-ng-model="projectApiEditCtrl.detail.groupID" data-ng-options="group.groupID as group.groupName for group in projectApiEditCtrl.group" data-ng-change="projectApiEditCtrl.changeChildGroup()">
+                                </select>
+                            </li>
+                            <li class="pull-left">
+                                <select class="eo-input" data-ng-model="projectApiEditCtrl.detail.childGroupID" data-ng-options="group.groupID as group.groupName for group in projectApiEditCtrl.childGroupList">
+                                </select>
+                            </li>
+                            <li class="pull-left">
+                                <select class="eo-input" data-ng-model="projectApiEditCtrl.detail.apiStatus">
+                                    <option value="0">启用</option>
+                                    <option value="1">维护</option>
+                                    <option value="2">弃用</option>
+                                </select>
+                            </li>
+                            <li class="pull-left">
+                                <select class="eo-input" data-ng-model="projectApiEditCtrl.detail.apiProtocol">
+                                    <option value="0">HTTP</option>
+                                    <option value="1">HTTPS</option>
+                                </select>
+                            </li>
+                            <li class="pull-left">
+                                <select class="eo-input" ng-model="projectApiEditCtrl.detail.apiRequestType">
+                                    <option value="0">POST</option>
+                                    <option value="1">GET</option>
+                                    <option value="2">PUT</option>
+                                    <option value="3">DELETE</option>
+                                    <option value="4">HEAD</option>
+                                    <option value="5">OPTIONS</option>
+                                    <option value="6">PATCH</option>
+                                </select>
+                            </li>
+                            <li class="pull-right" data-ng-click="projectApiEditCtrl.storage()">
+                                <span>
+                                <a class="iconfont " ng-class="{'icon-favor':projectApiEditCtrl.detail.starred==0,'icon-favorfill':projectApiEditCtrl.detail.starred==1}"></a>
+                            </span>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <ul class="api-message-url">
+                            <li class="pull-left"><span>URI：</span></li>
+                            <li>
+                                <input class="eo-input" type="text" name="uri" data-ng-model="projectApiEditCtrl.detail.apiURI" data-ng-class="{'eo-input-error':(projectApiEditCtrl.submited&&editForm.uri.$invalid)}" required maxlength="255" />
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <ul class="api-message-name">
+                            <li class="pull-left"><span>名称：</span></li>
+                            <li>
+                                <input class="eo-input" type="text" name="name" data-ng-model="projectApiEditCtrl.detail.apiName" data-ng-class="{'eo-input-error':(projectApiEditCtrl.submited&&editForm.name.$invalid)}" required maxlength="255" />
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </ng-form>
+        </div>
+        <div class="second-part request-header">
+            <header>请求头部：</header>
+            <article>
+                <ul class="header-form-ul" sv-root sv-part="projectApiEditCtrl.detail.apiHeader">
+                    <li class="param-form" data-ng-repeat="query in projectApiEditCtrl.detail.apiHeader" sv-element="projectApiEditCtrl.soft.headerForm">
+                        <ul>
+                            <li class="pull-left nessarity">
+                                <label class="eo-sv-handle" sv-handle>{{$index+1}}</label>
+                                <label>
+                                    <a class="iconfont icon-move eo-button-success" data-ng-click="projectApiEditCtrl.deleteHeaderList($index)"></a> 
+                                </label>
+                            </li>
+                            <li>
+                                <ul class="param-info">
+                                    <li class="pull-left">
+                                        <label>头部标签：</label>
+                                        <ul class="request-header-icon-form">
+                                            <li ng-mouseover="query.mouseLeave=false" ng-mouseleave="query.mouseLeave=true">
+                                                <input id="{{'headerName_js'+$index}}" auto-complete mouse-leave="query.mouseLeave" model="query.headerName" array="projectApiEditCtrl.requestHeaderArray" query-index="{{'headerName_js'+$index}}" class="eo-input" data-ng-model="query.headerName" data-ng-class="{'eo-input-error':(projectApiEditCtrl.submited&&!query.headerName)}" data-ng-change="query.labelIsClick=false" maxlength="255" required>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <ul class="request-header-content-input">
+                                            <li class="pull-left">
+                                                <label>头部内容：</label>
+                                            </li>
+                                            <li>
+                                                <input class="eo-input " type="text" name="" data-ng-model="query.headerValue" maxlength="65530">
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </article>
+            <footer>
+                <button class="eo-button-success add-param-btn" data-ng-click="projectApiEditCtrl.addHeaderList()">添加<span class="iconfont icon-add"></span></button>
+            </footer>
+        </div>
+        <div class="second-part request-param-part">
+            <header>请求参数：
+                <ul class="pull-right " data-ng-class="{'hidden':projectApiEditCtrl.detail.apiRequestType!='0'}">
+                    <li class="request-param-type-li">
+                        <ul>
+                            <li>
+                                <input class="hidden" type="radio" name="request-param-form-type" id="request-param-form-type" data-ng-model="projectApiEditCtrl.detail.apiRequestParamType" ng-checked="true" value="0">
+                                <label for="request-param-form-type" class="radio-input iconfont " ng-class="{'icon-weibiaoti1fuzhi02':projectApiEditCtrl.detail.apiRequestParamType!='0','icon-circle':projectApiEditCtrl.detail.apiRequestParamType=='0'}"></label>
+                                <label for="request-param-form-type">表单[form-data]</label>
+                            </li>
+                            <li>
+                                <input class="hidden" id="request-param-raw-type" type="radio" name="request-param-form-type" data-ng-model="projectApiEditCtrl.detail.apiRequestParamType" value="1">
+                                <label for="request-param-raw-type" class="radio-input iconfont " ng-class="{'icon-weibiaoti1fuzhi02':projectApiEditCtrl.detail.apiRequestParamType!='1','icon-circle':projectApiEditCtrl.detail.apiRequestParamType=='1'}"></label>
+                                <label for="request-param-raw-type">源数据[raw]</label>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </header>
+           <article>
+                <ul class="request-form-ul form-ul" ng-class="{'hidden':projectApiEditCtrl.detail.apiRequestParamType=='1'}" sv-root sv-part="projectApiEditCtrl.detail.apiRequestParam">
+                    <li class="param-form " data-ng-repeat="query in projectApiEditCtrl.detail.apiRequestParam" sv-element="projectApiEditCtrl.soft.requestParamForm">
+                        <ul>
+                            <li class="pull-left nessarity">
+                                <label class="eo-sv-handle" sv-handle>{{$index+1}}</label>
+                                <label>
+                                    <a class="iconfont icon-move eo-button-success" data-ng-click="projectApiEditCtrl.deleteRequestList($index)"></a>
+                                </label>
+                                <select class="eo-input" data-ng-model="query.paramNotNull">
+                                    <option value="0">必填</option>
+                                    <option value="1">选填</option>
+                                </select>
+                            </li>
+                            <li>
+                                <ul class="request-param-info">
+                                    <li class="pull-left">
+                                        <label>参数名称：</label>
+                                        <input class="eo-input" type="text" name="" data-ng-model="query.paramKey" data-ng-class="{'eo-input-error':(projectApiEditCtrl.submited&&!query.paramKey)}" maxlength="255" required>
+                                    </li>
+                                    <li class="pull-left">
+                                        <label>参数说明：</label>
+                                        <input class="eo-input" type="text" name="" data-ng-model="query.paramName" maxlength="255">
+                                    </li>
+                                    <li class="pull-left request-type-select-li">
+                                        <label>参数类型：</label>
+                                        <select class="eo-input request-type-select" data-ng-model="query.paramType">
+                                            <option value="0">[text]</option>
+                                            <option value="1">[file]</option>
+                                            <option value="2">[json]</option>
+                                            <option value="3">[int]</option>
+                                            <option value="4">[float]</option>
+                                            <option value="5">[double]</option>
+                                            <option value="6">[date]</option>
+                                            <option value="7">[datetime]</option>
+                                            <option value="8">[boolean]</option>
+                                            <option value="9">[byte]</option>
+                                            <option value="10">[short]</option>
+                                            <option value="11">[long]</option>
+                                        </select>
+                                    </li>
+                                    <li class="go-more-btn-group">
+                                        <button class="go-more eo-button-default" data-ng-click="query.moreParam=!query.moreParam">
+                                            <span>{{!query.moreParam?'更多参数':'简略参数'}}</span>
+                                            <label class="iconfont " data-ng-class="{'icon-triangledownfill':!query.moreParam,'icon-triangleupfill':query.moreParam}"></label>
+                                        </button>
+                                    </li>
+                                </ul>
+                                <ul class="request-param-info" data-ng-class="{'hidden':!query.moreParam}">
+                                    <li class="request-param-limit">
+                                        <ul>
+                                            <li class="pull-left">
+                                                <label>参数限制：</label>
+                                            </li>
+                                            <li class="input-li" ng-mouseover="query.mouseLeave=false" ng-mouseleave="query.mouseLeave=true">
+                                                <input id="{{'limit_js'+$index}}" class="eo-input" type="text" name="" data-ng-model="query.paramLimit" auto-complete mouse-leave="query.mouseLeave" model="query.paramLimit" array="projectApiEditCtrl.requestParamLimitArray" query-index="{{'limit_js'+$index}}" data-ng-change="query.labelIsClick=false" maxlength="255">
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="request-param-example ">
+                                        <ul>
+                                            <li class="pull-left">
+                                                <label>参数示例：</label>
+                                            </li>
+                                            <li class="input-li">
+                                                <input class="eo-input" type="text" name="" data-ng-model="query.paramValue" maxlength="65530">
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="request-result " data-ng-class="{'hidden':!query.moreParam}">
+                                <ul class="pull-left">
+                                    <li>值可能性：</li>
+                                </ul>
+                                <ul class="param-info request-info">
+                                    <li class="request-param-form-ul" sv-root sv-part="query.paramValueList">
+                                        <ul data-ng-repeat="list in query.paramValueList" sv-element="projectApiEditCtrl.soft.requestParamForm.child">
+                                            <li class="pull-left num-label">
+                                                <label class="eo-sv-handle" sv-handle>{{$index+1}}</label>
+                                                <label>
+                                                    <a class="iconfont icon-move eo-button-success" data-ng-click="projectApiEditCtrl.deleteRequestParamList(query,$index)"></a>
+                                                </label>
+                                            </li>
+                                            <li class="pull-left">
+                                                <input class="eo-input" data-ng-class="{'eo-input-error':(projectApiEditCtrl.submited&&!list.value&&list.valueDescription)}" type="text" name="" data-ng-model="list.value" maxlength="65530">
+                                            </li>
+                                            <li>
+                                                <label>字段说明：</label>
+                                                <input class="eo-input" type="text" name="" data-ng-model="list.valueDescription" maxlength="255">
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <ul class="footer">
+                                    <li>
+                                        <button class="eo-button-success add-param-btn" data-ng-click="projectApiEditCtrl.addRequestParamList(query)">添加<span class="iconfont icon-add"></span></button>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="raw-div" ng-class="{'hidden':projectApiEditCtrl.detail.apiRequestParamType=='0'}">
+                    <textarea class="request-param-raw-content" data-ng-model="projectApiEditCtrl.detail.apiRequestRaw" maxlength="65530">
+                    </textarea>
+                </div>
+            </article>
+            <footer ng-class="{'hidden':projectApiEditCtrl.detail.apiRequestParamType=='1'}">
+                <button class="eo-button-success add-param-btn" data-ng-click="projectApiEditCtrl.addRequestList()">添加<span class="iconfont icon-add"></span></button>
+            </footer>
+        </div>
+        <div class="third-part">
+            <header>
+                <ul>
+                    <li class="pull-left edit-nav-li " ng-class="{'active':!projectApiEditCtrl.isSuccess}" data-ng-click="projectApiEditCtrl.changeMockStatus()">成功结果</li>
+                    <li class="pull-left edit-nav-li" ng-class="{'active':projectApiEditCtrl.isSuccess}" data-ng-click="projectApiEditCtrl.changeMockStatus()">失败结果</li>
+                    <li class="pull-right success-mock-li" ng-class="{'hidden':projectApiEditCtrl.isSuccess}">
+                        <ul>
+                            <li>
+                                <input class="hidden" type="radio" name="api-success-mock-type" id="success-json-type" data-ng-model="projectApiEditCtrl.detail.apiSuccessMockType" ng-checked="true" value="0">
+                                <label for="success-json-type" class="radio-input iconfont " ng-class="{'icon-weibiaoti1fuzhi02':projectApiEditCtrl.detail.apiSuccessMockType!='0','icon-circle':projectApiEditCtrl.detail.apiSuccessMockType=='0'}"></label>
+                                <label for="success-json-type">JSON</label>
+                            </li>
+                            <li>
+                                <input class="hidden" id="success-xml-type" type="radio" name="api-success-mock-type" data-ng-model="projectApiEditCtrl.detail.apiSuccessMockType" value="1">
+                                <label for="success-xml-type" class="radio-input iconfont " ng-class="{'icon-weibiaoti1fuzhi02':projectApiEditCtrl.detail.apiSuccessMockType!='1','icon-circle':projectApiEditCtrl.detail.apiSuccessMockType=='1'}"></label>
+                                <label for="success-xml-type">XML</label>
+                            </li>
+                            <li>
+                                <input class="hidden" id="success-html-type" type="radio" name="api-success-mock-type" data-ng-model="projectApiEditCtrl.detail.apiSuccessMockType" value="2">
+                                <label for="success-html-type" class="radio-input iconfont " ng-class="{'icon-weibiaoti1fuzhi02':projectApiEditCtrl.detail.apiSuccessMockType!='2','icon-circle':projectApiEditCtrl.detail.apiSuccessMockType=='2'}"></label>
+                                <label for="success-html-type">HTML</label>
+                            </li>
+                            <li>
+                                <input class="hidden" id="success-text-type" type="radio" name="api-success-mock-type" data-ng-model="projectApiEditCtrl.detail.apiSuccessMockType" value="3">
+                                <label for="success-text-type" class="radio-input iconfont " ng-class="{'icon-weibiaoti1fuzhi02':projectApiEditCtrl.detail.apiSuccessMockType!='3','icon-circle':projectApiEditCtrl.detail.apiSuccessMockType=='3'}"></label>
+                                <label for="success-text-type">TEXT</label>
+                            </li>
+                        </ul>
+                        <!--<select class="eo-input" data-ng-model="projectApiEditCtrl.detail.apiSuccessMockType">
+                            <option value="0">JSON</option>
+                            <option value="1">XML</option>
+                            <option value="2">HTML</option>
+                            <option value="3">其他</option>
+                        </select>-->
+                    </li>
+                    <li class="pull-right failure-mock-li" ng-class="{'hidden':!projectApiEditCtrl.isSuccess}">
+                        <ul>
+                            <li>
+                                <input class="hidden" type="radio" name="api-failure-mock-type" id="failure-json-type" data-ng-model="projectApiEditCtrl.detail.apiFailureMockType" ng-checked="true" value="0">
+                                <label for="failure-json-type" class="radio-input iconfont " ng-class="{'icon-weibiaoti1fuzhi02':projectApiEditCtrl.detail.apiFailureMockType!='0','icon-circle':projectApiEditCtrl.detail.apiFailureMockType=='0'}"></label>
+                                <label for="failure-json-type">JSON</label>
+                            </li>
+                            <li>
+                                <input class="hidden" id="failure-xml-type" type="radio" name="api-failure-mock-type" data-ng-model="projectApiEditCtrl.detail.apiFailureMockType" value="1">
+                                <label for="failure-xml-type" class="radio-input iconfont " ng-class="{'icon-weibiaoti1fuzhi02':projectApiEditCtrl.detail.apiFailureMockType!='1','icon-circle':projectApiEditCtrl.detail.apiFailureMockType=='1'}"></label>
+                                <label for="failure-xml-type">XML</label>
+                            </li>
+                            <li>
+                                <input class="hidden" id="failure-html-type" type="radio" name="api-failure-mock-type" data-ng-model="projectApiEditCtrl.detail.apiFailureMockType" value="2">
+                                <label for="failure-html-type" class="radio-input iconfont " ng-class="{'icon-weibiaoti1fuzhi02':projectApiEditCtrl.detail.apiFailureMockType!='2','icon-circle':projectApiEditCtrl.detail.apiFailureMockType=='2'}"></label>
+                                <label for="failure-html-type">HTML</label>
+                            </li>
+                            <li>
+                                <input class="hidden" id="failure-text-type" type="radio" name="api-failure-mock-type" data-ng-model="projectApiEditCtrl.detail.apiFailureMockType" value="3">
+                                <label for="failure-text-type" class="radio-input iconfont " ng-class="{'icon-weibiaoti1fuzhi02':projectApiEditCtrl.detail.apiFailureMockType!='3','icon-circle':projectApiEditCtrl.detail.apiFailureMockType=='3'}"></label>
+                                <label for="failure-text-type">TEXT</label>
+                            </li>
+                        </ul>
+                        <!--<select class="eo-input" data-ng-model="projectApiEditCtrl.detail.apiFailureMockType">
+                            <option value="0">JSON</option>
+                            <option value="1">XML</option>
+                            <option value="2">HTML</option>
+                            <option value="3">其他</option>
+                        </select>-->
+                    </li>
+                </ul>
+            </header>
+            <article>
+                <div ng-class="{'hidden':projectApiEditCtrl.isSuccess}">
+                    <!--<div id="apiResult_js" class="hidden"></div>-->
+                    <textarea class="back-result-content" data-ng-model="projectApiEditCtrl.detail.apiSuccessMock" maxlength="65530">
+                    </textarea>
+                </div>
+                <div ng-class="{'hidden':!projectApiEditCtrl.isSuccess}">
+                    <!--<div id="apiResult_js_1" class="hidden"></div>-->
+                    <textarea class="back-result-content" data-ng-model="projectApiEditCtrl.detail.apiFailureMock" maxlength="65530">
+                    </textarea>
+                </div>
+            </article>
+        </div>
+        <div class="forth-part">
+            <header>返回说明：</header>
+            <article>
+                <ng-form name="editParamForm">
+                    <ul class="response-form-ul" sv-root sv-part="projectApiEditCtrl.detail.apiResultParam">
+                        <li class="param-form" data-ng-repeat="query in projectApiEditCtrl.detail.apiResultParam" sv-element="projectApiEditCtrl.soft.responseParamForm">
+                            <ul>
+                                <li class="pull-left nessarity">
+                                    <label class="eo-sv-handle" sv-handle>{{$index+1}}</label>
+                                    <label>
+                                        <a class="iconfont icon-move eo-button-success" data-ng-click="projectApiEditCtrl.deleteResultList($index)"></a>
+                                    </label>
+                                    <select class="eo-input" data-ng-model="query.paramNotNull">
+                                        <option value="0">必含</option>
+                                        <option value="1">非必含</option>
+                                    </select>
+                                </li>
+                                <li>
+                                    <ul class="param-info response-param-info">
+                                        <li class="pull-left">
+                                            <label>字段名称：</label>
+                                            <input class="eo-input" type="text" data-ng-model="query.paramKey" data-ng-class="{'eo-input-error':(projectApiEditCtrl.submited&&!query.paramKey)}" maxlength="255" required>
+                                        </li>
+                                        <li>
+                                            <label>字段说明：</label>
+                                            <input class="eo-input" type="text" name="" data-ng-model="query.paramName" maxlength="255">
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="response-result">
+                                    <ul class="pull-left">
+                                        <li>值可能性：</li>
+                                    </ul>
+                                    <ul class="param-info response-result-info">
+                                        <li class="response-param-form-ul" sv-root sv-part="query.paramValueList">
+                                            <ul data-ng-repeat="list in query.paramValueList" sv-element="projectApiEditCtrl.soft.responseParamForm.child">
+                                                <li class="pull-left num-label">
+                                                    <label class="eo-sv-handle" sv-handle>{{$index+1}}</label>
+                                                    <label>
+                                                        <a class="iconfont icon-move eo-button-success" data-ng-click="projectApiEditCtrl.deleteResultParamList(query,$index)"></a>
+                                                    </label>
+                                                </li>
+                                                <li class="pull-left">
+                                                    <input class="eo-input" type="text" name="" data-ng-model="list.value" data-ng-class="{'eo-input-error':(projectApiEditCtrl.submited&&!list.value&&list.valueDescription)}" maxlength="255">
+                                                </li>
+                                                <li class="response-result-desc">
+                                                    <label>值说明：</label>
+                                                    <input class="eo-input" type="text" name="" data-ng-model="list.valueDescription" maxlength="255">
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                    <ul class="footer">
+                                        <li>
+                                            <button class="eo-button-success add-param-btn" data-ng-click="projectApiEditCtrl.addResultParamList(query)">添加<span class="iconfont icon-add"></span></button>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </ng-form>
+            </article>
+            <footer>
+                <button class="eo-button-success add-param-btn" data-ng-click="projectApiEditCtrl.addResultList()">添加<span class="iconfont icon-add"></span></button>
+            </footer>
+        </div>
+        <div class="forth-part remark-part">
+            <header>备注：
+                <ul class="pull-right ">
+                    <li class="remark-type-li">
+                        <ul>
+                            <li>
+                                <input class="hidden" type="radio" name="remark-editor-type" id="remark-editor-type" data-ng-model="projectApiEditCtrl.detail.apiNoteType" ng-checked="true" value="0">
+                                <label for="remark-editor-type" class="radio-input iconfont " ng-class="{'icon-weibiaoti1fuzhi02':projectApiEditCtrl.detail.apiNoteType!='0','icon-circle':projectApiEditCtrl.detail.apiNoteType=='0'}"></label>
+                                <label for="remark-editor-type">富文本</label>
+                            </li>
+                            <li>
+                                <input class="hidden" id="markdown-editor-type" type="radio" name="request-param-form-type" data-ng-model="projectApiEditCtrl.detail.apiNoteType" value="1" data-ng-change="projectApiEditCtrl.changeNoteType()">
+                                <label for="markdown-editor-type" class="radio-input iconfont " ng-class="{'icon-weibiaoti1fuzhi02':projectApiEditCtrl.detail.apiNoteType!='1','icon-circle':projectApiEditCtrl.detail.apiNoteType=='1'}"></label>
+                                <label for="markdown-editor-type">markdown</label>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </header> 
+            <article>
+                <div id="editormd-js" ng-class="{'hidden':projectApiEditCtrl.detail.apiNoteType=='0'}" data-ng-model="projectApiEditCtrl.detail.apiNoteRaw" result-html="projectApiEditCtrl.detail.apiMarkdownNote" markdown>
+                    <textarea style="display:none;"></textarea>
+                </div>
+            </article>
+            <article ng-class="{'hidden':projectApiEditCtrl.detail.apiNoteType=='1'}">
+                <textarea wang-editor ng-model="projectApiEditCtrl.detail.apiRichNote" id="editor-js" maxlength="65535"></textarea>
+            </article>
+            <footer>
+            </footer>
+        </div>
+        <div class="fifth-part">
+            <span>
+                <button class="eo-button-success" data-ng-click="projectApiEditCtrl.edit()">保存</button>
+                <button class="eo-button-info" ng-class="{'hidden':!!projectApiEditCtrl.detail.apiID}" data-ng-click="projectApiEditCtrl.keep()">继续添加</button>
+            </span>
+        </div>
+    </article>
+    <footer>
+        <div load-directive is-end="projectApiEditCtrl.loadingIsEnd">
+        </div>
+    </footer>
+</div>

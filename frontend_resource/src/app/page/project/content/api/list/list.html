@@ -1,0 +1,65 @@
+<div class="project-list project-div">
+    <a class="hidden" id="dump_js"></a>
+    <header>
+        <ul>
+            <li class="pull-left eo-button-success" data-ng-click="projectApiListCtrl.edit()">
+                <span class="iconfont icon-add"></span> 添加接口
+            </li>
+            <li class="pull-left eo-button-success" data-ng-click="projectApiListCtrl.team()">
+                <span class="iconfont icon-index-users"></span> 协作管理
+            </li>
+            <li class="pull-left eo-button-success" dump-directive project-id="{{projectApiListCtrl.info.projectID}}">
+                <span class="iconfont icon-index-clouddownload"></span> 导出项目
+            </li>
+            <li en-v is-show="projectApiListCtrl.envInfo.isShow" is-env-uri="projectApiListCtrl.envInfo.envURI"></li>
+        </ul>
+    </header>
+    <article>
+        <table>
+            <thead>
+                <tr>
+                    <th data-ng-click="projectApiListCtrl.sort(0)" class="first-th">
+                        <label class="iconfont icon-favorfill"></label>
+                    </th>
+                    <th class="api-name second-th" ng-class="{'active':projectApiListCtrl.sortInfo.name}" data-ng-click="projectApiListCtrl.sort(1)">
+                        接口名称
+                        <label class="iconfont " ng-class="{'icon-triangledownfill':!projectApiListCtrl.sortInfo.nameAsc,'icon-triangleupfill':projectApiListCtrl.sortInfo.nameAsc}"></label>
+                    </th>
+                    <th class="third-th">接口URI</th>
+                    <th class="forth-th">所在分组</th>
+                    <th class="api-time fifth-th" ng-class="{'active':projectApiListCtrl.sortInfo.time}" data-ng-click="projectApiListCtrl.sort(2)">
+                        更新日期
+                        <label class="iconfont " ng-class="{'icon-triangledownfill':!projectApiListCtrl.sortInfo.timeAsc,'icon-triangleupfill':projectApiListCtrl.sortInfo.timeAsc}"></label>
+                    </th>
+                    <th class="sixth-th">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="query in projectApiListCtrl.query" data-ng-click="projectApiListCtrl.enterApi(query.apiID)">
+                    <th class="first-th">
+                        <a data-ng-click="projectApiListCtrl.storage(query)">
+                            <label class="iconfont" ng-class="{'icon-favor':query.starred==0,'icon-favorfill':query.starred==1}"></label>
+                        </a>
+                    </th>
+                    <td class="second-th">
+                        <label class="iconfont icon-circle " ng-class="{'eo-status-success':query.apiStatus==0,'eo-status-warning':query.apiStatus==1,'eo-status-danger':query.apiStatus==2}"></label>
+                        {{query.apiName}}
+                    </td>
+                    <td class="third-th">
+                        <span class="get-label" ng-class="{'eo-color-success':query.apiRequestType==0,'eo-color-default':query.apiRequestType==1,'eo-color-others':query.apiRequestType==2,'eo-color-warning':query.apiRequestType==6,'eo-color-danger':query.apiRequestType==3,'eo-color-info':query.apiRequestType==4,'eo-color-options':query.apiRequestType==5}">{{query.type}}</span> {{projectApiListCtrl.envInfo.envURI}}{{query.apiURI}}
+                    </td>
+                    <td class="forth-th">{{query.groupName}}</td>
+                    <td class="fifth-th">{{query.apiUpdateTime}}</td>
+                    <td class="sixth-th">
+                        <a class="project-function-edit" data-ng-click="projectApiListCtrl.edit(query)"><span class="iconfont icon-write"></span>修改</a>
+                        <a class="project-function-delete" data-ng-click="projectApiListCtrl.delete(query.apiID,$index)"><span class="iconfont icon-delete"></span>删除</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </article>
+    <footer>
+        <div load-directive is-end="projectApiListCtrl.loadingIsEnd">
+        </div>
+    </footer>
+</div>

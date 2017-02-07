@@ -1,0 +1,52 @@
+<div class="home-content home-content-news">
+    <div class="home-div">
+        <header>
+            <ul>
+                <li>
+                    <button class="eo-button-default" data-ng-click="homeNewsCtrl.clean()" ng-disabled="homeNewsCtrl.query.length<1"><span class="iconfont icon-hotfill"></span>清空消息</button>
+                </li>
+            </ul>
+        </header>
+        <article>
+            <table class="thead-table">
+                <thead>
+                    <tr>
+                        <th class="first-th">类型</th>
+                        <th class="second-th">消息</th>
+                        <th class="third-th">时间</th>
+                        <th class="forth-th"></th>
+                    </tr>
+                </thead>
+            </table>
+            <table class="tbody-table" data-ng-repeat='query in homeNewsCtrl.query'>
+                <tbody>
+                    <tr class="tr-title" data-ng-click="homeNewsCtrl.read(query,$index)">
+                        <th class="first-th">{{query.msgType==0?'系统':'项目'}}</th>
+                        <td class="second-th" data-ng-class="{'isRead':query.isRead==1}">{{query.summary}}</td>
+                        <td class="third-th">{{query.msgSendTime}}</td>
+                        <td class="forth-th">
+                            <span class="iconfont " ng-class="{'icon-triangledownfill':!query.isClick,'icon-triangleupfill':query.isClick}"></span>
+                        </td>
+                    </tr>
+                    <tr class="tr-detail" ng-class="{'hidden':!query.isClick}">
+                        <td class="first-th"></td>
+                        <td colspan="3" class="detail-td">
+                            <ul class="detail-ul">
+                                <li data-ng-bind-html="query.msg">
+                                </li>
+                                <li class="function-btn-group">
+                                    <a class="home-function-delete" data-ng-click="homeNewsCtrl.delete(query.msgID,$index)"><span class="iconfont icon-delete"></span>删除</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </article>
+        <footer class="pageFooter" ng-class="{'hidden':homeNewsCtrl.query.length<1}">
+            <uib-pagination total-items="homeNewsCtrl.info.msgCount" items-per-page="homeNewsCtrl.info.pageSize" ng-model="homeNewsCtrl.info.page" max-size="homeNewsCtrl.info.maxSize" class="pagination-sm " boundary-link-Number="true" rotate="false" next-text="&#xe611;" previous-text="&#xe60f;" ng-change="homeNewsCtrl.pageChanged()"></uib-pagination>
+        </footer>
+    </div>
+    <div load-directive is-end="homeNewsCtrl.loadingIsEnd">
+    </div>
+</div>

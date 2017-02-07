@@ -1,0 +1,47 @@
+<div class="guide-second-step">
+    <div class="pro-install" ng-class="{'hidden':secondCtrl.installing}">
+        <div class="install-head">
+            <p>请在下方填写您的数据库连接信息。如果您不确定，请联系您的服务提供商。</p>
+        </div>
+        <form class="install-info" name="secondForm">
+            <ul>
+                <li class="database-master">
+                    <span class="message">数据库主机</span>
+                    <input type="text" name="master" class="eo-input" data-ng-model="secondCtrl.info.dbURL" required />
+                    <span class="tips">数据库所在服务器地址，本机一般为localhost</span>
+                </li>
+                <li class="database-name">
+                    <span class="message">数据库名</span>
+                    <input type="text" name="name" class="eo-input" data-ng-model="secondCtrl.info.dbName" required />
+                    <span class="tips">要将eolinker安装至哪个数据库</span>
+                </li>
+                <li class="database-username">
+                    <span class="message">数据库用户名</span>
+                    <input type="text" name="username" placeholder="用户名" class="eo-input" data-ng-model="secondCtrl.info.dbUser" required />
+                    <span class="tips">连接您数据库所用的用户名</span>
+                </li>
+                <li class="database-password">
+                    <span class="message">数据库密码</span>
+                    <input type="text" name="password" placeholder="密码" class="eo-input" data-ng-model="secondCtrl.info.dbPassword" />
+                    <span class="tips">连接您数据库所用的密码</span>
+                </li>
+            </ul>
+        </form>
+        <div class="install-tips">
+            <p>注意，请保证您填写的数据库用户名对应的用户拥有对数据库的建表操作权限，否则eolinker将无法正常安装成功。如需了解更多关于eolinker安装过程中遇到的问题以及相应的解决办法，请<a href="https://bbs.eolinker.com/#/dashboard">点击这里</a>进入eolinker官方交流社区，提交问题以及寻找答案。</p>
+        </div>
+        <div>
+            <button class="eo-button-success guide-button" data-ng-click='secondCtrl.enterThird()'>下一步
+                <span class="iconfont icon-right pull-right"></span>
+            </button>
+        </div>
+    </div>
+    <div class="installing" ng-class="{'hidden':!secondCtrl.installing}">
+        <div class="installing-wrap">
+            <div class="icon-wrap">
+                <span class="iconfont icon-loading"></span>
+            </div>
+            <p>安装中...</p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,639 @@
+<div class="model">
+    <!-- 弹窗 -->
+    <script type="text/ng-template" id="InfoModel">
+        <div class="model-info" data-ng-class="{'error':type=='error','success':type=='success','info':type=='info'}">
+            <ul>
+                <li>
+                    <span><i class="iconfont"  data-ng-class="{'icon-roundclosefill':type=='error','icon-roundcheck':type=='success','icon-move':type=='info'}"></i></span><span class="text-center model-title" data-ng-bind="::info"></span>
+                </li>
+            </ul>
+        </div>
+    </script>
+    <!-- tips弹窗 -->
+    <script type="text/ng-template" id="TipsModel">
+        <div class="model-tips">
+            <header>
+                <ul>
+                    <li class="pull-left tips-title">
+                        技巧提示</li>
+                    <li class="pull-right">
+                        <a class="iconfont icon-close" ng-click="cancel()"></a>
+                    </li>
+                </ul>
+            </header>
+            <article>
+                <ul>
+                    <li>
+                        <img ng-src="{{tips.img}}" data-ng-click="imgNext(tips.num)">
+                    </li>
+                    <li class="text-li" ng-bind-html="tips.text">
+                    </li>
+                </ul>
+            </article>
+            <footer>
+                <ul>
+                    <li class="iconfont icon-circle " ng-class="{'active':tips.num==0}" data-ng-click="next(0)"></li>
+                    <li class="iconfont icon-circle " ng-class="{'active':tips.num==1}" data-ng-click="next(1)"></li>
+                    <li class="iconfont icon-circle " ng-class="{'active':tips.num==2}" data-ng-click="next(2)"></li>
+                    <li class="iconfont icon-circle " ng-class="{'active':tips.num==3}" data-ng-click="next(3)"></li>
+                    <li class="iconfont icon-circle" ng-class="{'active':tips.num==4}" data-ng-click="next(4)"></li>
+                    <li class="iconfont icon-circle " ng-class="{'active':tips.num==5}" data-ng-click="next(5)"></li>
+                </ul>
+            </footer>
+        </div>
+        <div class="mask" ng-click="cancel()"></div>
+    </script>
+    <!-- 信息弹窗 -->
+    <script type="text/ng-template" id="MessageModel">
+        <div class="model-message">
+            <header data-ng-bind="::title"></header>
+            <article>
+                <form name="Form">
+                    <ul>
+                        <li class="model-message-info" data-ng-bind="::info"></li>
+                        <li class="btn-group">
+                            <a class="eo-button-default" ng-click="cancel()">关闭</a>
+                        </li>
+                    </ul>
+                </form>
+            </article>
+            <footer></footer>
+        </div>
+        <div class="mask" ng-click="cancel()"></div>
+    </script>
+    <!-- 错误弹窗 -->
+    <script type="text/ng-template" id="ErrorModel">
+        <div class="model-error">
+            <header data-ng-bind="::title"></header>
+            <article>
+                <form name="Form">
+                    <ul>
+                        <li class="model-error-info" data-ng-bind="::info"></li>
+                        <li class="btn-group">
+                            <a class="eo-button-primary" target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=208b23b73761039b9994d71378ccbf7c84c872d5577d557e45168b37fd290c12">在线求助</a>
+                            <a class="eo-button-default" ng-click="cancel()">关闭</a>
+                        </li>
+                    </ul>
+                </form>
+            </article>
+            <footer></footer>
+        </div>
+        <div class="mask" ng-click="cancel()"></div>
+    </script>
+    <!-- 导入弹窗 -->
+    <script type="text/ng-template" id="ImportModel">
+        <div class="model-import">
+            <header>
+                <ul>
+                    <li class="pull-left header-title" data-ng-bind="::title"></li>
+                    <li class="btn-group pull-right">
+                        <a class="eo-button-default " ng-click="cancel()">关闭</a>
+                    </li>
+                </ul>
+            </header>
+            <article>
+                <form name="Form">
+                    <ul>
+                        <li class="model-import-info">
+                            <ul class="model-btn-group-ul">
+                                <li class="pull-left first-li">
+                                    <a class="postman-1-a">
+                                        <p>eolinker</p>
+                                    </a>
+                                    <input id="postman-1-js" type="file" name="" onchange="angular.element(this).scope().importFile(0,this.files)" required>
+                                </li>
+                                <li class="pull-left center-li">
+                                    <a class="postman-1-a">
+                                        <p>postman v1</p>
+                                    </a>
+                                    <input id="postman-1-js" type="file" name="" onchange="angular.element(this).scope().importFile(1,this.files)" required>
+                                </li>
+                                <li class="center-li pull-left">
+                                    <a class="postman-2-a">
+                                        <p>postman v2</p>
+                                    </a>
+                                    <input id="postman-2-js" type="file" name="" onchange="angular.element(this).scope().importFile(2,this.files)">
+                                </li>
+                                <li class="last-li">
+                                    <a class="dhc-a">
+                                        <p>DHC</p>
+                                    </a>
+                                    <input id="dhc-js" type="file" name="" onchange="angular.element(this).scope().importFile(3,this.files)">
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="btn-group">
+                        </li>
+                    </ul>
+                </form>
+            </article>
+            <footer>
+                <div load-directive is-end="loadingIsEnd">
+                </div>
+            </footer>
+        </div>
+        <div class="mask" ng-click="cancel()"></div>
+    </script>
+    <!-- 确认弹窗 -->
+    <script type="text/ng-template" id="EnsureModel">
+        <div class="model-sure">
+            <header data-ng-bind="::title"></header>
+            <article>
+                <form name="sureForm">
+                    <ul>
+                        <li data-ng-bind="::info"></li>
+                        <li ng-if="necessity">
+                            <input type="text" name="sure" data-ng-model="sure" placeholder="删除操作不可撤回，确定请输入yes" class="eo-input " data-ng-class="{'eo-input-error':(submited&&sureForm.sure.$invalid)}" ng-pattern="/^[y|Y][e|E][s|S]$/" required>
+                        </li>
+                        <li class="btn-group">
+                            <button class="eo-button-warning " ng-click="ok()">删除</button>
+                            <a class="eo-button-default " ng-click="cancel()">取消</a>
+                        </li>
+                    </ul>
+                </form>
+            </article>
+            <footer></footer>
+        </div>
+        <div class="mask"></div>
+    </script>
+    <!-- 更新弹窗 -->
+    <script type="text/ng-template" id="UpdateModel">
+        <div class="model-update">
+            <header>
+                <ul>
+                    <li class="pull-left header-title" data-ng-bind="::title"></li>
+                    <li class="btn-group pull-right" ng-class="{'hidden':info.updating}">
+                        <a class="eo-button-default " ng-click="cancel()">关闭</a>
+                    </li>
+                </ul>
+            </header>
+            <article>
+                <form name="updateForm">
+                    <ul>
+                        <div ng-class="{'hidden':info.updating||info.updateFail||info.hasNewVersion}" class="content-wrap">
+                            <div>{{info.version}}</div>
+                            <div><b>自动更新</b>：项目将会连接远程服务器下载最新的升级包解压并且自动更新数据库，请保证您的项目目录拥有读写权限以方便更新文件覆盖。</div>
+                            <div><b>手动更新</b>：请手动前往eolinker开源版本更新页面下载更新包，并且解压到项目根目录替换所有同名文件，然后点击手动更新按钮，项目将会自动更新数据库。</div>
+                            <div>
+                                注意！更新前请保证当前没有编辑任务，否则可能丢失当前的操作数据。</div>
+                            <li class="btn-group">
+                                <button class="eo-button-success " ng-click="online()">在线更新</button>
+                                <button class="eo-button-primary " ng-click="manual()">手动更新</button>
+                                <a class="eo-button-default " ng-click="cancel()">取消</a>
+                            </li>
+                        </div>
+                        <div ng-class="{'hidden':!info.updating}">
+                            <div class="updating-wrap">
+                                <div class="icon-wrap">
+                                    <span class="iconfont icon-loading"></span>
+                                </div>
+                                <p>更新中...</p>
+                            </div>
+                        </div>
+                        <div ng-class="{'hidden':!info.updateFail}">
+                            <div>{{info.tips}}</div>
+                            <li class="btn-group">
+                                <button class="eo-button-success " ng-click="ok()">{{info.ok}}</button>
+                                <a class="eo-button-default " ng-click="cancel()">{{info.cancel}}</a>
+                            </li>
+                        </div>
+                        <div ng-class="{'hidden':!info.autoUpdateBtn}">
+                            <div>{{info.updateTips}}</div>
+                            <div class="tips">{{info.tips}}</div>
+                            <li class="btn-group">
+                                <button class="eo-button-success" ng-click="autoUpdate()">{{info.ok}}</button>
+                                <a class="eo-button-default " ng-click="cancel()">{{info.cancel}}</a>
+                            </li>
+                        </div>
+                        <div ng-class="{'hidden':!info.manualUpdateBtn}">
+                            <div>{{info.updateTips}}</div>
+                            <div class="tips">{{info.tips}}</div>
+                            <li class="btn-group">
+                                <button class="eo-button-success" ng-click="manualUpdate()">{{info.ok}}</button>
+                                <a class="eo-button-default " ng-click="cancel()">{{info.cancel}}</a>
+                            </li>
+                        </div>
+                    </ul>
+                </form>
+            </article>
+            <footer></footer>
+        </div>
+        <div class="mask"></div>
+    </script>
+    <!-- 协作信息弹窗 -->
+    <script type="text/ng-template" id="TeamModel">
+        <div class="model-team">
+            <header>
+                <ul>
+                    <li class="pull-left" data-ng-bind="::title"></li>
+                    <li class="btn-group pull-right">
+                        <a class="eo-button-default " ng-click="cancel()">关闭</a>
+                    </li>
+                </ul>
+            </header>
+            <article>
+                <form name="sureForm">
+                    <ul>
+                        <li data-ng-mouseenter="search.leave=false;" data-ng-mouseleave="search.leave=true;" ng-class="{'hidden':!info.checkPower}">
+                            <input type="text" name="user" data-ng-model="info.userName" placeholder="邀请成员的用户名" class="eo-input " data-ng-change="textChange()" data-ng-blur="closeSearch()" required>
+                            <ul class="search-ul" ng-class="{'hidden':!searchInfo,'had-invited-search-ul':(searchInfo&&searchInfo.isInvited==1)||!info.checkPower}" data-ng-click="add()">
+                                <li>
+                                    <ul class="people-ul">
+                                        <li class="pull-left name-summary-li">
+                                            {{!!searchInfo.userNickName?searchInfo.userName.substr(0, 2).toUpperCase():'未知'}}
+                                        </li>
+                                        <li class="pull-left people-li">
+                                            <p>
+                                                <span>{{!!searchInfo.userNickName?searchInfo.userNickName:'未知昵称'}}</span>
+                                            </p>
+                                            <p class="userName-p">
+                                                {{searchInfo.userName}}
+                                            </p>
+                                        </li>
+                                        <li class="pull-right" ng-class="{'hidden':!info.checkPower}">
+                                            <span class="check-status">{{searchInfo.isInvited==1?'已加入':'添加'}}</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <ul class="search-ul nothing-search-ul" ng-class="{'hidden':searchInfo||!search.submited}">
+                                <li>
+                                    <ul class="none-people-ul">
+                                        <li>抱歉，没有找到该用户</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <ul class="list-ul">
+                                <li ng-repeat="query in query">
+                                    <ul class="people-ul">
+                                        <li class="pull-left name-summary-li">
+                                            {{!!query.userNickName?query.userNickName.substr(0, 2).toUpperCase():'未知'}}
+                                        </li>
+                                        <li class="pull-left people-li">
+                                            <p>
+                                                <span>{{!!query.userNickName?query.userNickName:'未知昵称'}}</span>
+                                                <span class="iconfont " ng-class="{'icon-huangguan':query.userType==0}"></span>
+                                            </p>
+                                            <p class="userName-p">
+                                                {{query.inviteCall?query.inviteCall:query.userType==0?'管理员':query.userName}}
+                                            </p>
+                                        </li>
+                                        <li class="pull-right" ng-class="{'hidden':(query.userType==0&&$first)||(!info.checkPower&&query.isNow==0)}">
+                                            <a data-ng-click="delete(query,$index)"><span class="iconfont icon-close"></span></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="btn-group">
+                        </li>
+                    </ul>
+                </form>
+            </article>
+            <footer></footer>
+        </div>
+        <div class="mask"></div>
+    </script>
+    <!-- 环境变量设置弹窗 -->
+    <script type="text/ng-template" id="EnVModel">
+        <div class="model-en-v">
+            <header>
+                <ul>
+                    <li class="pull-left" data-ng-bind="::title"></li>
+                    <li class="btn-group pull-right">
+                        <a class="eo-button-default " ng-click="cancel()">关闭</a>
+                    </li>
+                </ul>
+            </header>
+            <article>
+                <ul class="list-ul">
+                    <li data-ng-repeat="query in query">
+                        <ul class="unsave-info-ul" data-ng-class="{'hidden':!query.isEdit}">
+                            <li>
+                                <input class="eo-input key-input" type="text" placeholder="环境名称" data-ng-model="query.envName">
+                            </li>
+                            <li>
+                                <input class="eo-input value-input" type="text" placeholder="环境地址URI" data-ng-model="query.envURI">
+                            </li>
+                            <li class="btn-group-li">
+                                <button class="eo-button-success " data-ng-click="edit(query)">
+                                    保存
+                                </button>
+                            </li>
+                        </ul>
+                        <ul class="had-save-info-ul" data-ng-class="{'hidden':query.isEdit}">
+                            <li class="pull-left key">{{query.envName}}</li>
+                            <li class="pull-left value">{{query.envURI}}</li>
+                            <li class="btn-group-li">
+                                <ul>
+                                    <li class="pull-left">
+                                        <button class="eo-button-default first-btn " data-ng-click="query.isEdit=!query.isEdit">
+                                            <label class="iconfont icon-write"></label>
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button class="eo-button-default second-btn" data-ng-click="delete(query,$index)" data-ng-class="{'hidden':query.isModel}">
+                                            <label class="iconfont icon-delete"></label>
+                                        </button>
+                                        <button class="eo-button-default second-btn disable-btn" data-ng-class="{'hidden':!query.isModel}">
+                                            <label class="iconfont icon-delete"></label>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        <ul class="add-info-ul ">
+                            <li>
+                                <input name="envName" class="eo-input key-input" data-ng-model="info.envName" type="text" placeholder="环境名称" ng-pattern="/^.{1,20}$/" required>
+                            </li>
+                            <li>
+                                <input name="envURI" class="eo-input value-input" data-ng-model="info.envURI" type="text" placeholder="环境地址URI" ng-pattern="/^.{1,250}$/" required>
+                            </li>
+                            <li class="btn-group-li">
+                                <button class="eo-button-success  " data-ng-click="add()">
+                                    添加
+                                    <label class="iconfont icon-add"></label>
+                                </button>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </article>
+            <footer>
+            </footer>
+        </div>
+        <div class="mask"></div>
+    </script>
+    <!-- 编辑数据库表字段弹窗 -->
+    <script type="text/ng-template" id="FieldModel">
+        <div class="model-project model-field">
+            <header data-ng-bind="::title"></header>
+            <article>
+                <form name="editFieldForm">
+                    <ul>
+                        <li class="message-li">
+                            <ul class="pull-left">
+                                <li class="pull-left">
+                                    <ul class="field-name">
+                                        <li>字段名：</li>
+                                        <li>
+                                            <input type="text" name="name" data-ng-model="info.fieldName" placeholder="字段名(1~255位)" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editFieldForm.name.$invalid)}" ng-pattern="/^.{1,255}$/" maxlength="255" required>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="field-type">
+                                    <ul>
+                                        <li>类型：</li>
+                                        <li class="input-li" ng-mouseover="info.mouseLeave=false" ng-mouseleave="info.mouseLeave=true">
+                                            <input id="{{'type_js'}}" class="eo-input" type="text" name="" data-ng-model="info.fieldType" auto-complete mouse-leave="info.mouseLeave" model="info.fieldType" array="typeList" query-index="{{'type_js'}}" data-ng-change="submited=info.labelIsClick=false" data-ng-class="{'eo-input-error':(submited&&!isType)}" required>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="pull-left">
+                                    <ul class="field-length">
+                                        <li>字段长度：</li>
+                                        <li>
+                                            <input type="text" name="length" data-ng-model="info.fieldLength" placeholder="字段长度" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editFieldForm.length.$invalid)}" ng-pattern="/^[1-9]\d{0,12}$/" required>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="field-key pull-left">
+                                    <ul>
+                                        <li>主键：</li>
+                                        <li>
+                                            <select data-ng-model="info.isPrimaryKey" class="eo-input" data-ng-change="changeKey()" required>
+                                                <option value="0">否</option>
+                                                <option value="1">是</option>
+                                            </select>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="field-null pull-right">
+                                    <ul>
+                                        <li>必填：</li>
+                                        <li>
+                                            <select data-ng-model="info.isNotNull" class="eo-input" ng-disabled="info.isPrimaryKey=='1'" required>
+                                                <option value="0">否</option>
+                                                <option value="1">是</option>
+                                            </select>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <ul>
+                                <li>
+                                    <ul class="field-description">
+                                        <li>字段描述：</li>
+                                        <li>
+                                            <textarea name="description" data-ng-model="info.fieldDescription" data-ng-class="{'eo-input-error':(submited&&editFieldForm.name.$invalid)}" maxlength="250"></textarea>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="btn-group">
+                            <button class="eo-button-success " ng-click="ok()">确定</button>
+                            <a class="eo-button-info" ng-if="info.isAdd" ng-click="keep()">继续添加</a>
+                            <a class="eo-button-default " ng-click="cancel()">取消</a>
+                        </li>
+                    </ul>
+                </form>
+            </article>
+            <footer></footer>
+        </div>
+        <div class="mask"></div>
+    </script>
+    <!-- 添加/编辑project输入弹窗 -->
+    <script type="text/ng-template" id="ProjectModel">
+        <div class="model-project">
+            <header data-ng-bind="::title"></header>
+            <article>
+                <form name="editProjectForm">
+                    <ul>
+                        <li>
+                            <ul class="project-name">
+                                <li>项目名称：</li>
+                                <li>
+                                    <input type="text" name="name" data-ng-model="info.projectName" placeholder="1~32位字符串" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editProjectForm.name.$invalid)}" ng-pattern="/^.{1,32}$/" maxlength="32" required>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="pull-left">
+                            <ul class="project-version">
+                                <li>版本号：</li>
+                                <li>
+                                    <input type="text" name="version" data-ng-model="info.projectVersion" placeholder="1-6位数字版本号" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editProjectForm.version.$invalid)}" ng-pattern="/^[1-9]\d{0,5}$|\d+\.\d{1,4}$/" maxlength="6" required>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="project-type">
+                            <ul>
+                                <li>项目类型：</li>
+                                <li>
+                                    <select data-ng-model="info.projectType" class="eo-input " required>
+                                        <option value="0">Web</option>
+                                        <option value="1">App</option>
+                                        <option value="2">PC</option>
+                                        <option value="3">其他</option>
+                                    </select>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="btn-group">
+                            <button class="eo-button-success " ng-click="ok()">确定</button>
+                            <a class="eo-button-default " ng-click="cancel()">取消</a>
+                        </li>
+                    </ul>
+                </form>
+            </article>
+            <footer></footer>
+        </div>
+        <div class="mask"></div>
+    </script>
+    <!-- 添加/编辑database输入弹窗 -->
+    <script type="text/ng-template" id="DatabaseModel">
+        <div class="model-project">
+            <header data-ng-bind="::title"></header>
+            <article>
+                <form name="editDatabaseForm">
+                    <ul>
+                        <li>
+                            <ul class="project-name">
+                                <li>数据库名称：</li>
+                                <li>
+                                    <input type="text" name="name" data-ng-model="info.dbName" placeholder="1~32位字符串" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editDatabaseForm.name.$invalid)}" ng-pattern="/^.{1,32}$/" maxlength="32" required>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <ul class="project-name">
+                                <li>版本号：</li>
+                                <li>
+                                    <input type="text" name="version" data-ng-model="info.dbVersion" placeholder="1-6位数字版本号" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editDatabaseForm.version.$invalid)}" ng-pattern="/^[1-9]\d{0,5}$|\d+\.\d{1,4}$/" maxlength="6" required>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="btn-group">
+                            <button class="eo-button-success " ng-click="ok()">确定</button>
+                            <a class="eo-button-default " ng-click="cancel()">取消</a>
+                        </li>
+                    </ul>
+                </form>
+            </article>
+            <footer></footer>
+        </div>
+        <div class="mask"></div>
+    </script>
+    <!-- 添加/编辑项目分组弹窗 -->
+    <script type="text/ng-template" id="GroupModel">
+        <div class="model-group">
+            <header data-ng-bind="::title"></header>
+            <article>
+                <form name="editGroupForm">
+                    <ul>
+                        <li>
+                            <ul class="group-name">
+                                <li>分组名称：</li>
+                                <li>
+                                    <input type="text" name="name" data-ng-model="info.groupName" placeholder="1~32位字符串" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editGroupForm.name.$invalid)}" ng-pattern="/^.{1,32}$/" maxlength="32" required>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="btn-group">
+                            <button class="eo-button-success " ng-click="ok()">确定</button>
+                            <a class="eo-button-default " ng-click="cancel()">取消</a>
+                        </li>
+                    </ul>
+                </form>
+            </article>
+            <footer></footer>
+        </div>
+        <div class="mask"></div>
+    </script>
+    <!-- 添加/编辑数据库表弹窗 -->
+    <script type="text/ng-template" id="TableModel">
+        <div class="model-table">
+            <header data-ng-bind="::title"></header>
+            <article>
+                <form name="editTableForm">
+                    <ul>
+                        <li>
+                            <ul class="table-name">
+                                <li>表名称：</li>
+                                <li>
+                                    <input type="text" name="name" data-ng-model="info.tableName" placeholder="1~255位字符串" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editTableForm.name.$invalid)}" ng-pattern="/^.{1,255}$/" maxlength="255" required>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <ul class="table-description">
+                                <li>表描述：</li>
+                                <li>
+                                    <textarea name="description" data-ng-model="info.tableDescription" maxlength="250"></textarea>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="btn-group">
+                            <button class="eo-button-success " ng-click="ok()">确定</button>
+                            <a class="eo-button-default " ng-click="cancel()">取消</a>
+                        </li>
+                    </ul>
+                </form>
+            </article>
+            <footer></footer>
+        </div>
+        <div class="mask"></div>
+    </script>
+    <!-- 添加/编辑状态码输入弹窗 -->
+    <script type="text/ng-template" id="CodeModel">
+        <div class="model-project model-code">
+            <header data-ng-bind="::title"></header>
+            <article>
+                <form name="editProjectForm">
+                    <ul>
+                        <li class="pull-left">
+                            <ul class="project-version">
+                                <li>状态码：</li>
+                                <li>
+                                    <input type="text" name="name" data-ng-model="info.code" placeholder="1~32位字符串" class="eo-input " data-ng-class="{'eo-input-error':(submited&&editProjectForm.name.$invalid)}" ng-pattern="/^.{1,32}$/" maxlength="32" required>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="project-type">
+                            <ul>
+                                <li>状态码分组：</li>
+                                <li>
+                                    <select data-ng-model="info.groupID" class="eo-input" data-ng-options="group.groupID as group.groupName for group in query" data-ng-change="changeChildGroup()">
+                                    </select>
+                                    <select data-ng-model="info.childGroupID" class="eo-input" data-ng-options="group.groupID as group.groupName for group in childGroup">
+                                    </select>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="code-desc">
+                            <ul>
+                                <li>状态码概述：</li>
+                                <li>
+                                    <input type="text" name="desc" data-ng-model="info.codeDesc" class="eo-input" placeholder="至少一位" data-ng-class="{'eo-input-error':(submited&&editProjectForm.desc.$invalid)}" ng-pattern="/^.{1,}$/" required maxlength="255" />
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="btn-group">
+                            <button class="eo-button-success " ng-click="ok()">确定</button>
+                            <a class="eo-button-info" ng-if="info.isAdd" ng-click="keep()">继续添加</a>
+                            <a class="eo-button-default " ng-click="cancel()">取消</a>
+                        </li>
+                    </ul>
+                </form>
+            </article>
+            <footer></footer>
+        </div>
+        <div class="mask"></div>
+    </script>
+</div>

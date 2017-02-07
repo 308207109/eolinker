@@ -1,0 +1,86 @@
+.home-content-project {
+    .home-content-project-content {
+        padding-top: 51px;
+        article {
+            margin-top: 15px;
+            table {
+                width: 100%;
+                border: 1px solid #e5e5e5;
+                background: #fff;
+                font-size: 14px;
+                border-spacing: 0;
+                text-align: left;
+                text-indent: 10px;
+                border-radius: 3px;
+                thead {
+                    font-weight: bold;
+                    @include eo-line(43px);
+                    .first-th {
+                        min-width: 400px
+                    }
+                    .second-th {
+                        min-width: 90px
+                    }
+                    .third-th {
+                        min-width: 150px
+                    }
+                    .forth-th {
+                        min-width: 134px
+                    }
+                }
+                tbody {
+                    tr:nth-child(odd) {
+                        background: #fafafa;
+                    }
+                    tr:nth-child(even) {
+                        background: #fff;
+                    }
+                    tr {
+                        @include eo-line(43px);
+                        th {
+                            font-weight: initial;
+                        }
+                        td {
+                            color: #999;
+                            a {
+                                color: #999;
+                                .iconfont {
+                                    font-size: 14px;
+                                    color: #999;
+                                    padding: 5px;
+                                }
+                                &:hover {
+                                    color: #333;
+                                    .iconfont {
+                                        color: #333;
+                                    }
+                                }
+                            }
+                            .home-function-delete {
+                                margin-left: 10px;
+                            }
+                        }
+                        td:nth-child(3),
+                        td:nth-child(2) {
+                            span {
+                                @include eo-line(20px);
+                                min-width: 36px;
+                                text-indent: 0;
+                                display: inline-block;
+                                border-radius: 3px;
+                                font-size: 12px;
+                                text-align: center;
+                                cursor: pointer;
+                                padding: 0 5px;
+                            }
+                        }
+                        &:hover {
+                            background: #f0f0f0;
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

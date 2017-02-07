@@ -1,0 +1,166 @@
+project-code-list {
+    .project-code-list {
+        margin: 63px 5px 0 247px;
+        z-index: 0;
+        min-width: 1093px;
+        header {
+            @include eo-line(32px);
+            .eo-button-success {
+                @include eo-line(30px);
+                font-size: 14px;
+                width: 100px;
+                text-align: center;
+                margin-right: 5px;
+            }
+            .iconfont {
+                font-size: 14px;
+                color: #fff;
+                cursor: pointer;
+            }
+        }
+        article {
+            margin-top: 10px;
+            margin-bottom: 15px;
+            table {
+                width: 100%;
+                border: 1px solid #e5e5e5;
+                background: #fff;
+                font-size: 14px;
+                border-spacing: 0;
+                text-align: left;
+                text-indent: 10px;
+                border-radius: 3px;
+                table-layout: fixed;
+                .iconfont {
+                    font-size: 14px;
+                    cursor: pointer;
+                }
+                .icon-favorfill {
+                    color: #f48932;
+                    cursor: pointer;
+                }
+                .icon-favor {
+                    color: #ccc;
+                    cursor: pointer;
+                }
+                thead {
+                    font-weight: bold;
+                    @include eo-line(43px);
+                    th {
+                        font-weight: initial;
+                    }
+                    .api-name,
+                    .api-time {
+                        cursor: pointer;
+                        .iconfont {
+                            cursor: pointer;
+                            color: #E0E0E0;
+                        }
+                        &:hover {
+                            .iconfont {
+                                color: #333;
+                            }
+                        }
+                    }
+                    .active {
+                        font-weight: bold;
+                        .iconfont {
+                            color: #333;
+                        }
+                    }
+                    .first-th {
+                        text-align: left;
+                        text-indent: 10px;
+                        width: auto;
+                    }
+                    .second-th {
+                        min-width: 200px;
+                        width: 23%;
+                    }
+                    .third-th {
+                        min-width: 220px;
+                        width: 32%;
+                    }
+                    .forth-th {
+                        min-width: 115px;
+                        width: 13%;
+                    }
+                }
+                tbody {
+                    tr:nth-child(odd) {
+                        background: #fafafa;
+                    }
+                    tr:nth-child(even) {
+                        background: #fff;
+                    }
+                    tr {
+                        @include eo-line(43px);
+                        th {
+                            width: 36px;
+                            text-align: center;
+                            text-indent: 0;
+                        }
+                        td {
+                            color: #666;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            cursor: default;
+                            a {
+                                color: #666;
+                                .iconfont {
+                                    font-size: 14px;
+                                    color: #666;
+                                    padding: 5px;
+                                }
+                                &:hover {
+                                    color: #999;
+                                    .iconfont {
+                                        color: #999;
+                                    }
+                                }
+                            }
+                            .project-function-delete {
+                                margin-left: 10px;
+                            }
+                            .get-label {
+                                border-radius: 3px;
+                                margin-right: 8px;
+                                font-size: 12px;
+                                display: inline-block;
+                                width: 55px;
+                                @include eo-line(20px);
+                                text-align: center;
+                                text-indent: 0;
+                                cursor: pointer;
+                            }
+                        }
+                        td:nth-child(2) {
+                            .icon-circle {
+                                font-size: 12px;
+                                margin-right: 5px;
+                            }
+                            span {
+                                padding: 2px;
+                                border: 1px solid rgb(39, 107, 225);
+                                background-color: rgb(72, 128, 224);
+                                color: #fff;
+                                border-radius: 5px;
+                            }
+                        }
+                        .icon-favor {
+                            display: none;
+                        }
+                        &:hover {
+                            background: #f0f0f0;
+                            cursor: pointer;
+                            .icon-favor {
+                                display: initial;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,277 @@
+<div class="project-test project-div">
+    <header>
+        <ul>
+            <li class="pull-left go-back" data-ng-click="projectApiTestCtrl.back()">
+                <span class="iconfont icon-back"></span>接口列表</li>
+            <li class="pull-left switch-detail" data-ng-click="projectApiTestCtrl.goDetail()">
+                <span class="iconfont icon-i-copy"></span>详情
+            </li>
+            <li class="pull-left switch-test">
+                <span class="iconfont icon-lightfill"></span>测试
+            </li>
+            <li class="pull-left nav-btn">
+                <div class="go-more">
+                    <span class="iconfont icon-list"></span> 更多
+                    <div class="list-function-wrap">
+                        <ul class="nav-function" ng-if="!projectApiTestCtrl.trash">
+                            <li data-ng-click="projectApiTestCtrl.edit()"><span class="iconfont icon-write"></span>修改</li>
+                            <li data-ng-click="projectApiTestCtrl.saveTo()">
+                                <span class="iconfont icon-copy"></span>另存为(复制)
+                            </li>
+                            <li data-ng-click="projectApiTestCtrl.delete(projectApiTestCtrl.info.apiID)">
+                                <span class="iconfont icon-delete"></span>删除
+                            </li>
+                        </ul>
+                        <ul class="nav-function" ng-if="projectApiTestCtrl.trash">
+                            <li data-ng-click="projectApiTestCtrl.recover(projectApiTestCtrl.info.apiID)">
+                                <span class="iconfont icon-refresh"></span>恢复
+                            </li>
+                            <li data-ng-click="projectApiTestCtrl.deleteCompletely(projectApiTestCtrl.info.apiID)">
+                                <span class="iconfont icon-delete"></span>彻底删除
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <li en-v is-env-uri="projectApiTestCtrl.envInfo.envURI" is-test="projectApiTestCtrl.message.URL"></li>
+        </ul>
+    </header>
+    <article>
+        <div class="first-part">
+            <form name="testForm">
+                <ul>
+                    <li>
+                        <ul class="api-message-send">
+                            <li class="pull-left http-header-li ">
+                                <select class="eo-input" data-ng-model="projectApiTestCtrl.message.httpHeader">
+                                    <option value="0">HTTP</option>
+                                    <option value="1">HTTPS</option>
+                                </select>&nbsp;:
+                            </li>
+                            <li class="uri-input-li">
+                                <input class="eo-input" type="text" placeholder="请输入测试地址" data-ng-model="projectApiTestCtrl.message.URL" name="uri" data-ng-class="{'eo-input-error':(projectApiTestCtrl.submited&&testForm.uri.$invalid)}" maxlength="255" required>
+                            </li>
+                            <li class="pull-right">
+                                <button class="eo-button-info send-btn" data-ng-click="projectApiTestCtrl.test()" ng-disabled="projectApiTestCtrl.send.disable">
+                                    <span class="iconfont icon-fasong" ng-class="{'hidden':projectApiTestCtrl.send.disable}"></span> {{projectApiTestCtrl.send.disable?projectApiTestCtrl.send.countdown:'发送'}}
+                                </button>
+                            </li>
+                            <li class="pull-right">
+                                <select class="eo-input " ng-model="projectApiTestCtrl.detail.baseInfo.type" data-ng-change="projectApiTestCtrl.changeType()">
+                                    <option value="0">POST</option>
+                                    <option value="1">GET</option>
+                                    <option value="2">PUT</option>
+                                    <option value="3">DELETE</option>
+                                    <option value="4">HEAD</option>
+                                    <option value="5">OPTIONS</option>
+                                    <option value="6">PATCH</option>
+                                </select>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </form>
+        </div>
+        <div class="part request-header">
+            <header>请求头部：</header>
+            <article>
+                <ul>
+                    <li class="param-form" data-ng-repeat="query in projectApiTestCtrl.message.headers" data-ng-init="query.checkbox=true">
+                        <ul>
+                            <li class="pull-left nessarity">
+                                <input class="hidden" type="checkbox" id="{{'header_checkbox_'+$index}}" data-ng-model="query.checkbox">
+                                <label for="{{'header_checkbox_'+$index}}" class="checkbox pull-left iconfont" data-ng-class="{'icon-check':query.checkbox}"></label>
+                                <label class="number">{{$index+1}}</label>
+                                <label>
+                                    <a class="iconfont icon-move eo-button-success" data-ng-click="projectApiTestCtrl.deleteHeaderList($index)"></a>
+                                </label>
+                            </li>
+                            <li>
+                                <ul class="param-info">
+                                    <li class="pull-left">
+                                        <label>头部标签：</label>
+                                        <ul class="request-header-icon-form">
+                                            <li ng-mouseover="query.mouseLeave=false" ng-mouseleave="query.mouseLeave=true">
+                                                <input id="{{'headerName_js'+$index}}" auto-complete mouse-leave="query.mouseLeave" model="query.headerName" select="true" array="projectApiTestCtrl.requestHeaderArray" query-index="{{'headerName_js'+$index}}" class="eo-input" data-ng-model="query.headerName" data-ng-class="{'eo-input-error':(projectApiTestCtrl.submited&&!query.headerName)}" data-ng-change="query.labelIsClick=false" maxlength="255" required>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <ul class="request-header-content-input">
+                                            <li class="pull-left">
+                                                <label>头部内容：</label>
+                                            </li>
+                                            <li>
+                                                <input class="eo-input " type="text" name="" data-ng-model="query.headerValue" maxlength="65530">
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </article>
+            <footer>
+                <button class="eo-button-success add-param-btn" data-ng-click="projectApiTestCtrl.addHeaderList()">添加<span class="iconfont icon-add"></span></button>
+            </footer>
+        </div>
+        <div class="part request-param-part">
+            <header>请求参数：
+                <ul class="pull-right " data-ng-class="{'hidden':projectApiTestCtrl.detail.baseInfo.type!='0'&&projectApiTestCtrl.detail.baseInfo.type!='2'}">
+                    <li class="request-param-type-li">
+                        <ul>
+                            <li>
+                                <input class="hidden" type="radio" name="request-param-form-type" id="request-param-form-type" data-ng-model="projectApiTestCtrl.message.requestType" ng-checked="true" value="0">
+                                <label for="request-param-form-type" class="radio-input iconfont " ng-class="{'icon-weibiaoti1fuzhi02':projectApiTestCtrl.message.requestType!='0','icon-circle':projectApiTestCtrl.message.requestType=='0'}"></label>
+                                <label for="request-param-form-type">表单[form-data]</label>
+                            </li>
+                            <li>
+                                <input class="hidden" id="request-param-raw-type" type="radio" name="request-param-form-type" data-ng-model="projectApiTestCtrl.message.requestType" value="1">
+                                <label for="request-param-raw-type" class="radio-input iconfont " ng-class="{'icon-weibiaoti1fuzhi02':projectApiTestCtrl.message.requestType!='1','icon-circle':projectApiTestCtrl.message.requestType=='1'}"></label>
+                                <label for="request-param-raw-type">源数据[raw]</label>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </header>
+            <article>
+                <ul class="form-ul" ng-class="{'hidden':projectApiTestCtrl.message.requestType=='1'}">
+                    <li class="param-form" data-ng-repeat="query in projectApiTestCtrl.message.params" data-ng-init="query.checkbox=true">
+                        <ul>
+                            <li class="pull-left nessarity">
+                                <input class="hidden" type="checkbox" id="{{'param_checkbox_'+$index}}" data-ng-model="query.checkbox">
+                                <label for="{{'param_checkbox_'+$index}}" class="checkbox pull-left iconfont" data-ng-class="{'icon-check':query.checkbox}"></label>
+                                <label class="number">{{$index+1}}</label>
+                                <label>
+                                    <a class="iconfont icon-move eo-button-success" data-ng-click="projectApiTestCtrl.deleteRequestList($index)"></a>
+                                </label>
+                            </li>
+                            <li>
+                                <ul class="param-info">
+                                    <li class="pull-left">
+                                        <label>参数名称：</label>
+                                        <ul class="request-param-icon-form">
+                                            <li>
+                                                <input class="eo-input" data-ng-model="query.paramKey" data-ng-class="{'eo-input-error':(projectApiTestCtrl.submited&&!query.paramKey)}" maxlength="255" required>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="pull-left">
+                                        <label>类型：</label>
+                                        <select class="eo-input request-type-select">
+                                            <option value="0" selected>[TEXT]</option>
+                                        </select>
+                                    </li>
+                                    <li>
+                                        <ul class="request-param-content-input">
+                                            <li class="pull-left">
+                                                <label>参数值：</label>
+                                            </li>
+                                            <li class="last-li" ng-mouseover="query.mouseLeave=false" ng-mouseleave="query.mouseLeave=true" ng-if="query.paramValueQuery.length>0">
+                                                <input id="{{'paramInfo_js'+$index}}" auto-complete mouse-leave="query.mouseLeave" model="query.paramInfo" select="true" array="query.paramValueQuery" query-index="{{'paramInfo_js'+$index}}" class="eo-input pull-left" data-ng-model="query.paramInfo" data-ng-change="query.labelIsClick=false">
+                                            </li>
+                                            <li class="last-li" ng-if="!query.paramValueQuery.length>0">
+                                                <input id="{{'paramInfo_js'+$index}}" class="eo-input pull-left" data-ng-model="query.paramInfo">
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="raw-div" ng-class="{'hidden':projectApiTestCtrl.message.requestType=='0'}">
+                    <textarea class="request-param-raw-content" data-ng-model="projectApiTestCtrl.message.raw" maxlength="65530">
+                    </textarea>
+                </div>
+            </article>
+            <footer ng-class="{'hidden':projectApiTestCtrl.message.requestType=='1'}">
+                <button class="eo-button-success add-param-btn" data-ng-click="projectApiTestCtrl.addRequestList()">添加<span class="iconfont icon-add"></span></button>
+            </footer>
+        </div>
+        <div class="third-part">
+            <header>
+                <ul>
+                    <li class="pull-left test-nav-li " ng-class="{'active':!projectApiTestCtrl.isHeader}" data-ng-click="projectApiTestCtrl.changeResult()">body</li>
+                    <li class="pull-left test-nav-li" ng-class="{'active':projectApiTestCtrl.isHeader}" data-ng-click="projectApiTestCtrl.changeType()">header</li>
+                    <li class="pull-right" ng-class="{'hidden':projectApiTestCtrl.isHeader}">
+                        <button class="change-type-btn send-format others-btn" ng-class="{'hidden':!(projectApiTestCtrl.detail.baseInfo.apiSuccessMockType==3)}">{{projectApiTestCtrl.detail.baseInfo.successMockType}}</button>
+                        <button class="eo-button-info change-type-btn send-format" arrange-json="apiResult_js" is-json="projectApiTestCtrl.format.isJson" ng-model="projectApiTestCtrl.format.message" result-type="projectApiTestCtrl.detail.baseInfo.apiSuccessMockType" textarea-json="textarea_js" ng-class="{'hidden':projectApiTestCtrl.detail.baseInfo.apiSuccessMockType==3}">{{projectApiTestCtrl.detail.baseInfo.successMockType}}|<span class="iconfont icon-magic"></span>格式整理</button>
+                    </li>
+                    <li class="pull-right" ng-class="{'hidden':projectApiTestCtrl.isHeader}">
+                        <button class="change-type-btn send-format " data-ng-click="projectApiTestCtrl.newWindow()" ng-class="{'eo-button-info':!!projectApiTestCtrl.format.message,'others-btn':!projectApiTestCtrl.format.message}">
+                            <span class="iconfont icon-xinchuangkoudakai"></span>新开页面
+                        </button>
+                    </li>
+                    <li class="pull-right" ng-class="{'hidden':projectApiTestCtrl.isHeader}">
+                        <button class="change-type-btn send-format copy-opacity-btn" copy-directive copy-id="copy-test-body-js" copy-class="copy-test-body" copy-model="projectApiTestCtrl.format.message"></button>
+                        <button class="change-type-btn send-format" ng-class="{'eo-button-info':!!projectApiTestCtrl.format.message,'others-btn':!projectApiTestCtrl.format.message}">
+                            <span class="iconfont icon-copy"></span>复制
+                        </button>
+                    </li>
+                </ul>
+            </header>
+            <article ng-class="{'hidden':projectApiTestCtrl.isHeader}">
+                <div class="test-httpHeader-content" ng-class="{'hidden':!projectApiTestCtrl.result.hadTest,'test-default':projectApiTestCtrl.result.httpCodeType===1,'test-success':projectApiTestCtrl.result.httpCodeType===2,'test-warning':projectApiTestCtrl.result.httpCodeType===3,'test-error':projectApiTestCtrl.result.httpCodeType===4||projectApiTestCtrl.result.httpCodeType===5}">
+                    {{projectApiTestCtrl.result.httpCodeType!=5?projectApiTestCtrl.result.testHttpCode:'No&nbsp;response'}}
+                    <span class="pull-right">
+                        {{!(projectApiTestCtrl.result.httpCodeType===5)?'time：'+projectApiTestCtrl.result.testDeny+'ms':''}}
+                    </span>
+                </div>
+                <div class="back-result-content " id="apiResult_js">
+                </div>
+                <pre class="back-result-content eo-pre hidden" id="textarea_js" readonly></pre>
+            </article>
+            <article ng-class="{'hidden':!projectApiTestCtrl.isHeader}">
+                <ul class="test-header-ul">
+                    <li ng-repeat="query in projectApiTestCtrl.result.testResult.headers">
+                        <span class="test-header-key">{{query.key}}</span>&nbsp;:&nbsp;{{query.value}}
+                    </li>
+                </ul>
+            </article>
+        </div>
+        <div class="part test-history-part" data-ng-class="{'hidden':projectApiTestCtrl.detail.testHistory.length<=0}">
+            <header>请求历史：</header>
+            <article>
+                <ul>
+                    <li class="param-form" data-ng-repeat="query in projectApiTestCtrl.detail.testHistory track by $index" data-ng-click="projectApiTestCtrl.enterHistory(query)">
+                        <ul>
+                            <li class="pull-left nessarity">
+                                <label class="number">{{$index+1}}</label>
+                                <label>
+                                    <a class="iconfont icon-move eo-button-success" data-ng-click="projectApiTestCtrl.deleteTestList(query.testID,$index)"></a>
+                                </label>
+                            </li>
+                            <li>
+                                <ul class="param-info">
+                                    <li class="pull-left test-history-time">
+                                        <label>{{query.testTime}}</label>
+                                    </li>
+                                    <li class="pull-left test-history-code">
+                                        <label class="history-type" ng-class="{'eo-color-success':query.requestInfo.methodType==0,'eo-color-default':query.requestInfo.methodType==1,'eo-color-others':query.requestInfo.methodType==2,'eo-color-warning':query.requestInfo.methodType==6,'eo-color-danger':query.requestInfo.methodType==3,'eo-color-info':query.requestInfo.methodType==4,'eo-color-options':query.requestInfo.methodType==5}">{{query.requestInfo.method}}</label>
+                                    </li>
+                                    <li class="pull-left test-history-url">
+                                        <label>{{query.requestInfo.URL}}</label>
+                                    </li>
+                                    <li class="pull-right test-history-http-code">
+                                        <label ng-class="{'test-default-color':query.httpCodeType===1,'test-success-color':query.httpCodeType===2,'test-warning-color':query.httpCodeType===3,'test-error-color':query.httpCodeType===4||query.httpCodeType===5}">{{query.resultInfo.httpCode}}</label>
+                                    </li>
+                                    <li class="pull-right test-history-deny">
+                                        <label>{{query.resultInfo.testDeny}}ms</label>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </article>
+            <footer>
+            </footer>
+        </div>
+    </article>
+    <footer class="plug">
+        <div class="opacity-none" id="plug-in-result-js"></div>
+        <div class="hidden" id="plug-in-js">{"method":{{projectApiTestCtrl.detail.baseInfo.type}},"requestInfo":{{projectApiTestCtrl.message}}}</div>
+    </footer>
+</div>
