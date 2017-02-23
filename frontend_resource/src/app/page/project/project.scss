@@ -154,7 +154,7 @@ project {
                             color: #333;
                             .icon-list,
                             .title-icon {
-                                color: #333;
+                                color: #000;
                             }
                             .icon-triangledownfill {
                                 color: $buttonSuccessFocusBgColor;
@@ -166,7 +166,7 @@ project {
                                 .title-icon {
                                     color: #555;
                                     font-size: 14px;
-                                    display: inline-block;
+                                    display: initial;
                                     padding-right: 10px;
                                 }
                             }

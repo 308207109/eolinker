@@ -133,7 +133,7 @@ gulp.task('vendor', gulpsync.sync(['vendor:base', 'vendor:app']));
  * [复制依赖文件]
  */
 
-gulp.task('vendor:base', function() {
+gulp.task('vendor:base', function() { 
     var jsFilter = $.filter('**/*.js', { restore: true }),
         cssFilter = $.filter('**/*.css', { restore: true });
     return gulp.src(config.vendor.base.source, { base: 'bower_components' })

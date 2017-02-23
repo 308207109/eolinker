@@ -636,4 +636,31 @@
         </div>
         <div class="mask"></div>
     </script>
+    <!-- JSON转param输入弹窗 -->
+    <script type="text/ng-template" id="JsonToParamInputModel">
+        <div class="model-sure eo-modal model-json-to-param">
+            <header>
+                <ul>
+                    <li>JSON转换返回参数</li>
+                </ul>
+            </header>
+            <article>
+                <form name="sureForm">
+                    <ul>
+                        <li>
+                            <textarea type="text" name="description" data-ng-model="info.desc" placeholder="请输入json字符串。" class="eo-input desc-textarea" data-ng-class="{'eo-input-error':(submited&&sureForm.description.$invalid)}">
+                            </textarea>
+                        </li>
+                        <li class="btn-group">
+                            <button class="eo-button-info" ng-click="ok(0)">插入</button>
+                            <button class="eo-button-info" ng-click="ok(1)">替换</button>
+                            <a class="eo-button-default " ng-click="cancel()">取消</a>
+                        </li>
+                    </ul>
+                </form>
+            </article>
+            <footer></footer>
+        </div>
+        <div class="mask"></div>
+    </script>
 </div>

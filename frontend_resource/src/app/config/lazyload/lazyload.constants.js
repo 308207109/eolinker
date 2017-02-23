@@ -3,7 +3,7 @@
 
     angular
         .module('eolinker')
-        /* 预加载模块名和路径 */
+        /* 按需加载模块名和路径 */
         .constant('APP_REQUIRES', {
             // jQuery based and standalone scripts
             scripts: {},

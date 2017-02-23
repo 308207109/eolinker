@@ -1,8 +1,8 @@
 (function () { 
  return angular.module("eolinker")
-.constant("serverUrl", "/eolinker/server/index.php")
-.constant("isDebug", true)
-.constant("assetUrl", "app/")
-.constant("cookieConfig", {"domain":"localhost"});
+.constant("serverUrl", "./server/index.php")
+.constant("isDebug", false)
+.constant("assetUrl", "")
+.constant("cookieConfig", {"domain":"../"});
 
 })();

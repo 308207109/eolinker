@@ -74,54 +74,6 @@
                             vm.detail.baseInfo.type = 'PATCH';
                             break;
                     }
-                    switch (data.apiInfo.baseInfo.apiSuccessMockType) {
-                        case 0:
-                        case '0':
-                            {
-                                vm.detail.baseInfo.successMockType = 'JSON';
-                                break;
-                            }
-                        case 1:
-                        case '1':
-                            {
-                                vm.detail.baseInfo.successMockType = 'XML';
-                                break;
-                            }
-                        case 2:
-                        case '2':
-                            {
-                                vm.detail.baseInfo.successMockType = 'HTML';
-                                break;
-                            }
-                        case 3:
-                        case '3':
-                            vm.detail.baseInfo.successMockType = '其他';
-                            break;
-                    }
-                    switch (data.apiInfo.baseInfo.apiFailureMockType) {
-                        case 0:
-                        case '0':
-                            {
-                                vm.detail.baseInfo.failureMockType = 'JSON';
-                                break;
-                            }
-                        case 1:
-                        case '1':
-                            {
-                                vm.detail.baseInfo.failureMockType = 'XML';
-                                break;
-                            }
-                        case 2:
-                        case '2':
-                            {
-                                vm.detail.baseInfo.failureMockType = 'HTML';
-                                break;
-                            }
-                        case 3:
-                        case '3':
-                            vm.detail.baseInfo.failureMockType = '其他';
-                            break;
-                    }
                     switch (data.apiInfo.baseInfo.apiProtocol) {
                         case 0:
                         case '0':
@@ -157,7 +109,6 @@
                                 }
                             })
                             val.paramKeyHtml = $sce.trustAsHtml(val.paramKeyHtml)
-                                //console.log(val.paramKeyHtml)
                         } else {
                             val.paramKeyHtml = $sce.trustAsHtml(val.paramKey)
                         }

@@ -32,6 +32,8 @@
 
     .controller('CodeModelCtrl', CodeModelCtrl)
 
+    .controller('JsonToParamInputModelCtrl', JsonToParamInputModelCtrl)
+
     // 消息提示弹窗控制器
     InfoModelCtrl.$inject = ['$scope', '$uibModalInstance', '$timeout', 'info', 'type'];
 
@@ -280,7 +282,7 @@
             hasNewVersion: false,
             updating: false,
             updateFail: false,
-            version: '当前版本为2.0.0，更新时间为2017年2月7日。',
+            version: '当前版本为2.1.0，更新时间为2017年2月22日。',
             tips: '',
             updateTips: '',
             ok: '确定',
@@ -1189,6 +1191,47 @@
             });
             modalInstance.result.then(callback);
         }
+    }
+
+    // JSON转param输入弹窗
+    JsonToParamInputModelCtrl.$inject = ['$scope', '$uibModalInstance', '$uibModal'];
+
+    function JsonToParamInputModelCtrl($scope, $uibModalInstance, $uibModal) {
+        $scope.ok = function(which) {
+            if ($scope.sureForm.$valid) {
+                try {
+                    JSON.parse($scope.info.desc);
+                    $uibModalInstance.close({ which: which, desc: $scope.info.desc });
+                } catch (e) {
+                    $scope.InfoModel('JSON格式有误', 'error');
+                }
+            } else {
+                $scope.submited = true;
+            }
+        };
+
+        $scope.cancel = function() {
+            $uibModalInstance.close(false);
+        };
+
+        //弹窗引用
+        $scope.InfoModel = function openModel(info, type, callback) {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'InfoModel',
+                controller: 'InfoModelCtrl',
+                resolve: {
+                    info: function() {
+                        return info;
+                    },
+                    type: function() {
+                        return type;
+                    }
+                }
+            });
+            modalInstance.result.then(callback);
+        }
+
     }
 
 

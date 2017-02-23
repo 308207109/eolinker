@@ -26,7 +26,7 @@
 目录结构
 
 --gulp
-
+ 
 * --base.js    配置基本项目依赖
 * --build.js   生成上线版本脚本
 * --config.js  全局配置文件

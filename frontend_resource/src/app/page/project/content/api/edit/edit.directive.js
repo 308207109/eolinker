@@ -59,6 +59,18 @@
             apiResultParam: [],
             starred: 0
         };
+        vm.template = {// 自动匹配json获取response params
+            resultItem: {
+                "paramNotNull": "0",
+                "paramName": "",
+                "paramKey": "",
+                "paramValueList": []
+            },
+            resultValueItem:{
+                "value": "",
+                "valueDescription": ""
+            }
+        }
         var isMarkInit = false;
         vm.loadingIsEnd = true;
 
@@ -134,8 +146,8 @@
                         vm.detail.apiStatus = "" + vm.detail.apiStatus;
                         vm.detail.apiProtocol = "" + vm.detail.apiProtocol;
                         vm.detail.apiRequestType = "" + vm.detail.apiRequestType;
-                        vm.detail.apiSuccessMockType = "" + vm.detail.apiSuccessMockType;
-                        vm.detail.apiFailureMockType = "" + vm.detail.apiFailureMockType;
+                        // vm.detail.apiSuccessMockType = "" + vm.detail.apiSuccessMockType;
+                        // vm.detail.apiFailureMockType = "" + vm.detail.apiFailureMockType;
                         vm.detail.apiRequestParamType = "" + vm.detail.apiRequestParamType;
                         vm.detail.apiNoteType = "" + vm.detail.apiNoteType;
                         vm.detail.apiRichNote = vm.detail.apiNoteType == 0 ? vm.detail.apiNote : '';
@@ -167,8 +179,8 @@
                 vm.detail.apiStatus = '0';
                 vm.detail.apiProtocol = '0';
                 vm.detail.apiRequestType = '0';
-                vm.detail.apiSuccessMockType = '0';
-                vm.detail.apiFailureMockType = '0';
+                // vm.detail.apiSuccessMockType = '0';
+                // vm.detail.apiFailureMockType = '0';
                 vm.detail.apiRequestParamType = '0';
                 vm.detail.apiNoteType = '0';
             }
@@ -302,8 +314,8 @@
                 apiStatus: vm.detail.apiStatus,
                 apiProtocol: vm.detail.apiProtocol,
                 apiRequestType: vm.detail.apiRequestType,
-                apiSuccessMockType: vm.detail.apiSuccessMockType,
-                apiFailureMockType: vm.detail.apiFailureMockType,
+                apiSuccessMockType: 0,
+                apiFailureMockType: 0,
                 apiURI: vm.detail.apiURI,
                 apiName: vm.detail.apiName,
                 apiSuccessMock: vm.detail.apiSuccessMock,
@@ -453,8 +465,8 @@
                         vm.detail.apiStatus = '0';
                         vm.detail.apiProtocol = '0';
                         vm.detail.apiRequestType = '0';
-                        vm.detail.apiSuccessMockType = "0";
-                        vm.detail.apiFailureMockType = "0";
+                        // vm.detail.apiSuccessMockType = "0";
+                        // vm.detail.apiFailureMockType = "0";
                         vm.detail.apiRequestParamType = "0";
                         vm.detail.apiNoteType = "0";
                         vm.submited = false;

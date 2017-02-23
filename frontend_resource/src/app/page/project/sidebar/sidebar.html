@@ -66,14 +66,14 @@
                                 <span class="group-name pull-left">
                                     {{list.groupName}}
                                 </span>
-                                <span class="active ">
-                            <a class="iconfont icon-list" data-ng-click="query.listIsClick=true" data-ng-mouseleave="query.listIsClick=false">
-                                <ul class="sidebar-function" data-ng-class="{'hidden':!query.listIsClick,'envFirst':$first}">
-                                    <li data-ng-click="projectSidebarCtrl.editChildGroup(query,list,true)">修改</li>
-                                    <li data-ng-click="projectSidebarCtrl.deleteChildGroup(query,list,$index)">删除</li>
-                                </ul>
-                            </a>
-                        </span>
+                                <span class="active">
+                                    <a class="iconfont icon-list" data-ng-click="query.listIsClick=true" data-ng-mouseleave="query.listIsClick=false">
+                                    <ul class="sidebar-function" data-ng-class="{'hidden':!query.listIsClick,'envFirst':$first}">
+                                        <li data-ng-click="projectSidebarCtrl.editChildGroup(query,list,true)">修改</li>
+                                        <li data-ng-click="projectSidebarCtrl.deleteChildGroup(query,list,$index)">删除</li>
+                                    </ul>
+                                    </a>
+                                </span>
                             </li>
                         </ul>
                     </div>

@@ -19,7 +19,7 @@
                         <ul class="api-message-send">
                             <li class="pull-left">
                                 <select class="eo-input" data-ng-model="projectApiEditCtrl.detail.groupID" data-ng-options="group.groupID as group.groupName for group in projectApiEditCtrl.group" data-ng-change="projectApiEditCtrl.changeChildGroup()">
-                                </select>
+                                </select> 
                             </li>
                             <li class="pull-left">
                                 <select class="eo-input" data-ng-model="projectApiEditCtrl.detail.childGroupID" data-ng-options="group.groupID as group.groupName for group in projectApiEditCtrl.childGroupList">
@@ -253,7 +253,7 @@
                 <ul>
                     <li class="pull-left edit-nav-li " ng-class="{'active':!projectApiEditCtrl.isSuccess}" data-ng-click="projectApiEditCtrl.changeMockStatus()">成功结果</li>
                     <li class="pull-left edit-nav-li" ng-class="{'active':projectApiEditCtrl.isSuccess}" data-ng-click="projectApiEditCtrl.changeMockStatus()">失败结果</li>
-                    <li class="pull-right success-mock-li" ng-class="{'hidden':projectApiEditCtrl.isSuccess}">
+                    <!--<li class="pull-right success-mock-li" ng-class="{'hidden':projectApiEditCtrl.isSuccess}">
                         <ul>
                             <li>
                                 <input class="hidden" type="radio" name="api-success-mock-type" id="success-json-type" data-ng-model="projectApiEditCtrl.detail.apiSuccessMockType" ng-checked="true" value="0">
@@ -276,12 +276,12 @@
                                 <label for="success-text-type">TEXT</label>
                             </li>
                         </ul>
-                        <!--<select class="eo-input" data-ng-model="projectApiEditCtrl.detail.apiSuccessMockType">
+                        <select class="eo-input" data-ng-model="projectApiEditCtrl.detail.apiSuccessMockType">
                             <option value="0">JSON</option>
                             <option value="1">XML</option>
                             <option value="2">HTML</option>
                             <option value="3">其他</option>
-                        </select>-->
+                        </select>
                     </li>
                     <li class="pull-right failure-mock-li" ng-class="{'hidden':!projectApiEditCtrl.isSuccess}">
                         <ul>
@@ -305,7 +305,7 @@
                                 <label for="failure-text-type" class="radio-input iconfont " ng-class="{'icon-weibiaoti1fuzhi02':projectApiEditCtrl.detail.apiFailureMockType!='3','icon-circle':projectApiEditCtrl.detail.apiFailureMockType=='3'}"></label>
                                 <label for="failure-text-type">TEXT</label>
                             </li>
-                        </ul>
+                        </ul>-->
                         <!--<select class="eo-input" data-ng-model="projectApiEditCtrl.detail.apiFailureMockType">
                             <option value="0">JSON</option>
                             <option value="1">XML</option>
@@ -391,8 +391,9 @@
                     </ul>
                 </ng-form>
             </article>
-            <footer>
+            <footer> 
                 <button class="eo-button-success add-param-btn" data-ng-click="projectApiEditCtrl.addResultList()">添加<span class="iconfont icon-add"></span></button>
+                <span set-json-to-params="paramKey" item="{{projectApiEditCtrl.template.resultItem}}" value-item="{{projectApiEditCtrl.template.resultValueItem}}" reset-result="projectApiEditCtrl.detail.apiResultParam" set-value="paramValueList" set-value-key="value"></span>
             </footer>
         </div>
         <div class="forth-part remark-part">

@@ -158,6 +158,9 @@
                         margin-left: 2px;
                     }
                 }
+                .import-btn {
+                    width: 100px;
+                }
             }
         }
         .request-param-part {
@@ -254,11 +257,11 @@
                             @include eo-line(30px);
                         }
                         .request-param-form-ul {
-                                height: auto;
-                                ul {
-                                    margin-top: 10px;
-                                }
+                            height: auto;
+                            ul {
+                                margin-top: 10px;
                             }
+                        }
                         .footer {
                             margin-top: 10px;
                             margin-left: 74px;
@@ -450,11 +453,11 @@
                         @include eo-line(30px);
                     }
                     .response-param-form-ul {
-                            height: auto;
-                            ul {
-                                margin-top: 10px;
-                            }
+                        height: auto;
+                        ul {
+                            margin-top: 10px;
                         }
+                    }
                 }
                 .response-param-info {
                     input {

@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('eolinker.filter')
-    
+
     /* json格式整理 */
     .filter('JsonformatFilter', function() {
         return function(input, num) {
@@ -72,11 +72,11 @@
                     return '<span  data-type="object"><i   style="cursor:pointer;" class="iconfont icon-shanchu" ng-click="hide($event)"></i>{<br/>' + tmp_array.join(',<br/>') + '<br/>' + indent_tab(indent_count - 1) + '}</span>';
                 }
 
-                function indent_tab(indent_count) {// 设置缩进
+                function indent_tab(indent_count) { // 设置缩进
                     return (new Array(indent_count + 1)).join('&nbsp;&nbsp;&nbsp;&nbsp;');
                 }
 
-                function _typeof(object) {// 判断类型
+                function _typeof(object) { // 判断类型
                     var tf = typeof object,
                         ts = _toString.call(object);
                     return null === object ? 'Null' :
@@ -89,7 +89,7 @@
                         '[object Date]' == ts ? 'Date' : 'Object';
                 };
 
-                function loadCssString() {// 加载样式
+                function loadCssString() { // 加载样式
                     var style = document.createElement('style');
                     style.type = 'text/css';
                     var code = Array.prototype.slice.apply(arguments).join('');
@@ -109,7 +109,7 @@
                     '.json_link{ color: #717171;font-weight:bold;}',
                     '.json_array_brackets{}');
 
-                var _JSONFormat = function(origin_data) {// 解析json
+                var _JSONFormat = function(origin_data) { // 解析json
                     //this.data = origin_data ? origin_data :
                     //JSON && JSON.parse ? JSON.parse(origin_data) : eval('(' + origin_data + ')');
                     this.data = JSON.parse(origin_data);
@@ -128,53 +128,249 @@
         }
     })
 
-    /* xml格式整理 */
-    .filter('XmlformatFilter', function() {
+    /*
+     * XML to JSON格式整理过滤器
+     */
+    .filter('XmlToJsonFilter', function() {
+        var xmlParse = function(str) {
+            var parser = new window.DOMParser();
+            var xml = parser.parseFromString(str, "application/xml");
+            return xml;
+        }
         return function(input) {
-            var xmlToJson = function(xml) {
+            var xmlToJson = function(xml, extended) {
+                if (!xml) return {};
 
-                // 创建返回对象
-                var obj = {};
+                function parseXML(node, simple) {
+                    if (!node) return null;
+                    var txt = '',
+                        obj = null,
+                        att = null;
+                    var nt = node.nodeType,
+                        nn = jsVar(node.localName || node.nodeName);
+                    var nv = node.text || node.nodeValue || '';
+                    if (node.childNodes) {
+                        if (node.childNodes.length > 0) {
+                            angular.forEach(node.childNodes, function(cn, n) {
+                                var cnt = cn.nodeType,
+                                    cnn = jsVar(cn.localName || cn.nodeName);
+                                var cnv = cn.text || cn.nodeValue || '';
+                                if (cnt == 8) {
+                                    return;
+                                } else if (cnt == 3 || cnt == 4 || !cnn) {
+                                    if (cnv.match(/^\s+$/)) {
+                                        return;
+                                    };
+                                    txt += cnv.replace(/^\s+/, '').replace(/\s+$/, '');
+                                } else {
+                                    obj = obj || {};
+                                    if (obj[cnn]) {
+                                        if (!obj[cnn].length) obj[cnn] = myArr(obj[cnn]);
+                                        obj[cnn] = myArr(obj[cnn]);
+                                        obj[cnn][obj[cnn].length] = parseXML(cn, true /* simple */ );
+                                        obj[cnn].length = obj[cnn].length;
+                                    } else {
+                                        obj[cnn] = parseXML(cn);
+                                    };
+                                };
+                            });
+                        };
+                    };
+                    if (node.attributes) {
+                        if (node.attributes.length > 0) {
+                            att = {};
+                            obj = obj || {};
+                            angular.forEach(node.attributes, function(at, a) {
+                                var atn = jsVar('@' + at.name),
+                                    atv = at.value;
+                                att[atn] = atv;
+                                if (obj[atn]) {
+                                    obj[cnn] = myArr(obj[cnn]);
 
-                if (xml.nodeType == 1) {// element节点类型
-                    // do attributes
-                    if (xml.attributes.length > 0) {
-                        obj["@attributes"] = {};
-                        for (var j = 0; j < xml.attributes.length; j++) {
-                            var attribute = xml.attributes.item(j);
-                            obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
-                        }
-                    }
-                } else if (xml.nodeType == 3) {// text节点类型
-                    obj = xml.nodeValue;
-                }
+                                    obj[atn][obj[atn].length] = atv;
+                                    obj[atn].length = obj[atn].length;
+                                } else {
+                                    obj[atn] = atv;
+                                };
+                            });
+                        };
+                    };
 
-                if (xml.hasChildNodes()) {// 操作子节点
-                    for (var i = 0; i < xml.childNodes.length; i++) {
-                        var item = xml.childNodes.item(i);
-                        var nodeName = item.nodeName;
-                        if (typeof(obj[nodeName]) == "undefined" || !!obj[nodeName]) {
-                            obj[nodeName] = xmlToJson(item);
-                        } else {
-                            if (typeof(obj[nodeName].length) == "undefined") {
-                                var old = obj[nodeName];
-                                obj[nodeName] = [];
-                                obj[nodeName].push(old);
-                            }
-                            obj[nodeName].push(xmlToJson(item));
-                        }
-                    }
-                }
-                return obj;
-            }
-            return xmlToJson(input);
+                    if (obj) {
+                        obj = angular.extend((txt != '' ? new String(txt) : {}), /* {text:txt},*/ obj || {} /*, att || {}*/ );
+                        txt = (obj.text) ? ([obj.text || '']).concat([txt]) : txt;
+                        if (txt) obj.text = txt;
+                        txt = '';
+                    };
+                    var out = obj || txt;
+                    if (extended) {
+                        if (txt) out = {};
+                        txt = out.text || txt || '';
+                        if (txt) out.text = txt;
+                        if (!simple) out = myArr(out);
+                    };
+
+                    return out;
+                };
+                var jsVar = function(s) {
+                    return String(s || '').replace(/-/g, "_");
+                };
+
+                function isNum(s) {
+                    var regexp = /^((-)?([0-9]+)(([\.\,]{0,1})([0-9]+))?$)/
+                    return (typeof s == "number") || regexp.test(String((s && typeof s == "string") ? jQuery.trim(s) : ''));
+                };
+                var myArr = function(o) {
+                    if (!angular.isArray(o)) o = [o];
+                    o.length = o.length;
+                    return o;
+                };
+
+                if (typeof xml == 'string') xml = xmlParse(xml);
+                if (!xml.nodeType) return;
+                if (xml.nodeType == 3 || xml.nodeType == 4) return xml.nodeValue;
+                var root = (xml.nodeType == 9) ? xml.documentElement : xml;
+                var out = parseXML(root, true);
+                xml = null;
+                root = null;
+                return out;
+            };
+            return JSON.stringify(xmlToJson(input));
         }
     })
 
-    /* html格式整理 */
+    /*
+     * JSON to XML格式整理过滤器
+     */
+    .filter('JsonToXmlFilter', function() {
+        var defaultSettings = {
+            formatOutput: true,
+            formatTextNodes: false,
+            indentString: '  ',
+            rootTagName: 'root',
+            ignore: [],
+            replace: [],
+            nodes: [],
+            ///TODO: exceptions system
+            exceptions: []
+        };
+        var settings = {};
+        var convertToXml = function(json, tagName, parentPath, depth) {
+            var suffix = (settings.formatOutput) ? '\r\n' : '';
+            var indent = (settings.formatOutput) ? getIndent(depth) : '';
+            var xmlTag = indent + '<' + tagName;
+            var children = '';
+            for (var key in json) {
+                if (json.hasOwnProperty(key)) {
+                    var propertyPath = parentPath + key;
+                    var propertyName = getPropertyName(parentPath, key);
+                    // element not in ignore array, process
+                    if (settings.ignore.indexOf(propertyPath) == -1) {
+                        // array, create new child element
+                        if (angular.isArray(json[key])) {
+                            children += createNodeFromArray(json[key], propertyName,
+                                propertyPath + '.', depth + 1, suffix);
+                        }
+                        // object, new child element aswell
+                        else if (typeof(json[key]) === 'object') {
+                            children += convertToXml(json[key], propertyName,
+                                propertyPath + '.', depth + 1);
+                        }
+                        // primitive value property as attribute
+                        else {
+                            // unless it's explicitly defined it should be node
+                            if (propertyName.indexOf('@') == -1) {
+                                children += createTextNode(propertyName, json[key],
+                                    depth, suffix);
+                            } else {
+                                propertyName = propertyName.replace('@', '');
+                                xmlTag += ' ' + propertyName + '="' + json[key] + '"';
+                            }
+                        }
+                    }
+                }
+            }
+            // close tag properly
+            if (children !== '') {
+                xmlTag += '>' + suffix + children + indent + '</' + tagName + '>' + suffix;
+            } else {
+                xmlTag += '/>' + suffix;
+            }
+            return xmlTag;
+        };
+        var getIndent = function(depth) {
+            var output = '';
+            for (var i = 0; i < depth; i++) {
+                output += settings.indentString;
+            }
+            return output;
+        };
+        var getPropertyName = function(parentPath, name) {
+            var index = settings.replace.length;
+            var searchName = parentPath + name;
+            while (index--) {
+                // settings.replace array consists of {original : replacement} 
+                // objects 
+                if (settings.replace[index].hasOwnProperty(searchName)) {
+                    return settings.replace[index][searchName];
+                }
+            }
+            return name;
+        };
+        var createNodeFromArray = function(source, name, path, depth, suffix) {
+            var xmlNode = '';
+            if (source.length > 0) {
+                for (var index in source) {
+                    // array's element isn't object - it's primitive value, which
+                    // means array might need to be converted to text nodes
+                    if (typeof(source[index]) !== 'object') {
+                        // empty strings will be converted to empty nodes
+                        if (source[index] === "") {
+                            xmlNode += getIndent(depth) + '<' + name + '/>' + suffix;
+                        } else {
+                            var textPrefix = (settings.formatTextNodes) ? suffix + getIndent(depth + 1) : '';
+                            var textSuffix = (settings.formatTextNodes) ? suffix + getIndent(depth) : '';
+                            xmlNode += getIndent(depth) + '<' + name + '>' + textPrefix + source[index] + textSuffix + '</' + name + '>' + suffix;
+                        }
+                    }
+                    // else regular conversion applies
+                    else {
+                        xmlNode += convertToXml(source[index], name, path, depth);
+                    }
+                }
+            }
+            // array is empty, also creating empty XML node     
+            else {
+                xmlNode += getIndent(depth) + '<' + name + '/>' + suffix;
+            }
+            return xmlNode;
+        };
+        var createTextNode = function(name, text, parentDepth, suffix) {
+            // unformatted text node: <node>value</node>
+            // formatting includes value indentation and new lines
+            var textPrefix = (settings.formatTextNodes) ? suffix + getIndent(parentDepth + 2) : '';
+            var textSuffix = (settings.formatTextNodes) ? suffix + getIndent(parentDepth + 1) : '';
+            var xmlNode = getIndent(parentDepth + 1) + '<' + name + '>' + textPrefix + text + textSuffix + '</' + name + '>' + suffix;
+            return xmlNode;
+        };
+        return function(input) {
+            var jsonToXml = function(json, options) {
+                settings = {};
+                settings = angular.extend(settings, defaultSettings, options || {});
+                return '<?xml version="1.0" encoding="UTF-8"?>' + convertToXml(json, settings.rootTagName, '', 0);
+            };
+
+            return jsonToXml(JSON.parse(input));
+        }
+    })
+
+    /*
+     * HTML/xml格式整理过滤器
+     */
     .filter('HtmlformatFilter', function() {
         return function(input, num) {
             var Arrange = {
+
                 HTML: function(html_source, indent_size, indent_character, max_char) {
                     //Wrapper function to invoke all the necessary constructors and deal with the output.
 
@@ -445,7 +641,10 @@
                                 if (typeof temp_token !== 'string') {
                                     return temp_token;
                                 }
-                                token = js_beautify(temp_token, this.indent_size, this.indent_character, this.indent_level); //call the JS Beautifier
+                                /*
+                                 *修改时间 2017 2-21 18:27 author riverLethe
+                                 */
+                                // token = js_beautify(temp_token, this.indent_size, this.indent_character, this.indent_level); //call the JS Beautifier
                                 return [token, 'TK_CONTENT'];
                             }
                             if (this.current_mode === 'CONTENT') {
@@ -517,9 +716,14 @@
                         return this;
                     }
 
+                    /*_____________________--------------------_____________________*/
+
+
 
                     multi_parser = new Parser(); //wrapping functions Parser
                     multi_parser.printer(html_source, indent_character, indent_size); //initialize starting values
+
+
 
                     var f = true;
                     while (true) {

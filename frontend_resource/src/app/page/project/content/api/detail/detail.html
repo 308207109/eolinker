@@ -142,21 +142,21 @@
                     </tr>
                 </thead>
             </table>
-            <div class="request-param-form request-param-raw-form" id="request-param-div-js">
+            <div class="request-param-form request-param-raw-form" >
+                <pre class="request-param-raw-content" id="request-param-div-js"></pre>
             </div>
         </div>
         <div class="third-part">
             <header>
                 <ul>
+                    <li class="pull-left"><b >返回示例：</b></li>
                     <li class="pull-left test-nav-li " ng-class="{'active':!projectApiDetailCtrl.isSuccess}" data-ng-click="projectApiDetailCtrl.changeMockStatus()">成功结果</li>
                     <li class="pull-left test-nav-li" ng-class="{'active':projectApiDetailCtrl.isSuccess}" data-ng-click="projectApiDetailCtrl.changeMockStatus()">失败结果</li>
                     <li class="pull-right" ng-class="{'hidden':projectApiDetailCtrl.isSuccess}">
-                        <button class="change-type-btn send-format others-btn" ng-class="{'hidden':!(projectApiDetailCtrl.detail.baseInfo.apiSuccessMockType==3)}">{{projectApiDetailCtrl.detail.baseInfo.successMockType}}</button>
-                        <button class="eo-button-info change-type-btn send-format" arrange-json="apiResult_js" ng-model="projectApiDetailCtrl.detail.baseInfo.apiSuccessMock" is-json="projectApiDetailCtrl.format.successMock" result-type="projectApiDetailCtrl.detail.baseInfo.apiSuccessMockType" textarea-json="textarea_js" ng-class="{'hidden':projectApiDetailCtrl.detail.baseInfo.apiSuccessMockType==3}">{{projectApiDetailCtrl.detail.baseInfo.successMockType}}|<span class="iconfont icon-magic"></span>格式整理</button>
+                        <button class="eo-button-info change-type-btn send-format" arrange-json="apiResult_js" ng-model="projectApiDetailCtrl.detail.baseInfo.apiSuccessMock" is-json="projectApiDetailCtrl.format.successMock" textarea-json="textarea_js"><span class="iconfont icon-magic"></span>格式整理</button>
                     </li>
                     <li class="pull-right" ng-class="{'hidden':!projectApiDetailCtrl.isSuccess}">
-                        <button class="change-type-btn send-format others-btn" ng-class="{'hidden':!(projectApiDetailCtrl.detail.baseInfo.apiFailureMockType==3)}">{{projectApiDetailCtrl.detail.baseInfo.failureMockType}}</button>
-                        <button class="eo-button-info change-type-btn send-format" arrange-json="apiResult_js_1" ng-model="projectApiDetailCtrl.detail.baseInfo.apiFailureMock" is-json="projectApiDetailCtrl.format.failureMock" result-type="projectApiDetailCtrl.detail.baseInfo.apiFailureMockType" textarea-json="textarea_js_1" ng-class="{'hidden':projectApiDetailCtrl.detail.baseInfo.apiFailureMockType==3}">{{projectApiDetailCtrl.detail.baseInfo.failureMockType}}|<span class="iconfont icon-magic"></span>格式整理</button>
+                        <button class="eo-button-info change-type-btn send-format" arrange-json="apiResult_js_1" ng-model="projectApiDetailCtrl.detail.baseInfo.apiFailureMock" is-json="projectApiDetailCtrl.format.failureMock" textarea-json="textarea_js_1" ><span class="iconfont icon-magic"></span>格式整理</button>
                     </li>
                 </ul>
             </header>
@@ -168,9 +168,9 @@
                     </ul>
                 </div>
                 <div>
-                    <div class="back-result-content " id="apiResult_js">
-                    </div>
-                    <pre class="back-result-content eo-pre hidden" id="textarea_js" readonly></pre>
+                    <pre class="back-result-content " id="apiResult_js">
+                    </pre>
+                    <pre class="back-result-content hidden" id="textarea_js" readonly></pre>
                 </div>
             </article>
             <article ng-class="{'hidden':!projectApiDetailCtrl.isSuccess}">
@@ -181,9 +181,9 @@
                     </ul>
                 </div>
                 <div>
-                    <div class="back-result-content " id="apiResult_js_1">
-                    </div>
-                    <pre class="back-result-content eo-pre hidden" id="textarea_js_1" readonly></pre>
+                    <pre class="back-result-content " id="apiResult_js_1">
+                    </pre>
+                    <pre class="back-result-content hidden" id="textarea_js_1" readonly></pre>
                 </div>
             </article>
         </div>

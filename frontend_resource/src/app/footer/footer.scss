@@ -10,16 +10,12 @@
     background-color: #FFF;
     text-align: center;
     z-index: 1000;
-    .siteseal {
-        width: 141px + 130px;
-        margin: auto;
-        img{
-        margin-top:10px;
-        }
-    }
     p,
     a {
         color: #999;
+        .footer-link {
+            color:#3B83C0;
+        }
     }
 }
 
