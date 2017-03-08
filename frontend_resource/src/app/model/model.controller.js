@@ -282,7 +282,7 @@
             hasNewVersion: false,
             updating: false,
             updateFail: false,
-            version: '当前版本为2.1.0，更新时间为2017年2月22日。',
+            version: '当前版本为2.1.1，更新时间为2017年3月5日。',
             tips: '',
             updateTips: '',
             ok: '确定',
@@ -856,7 +856,7 @@
     function ProjectModelCtrl($scope, $uibModalInstance, $timeout, Api, $uibModal, CODE, title, info) {
         var code = CODE.SUCCESS;
         var vm = this;
-        $scope.title = title;
+        $scope.title = title; 
         $scope.info = {
             projectID: '',
             projectName: '',

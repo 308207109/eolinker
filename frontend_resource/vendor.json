@@ -11,6 +11,5 @@
 "bower_components/editor.md/plugins/link-dialog/link-dialog.js ",
 "bower_components/editor.md/plugins/table-dialog/table-dialog.js ",
 "bower_components/editor.md/lib/**/*",
-"bower_components/editor.md/images/loading.gif",
-"bower_components/editor.md/fonts/fontawesome-webfont.*"
+"bower_components/editor.md/images/loading.gif"
 ]

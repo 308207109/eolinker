@@ -49,7 +49,7 @@ class StatusCodeGroupController
 			//项目ID格式不合法
 			$this -> returnJson['statusCode'] = '180005';
 		}
-		elseif (!($nameLen >= 2 && $nameLen <= 16))
+		elseif (!($nameLen >= 1 && $nameLen <= 32))
 		{
 			//分组名称不合法
 			$this -> returnJson['statusCode'] = '180004';
@@ -147,7 +147,7 @@ class StatusCodeGroupController
 			//项目ID格式不合法
 			$this -> returnJson['statusCode'] = '180003';
 		}
-		elseif (!($nameLen >= 2 && $nameLen <= 16))
+		elseif (!($nameLen >= 1 && $nameLen <= 32))
 		{
 			//分组名称不合法
 			$this -> returnJson['statusCode'] = '180004';

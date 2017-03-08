@@ -88,7 +88,7 @@
                     data.childGroupID = vm.info.childGroupID;
                     vm.CodeModel(title, data, function(data) {
                         if (data) {
-                            vm.InfoModel(title + '成功', 'success');
+                            vm.InfoModel(title + '成功', 'success'); 
                             init();
                         }
                     });

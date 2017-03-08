@@ -26,7 +26,7 @@
             submited: false
         }
         vm.alert = {
-            user: '4~16位非纯数字，英文数字下划线组合，只能以英文开头'
+            user: '4~64位非纯数字，英文数字下划线组合，只能以英文开头'
         }
 
         function init() {// 初始化注册页面
@@ -45,7 +45,7 @@
                 Api.Register.Check(info).$promise.then(function(data) {
                     if (data.statusCode == code) {
                         vm.unavailable = false;
-                        vm.alert.user = '4~16位非纯数字，英文数字下划线组合，只能以英文开头';
+                        vm.alert.user = '4~64位非纯数字，英文数字下划线组合，只能以英文开头';
                     } else if (data.statusCode == '130005') {
                         vm.unavailable = true;
                         vm.alert.user = '用户名已存在';
@@ -53,7 +53,7 @@
                 })
             } else {
                 vm.unavailable = false;
-                vm.alert.user = '4~16位非纯数字，英文数字下划线组合，只能以英文开头';
+                vm.alert.user = '4~64位非纯数字，英文数字下划线组合，只能以英文开头';
             }
         }
 

@@ -1,8 +1,7 @@
-
 @font-face {
     font-family: "iconfont";
-    src: url('assets/font/iconfont.eot?t=1481123733566');
-    src: url('assets/font/iconfont.eot?t=1481123733566#iefix') format('embedded-opentype'), url('assets/font/iconfont.woff?t=1481123733566') format('woff'), url('assets/font/iconfont.ttf?t=1481123733566') format('truetype'), url('assets/font/iconfont.svg?t=1481123733566#iconfont') format('svg');
+    src: url('assets/font/iconfont.eot?t=1487864946398');
+    src: url('assets/font/iconfont.eot?t=1487864946398#iefix') format('embedded-opentype'), url('assets/font/iconfont.woff?t=1487864946398') format('woff'), url('assets/font/iconfont.ttf?t=1487864946398') format('truetype'), url('assets/font/iconfont.svg?t=1487864946398#iconfont') format('svg');
 }
 
 @font-face {
@@ -456,4 +455,8 @@
 
 .icon-trianglerightfill:before {
     content: "\e67a";
+}
+
+.icon-paixu1:before {
+    content: "\e665";
 }

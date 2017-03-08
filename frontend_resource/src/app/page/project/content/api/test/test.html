@@ -81,9 +81,8 @@
                             <li class="pull-left nessarity">
                                 <input class="hidden" type="checkbox" id="{{'header_checkbox_'+$index}}" data-ng-model="query.checkbox">
                                 <label for="{{'header_checkbox_'+$index}}" class="checkbox pull-left iconfont" data-ng-class="{'icon-check':query.checkbox}"></label>
-                                <label class="number">{{$index+1}}</label>
                                 <label>
-                                    <a class="iconfont icon-move eo-button-success" data-ng-click="projectApiTestCtrl.deleteHeaderList($index)"></a>
+                                    <a class="iconfont icon-move eo-button-delete" data-ng-click="projectApiTestCtrl.deleteHeaderList($index)"></a>
                                 </label>
                             </li>
                             <li>
@@ -142,9 +141,8 @@
                             <li class="pull-left nessarity">
                                 <input class="hidden" type="checkbox" id="{{'param_checkbox_'+$index}}" data-ng-model="query.checkbox">
                                 <label for="{{'param_checkbox_'+$index}}" class="checkbox pull-left iconfont" data-ng-class="{'icon-check':query.checkbox}"></label>
-                                <label class="number">{{$index+1}}</label>
                                 <label>
-                                    <a class="iconfont icon-move eo-button-success" data-ng-click="projectApiTestCtrl.deleteRequestList($index)"></a>
+                                    <a class="iconfont icon-move eo-button-delete" data-ng-click="projectApiTestCtrl.deleteRequestList($index)"></a>
                                 </label>
                             </li>
                             <li>
@@ -159,12 +157,16 @@
                                     </li>
                                     <li class="pull-left">
                                         <label>类型：</label>
-                                        <select class="eo-input request-type-select">
-                                            <option value="0" selected>[TEXT]</option>
+                                        <select class="eo-input request-type-select" data-ng-model="query.paramType" ng-init="query.paramType!='0'&&query.paramType!='1'?query.paramType='0':query.paramType" data-ng-class="{'hidden':projectApiTestCtrl.detail.baseInfo.type!='0'&&projectApiTestCtrl.detail.baseInfo.type!='2'}">
+                                            <option value="0">[text]</option> 
+                                            <option value="1">[file]</option> 
+                                        </select>
+                                        <select class="eo-input request-type-select" data-ng-model="query.paramType" data-ng-class="{'hidden':projectApiTestCtrl.detail.baseInfo.type=='0'||projectApiTestCtrl.detail.baseInfo.type=='2'}">
+                                            <option value="0">[text]</option> 
                                         </select>
                                     </li>
                                     <li>
-                                        <ul class="request-param-content-input">
+                                        <ul class="request-param-content-input" ng-if="query.paramType!='1'" ng-init="query.default>-1?query.paramInfo=query.paramValueQuery[query.default]:''">
                                             <li class="pull-left">
                                                 <label>参数值：</label>
                                             </li>
@@ -173,6 +175,16 @@
                                             </li>
                                             <li class="last-li" ng-if="!query.paramValueQuery.length>0">
                                                 <input id="{{'paramInfo_js'+$index}}" class="eo-input pull-left" data-ng-model="query.paramInfo">
+                                            </li>
+                                        </ul>
+                                        <ul class="request-param-content-input" ng-if="query.paramType=='1'">
+                                            <li class="pull-left">
+                                                <label>参数值：</label>
+                                            </li>
+                                            <li class="last-li">
+                                                <input class="eo-input pull-left" data-ng-model="query.paramInfo" disabled="true" placeholder="请选择测试文件,单个文件大小不得超过2M" title="{{query.paramInfo}}">
+                                                <input type="file"  name="{{query.paramKey}}" class="eo-button-info file-btn absolute" onchange="angular.element(this).scope().importFile(this.files)" ng-init="query.$index=$index">
+                                                <label class="eo-button-info  absolute">选择文件</label>
                                             </li>
                                         </ul>
                                     </li>
@@ -194,10 +206,10 @@
             <header>
                 <ul>
                     <li class="pull-left test-nav-li " ng-class="{'active':!projectApiTestCtrl.isHeader}" data-ng-click="projectApiTestCtrl.changeResult()">body</li>
-                    <li class="pull-left test-nav-li" ng-class="{'active':projectApiTestCtrl.isHeader}" data-ng-click="projectApiTestCtrl.changeType()">header</li>
+                    <li class="pull-left test-nav-li" ng-class="{'active':projectApiTestCtrl.isHeader}" data-ng-click="projectApiTestCtrl.changeResult()">header</li>
                     <li class="pull-right" ng-class="{'hidden':projectApiTestCtrl.isHeader}">
                         <button class="change-type-btn send-format others-btn" ng-class="{'hidden':!(projectApiTestCtrl.detail.baseInfo.apiSuccessMockType==3)}">{{projectApiTestCtrl.detail.baseInfo.successMockType}}</button>
-                        <button class="eo-button-info change-type-btn send-format" arrange-json="apiResult_js" is-json="projectApiTestCtrl.format.isJson" ng-model="projectApiTestCtrl.format.message" result-type="projectApiTestCtrl.detail.baseInfo.apiSuccessMockType" textarea-json="textarea_js" ng-class="{'hidden':projectApiTestCtrl.detail.baseInfo.apiSuccessMockType==3}">{{projectApiTestCtrl.detail.baseInfo.successMockType}}|<span class="iconfont icon-magic"></span>格式整理</button>
+                        <button class="eo-button-info change-type-btn send-format" arrange-json="apiResult_js" is-json="projectApiTestCtrl.format.isJson" ng-model="projectApiTestCtrl.format.message" result-type="projectApiTestCtrl.detail.baseInfo.apiSuccessMockType" textarea-json="textarea_js" ng-class="{'hidden':projectApiTestCtrl.detail.baseInfo.apiSuccessMockType==3}"><span class="iconfont icon-magic"></span>格式整理</button>
                     </li>
                     <li class="pull-right" ng-class="{'hidden':projectApiTestCtrl.isHeader}">
                         <button class="change-type-btn send-format " data-ng-click="projectApiTestCtrl.newWindow()" ng-class="{'eo-button-info':!!projectApiTestCtrl.format.message,'others-btn':!projectApiTestCtrl.format.message}">
@@ -240,7 +252,7 @@
                             <li class="pull-left nessarity">
                                 <label class="number">{{$index+1}}</label>
                                 <label>
-                                    <a class="iconfont icon-move eo-button-success" data-ng-click="projectApiTestCtrl.deleteTestList(query.testID,$index)"></a>
+                                    <a class="iconfont icon-move eo-button-delete" data-ng-click="projectApiTestCtrl.deleteTestList(query.testID,$index)"></a>
                                 </label>
                             </li>
                             <li>

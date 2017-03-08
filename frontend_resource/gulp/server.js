@@ -64,7 +64,7 @@ function browserSyncInit(baseDir, open, port) {
             //使用代理
             
             middleware: [
-                proxyMiddleware(['/eolinker'], {onProxyRes: onProxyRes, target: 'http://192.168.154.1:82', changeOrigin: true})
+                proxyMiddleware(['/eolinker'], {onProxyRes: onProxyRes, target: 'http://localhost:8089', changeOrigin: true})
                 // proxyMiddleware(['/api'], {onProxyRes: onProxyRes, target: 'http://192.168.1.131:8080/ripple-cf', changeOrigin: true})
             ]
         }

@@ -14,20 +14,17 @@
  * 再次感谢您的使用，希望我们能够共同维护国内的互联网开源文明和正常商业秩序。
  *
  */
-class TestController
-{
+class TestController {
 	//返回Json类型
 	private $returnJson = array('type' => 'test');
-	
+
 	/**
 	 * 检查登录状态
 	 */
-	public function __construct()
-	{
+	public function __construct() {
 		// 身份验证
 		$server = new GuestModule;
-		if (!$server -> checkLogin())
-		{
+		if (!$server -> checkLogin()) {
 			$this -> returnJson['statusCode'] = '120005';
 			exitOutput($this -> returnJson);
 		}
@@ -36,37 +33,32 @@ class TestController
 	/**
 	 * get测试
 	 */
-	public function get()
-	{
+	public function get() {
 		$method = 'GET';
 		$apiProtocol = quickInput('apiProtocol');
 		$URL = quickInput('URL');
 		$headers = json_decode(quickInput('headers'), TRUE);
-		$requestParam = json_decode(quickInput('params'), TRUE);
+		$requestParams = json_decode(quickInput('params'), TRUE);
 		$apiID = securelyInput('apiID');
 
-		if (!preg_match('/^[0-9]{1,11}$/', $apiID))
-		{
+		if (!preg_match('/^[0-9]{1,11}$/', $apiID)) {
 			//apiID格式非法
 			$this -> returnJson['statusCode'] = '210008';
 			exitOutput($this -> returnJson);
 		}
 
-		if ($headers)
-		{
+		if ($headers) {
 			//转成数字索引的数组
-			foreach ($headers as $name => $value)
-			{
+			foreach ($headers as $name => $value) {
 				$requestHeader[] = $name . ': ' . $value;
-				$requestHeaderInfo[] = array(
-					'name' => $name,
-					'value' => $value
-				);
+				$requestHeaderInfo[] = array('name' => $name, 'value' => $value, 'type' => '0');
 			}
 		}
 
-		if ($requestParam)
-		{
+		if ($requestParams) {
+			foreach ($requestParams as $key => $value) {
+				$requestParam[substr($key, 1)] = $value;
+			}
 			//			foreach ($requestParam as $key => $value)
 			//			{
 			//				$arr[] = $key . '=' . $value;
@@ -76,18 +68,14 @@ class TestController
 
 		}
 
-		if ($apiProtocol == 0)
-		{
+		if ($apiProtocol == 0) {
 			$completeURL = 'http://' . $URL;
-		}
-		else
-		{
+		} else {
 			$completeURL = 'https://' . $URL;
 		}
 
 		//URL格式非法
-		if (!$completeURL || !filter_var($completeURL, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED & FILTER_FLAG_HOST_REQUIRED & FILTER_FLAG_QUERY_REQUIRED))
-		{
+		if (!$completeURL || !filter_var($completeURL, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED & FILTER_FLAG_HOST_REQUIRED & FILTER_FLAG_QUERY_REQUIRED)) {
 			$this -> returnJson['statusCode'] = '210001';
 			exitOutput($this -> returnJson);
 		}
@@ -95,41 +83,23 @@ class TestController
 		$service = new ProxyModule;
 		$result = $service -> proxyToDesURL($method, $completeURL, $requestHeader);
 
-		if ($result)
-		{
-			$requestInfo = json_encode(array(
-				'apiProtocol' => $apiProtocol,
-				'method' => $method,
-				'URL' => $URL,
-				'headers' => $requestHeaderInfo ? $requestHeaderInfo : array(),
-				'requestType' => 0,
-				'params' => $requestParamInfo ? $requestParamInfo : array()
-			));
-			$resultInfo = json_encode(array(
-				'headers' => $result['testResult']['headers'],
-				'body' => $result['testResult']['body'],
-				'httpCode' => $result['testHttpCode'],
-				'testDeny' => $result['testDeny']
-			));
+		if ($result) {
+			$requestInfo = json_encode(array('apiProtocol' => $apiProtocol, 'method' => $method, 'URL' => $URL, 'headers' => $requestHeaderInfo ? $requestHeaderInfo : array(), 'requestType' => 0, 'params' => $requestParamInfo ? $requestParamInfo : array()));
+			$resultInfo = json_encode(array('headers' => $result['testResult']['headers'], 'body' => $result['testResult']['body'], 'httpCode' => $result['testHttpCode'], 'testDeny' => $result['testDeny']));
 			$testTime = $result['testTime'];
 			$server = new TestHistoryModule;
 			$testID = $server -> addTestHistory($apiID, $requestInfo, $resultInfo, $testTime);
-			if ($testID)
-			{
+			if ($testID) {
 				$this -> returnJson['statusCode'] = '000000';
 				$this -> returnJson['testHttpCode'] = $result['testHttpCode'];
 				$this -> returnJson['testResult'] = $result['testResult'];
 				$this -> returnJson['testDeny'] = $result['testDeny'];
 				$this -> returnJson['testID'] = $testID;
-			}
-			else
-			{
+			} else {
 				//添加测试记录失败
 				$this -> returnJson['statusCode'] = '210009';
 			}
-		}
-		else
-		{
+		} else {
 			$this -> returnJson['statusCode'] = '210002';
 		}
 		exitOutput($this -> returnJson);
@@ -139,127 +109,121 @@ class TestController
 	/**
 	 * post测试
 	 */
-	public function post()
-	{
+	public function post() {
 		$method = 'POST';
 		$apiProtocol = quickInput('apiProtocol');
 		$URL = quickInput('URL');
 		$headers = json_decode(quickInput('headers'), TRUE);
 		$apiID = securelyInput('apiID');
 		$requestType = quickInput('requestType');
-		switch($requestType)
-		{
-			case 0 :
-			{
-				$param = json_decode(quickInput('params'), TRUE);
-				foreach ($param as $key => $value)
-				{
-					$requestParamInfo[] = array(
-						'key' => $key,
-						'value' => $value
-					);
+		switch($requestType) {
+			case 0 : {
+				$params = json_decode(quickInput('params'), TRUE);
+				foreach ($params as $key => $value) {
+					if (strpos($key, '0') === 0) {
+						$key = substr($key, 1);
+						$param[$key] = $value;
+						$requestParamInfo[] = array('key' => $key, 'value' => $value, 'type' => '0');
+					} else if (strpos($key, '1') === 0) {
+						$key = substr($key, 1);
+						$requestParamInfo[] = array('key' => $key, 'value' => '', 'type' => '1');
+						//读取上传文件内容
+						$fp = fopen($value, 'br');
+						if (!$fp) {
+							$this -> returnJson['statusCode'] = '210014';
+							exitOutput($this -> returnJson);
+						}
+						//获取文件类型
+						$fpMetaData = stream_get_meta_data($fp);
+						//生成临时文件
+						$tmpFile = tempnam(sys_get_temp_dir(), 'php');
+						$fileList[] = $tmpFile;
+						//将文件内容写入
+						file_put_contents($tmpFile, stream_get_contents($fp));
+						//设置文件参数
+						if (version_compare(PHP_VERSION, '5.5.0') >= 0) {
+							$param[$key] = new CURLFile($tmpFile, $fpMetaData['mediatype']);
+						} else {
+							$param[$key] = '@' . $tmpFile;
+						}
+						fclose($fp);
+					} else {
+						$this -> returnJson['statusCode'] = '210013';
+						exitOutput($this -> returnJson);
+					}
 				}
 				break;
 			}
-			case 1 :
-			{
+			case 1 : {
 				$param = quickInput('params');
 				break;
 			}
-			default :
-			{
+			default : {
 				//请求参数类型错误
 				$this -> returnJson['statusCode'] = '210013';
 				exitOutput($this -> returnJson);
 			}
 		}
 
-		if (!preg_match('/^[0-9]{1,11}$/', $apiID))
-		{
+		if (!preg_match('/^[0-9]{1,11}$/', $apiID)) {
 			//apiID格式非法
 			$this -> returnJson['statusCode'] = '210008';
 			exitOutput($this -> returnJson);
 		}
 
-		if ($headers)
-		{
+		if ($headers) {
 			//转成数字索引的数组
-			foreach ($headers as $name => $value)
-			{
+			foreach ($headers as $name => $value) {
 				$requestHeader[] = $name . ': ' . $value;
-				$requestHeaderInfo[] = array(
-					'name' => $name,
-					'value' => $value
-				);
+				$requestHeaderInfo[] = array('name' => $name, 'value' => $value);
 			}
 		}
 
-		if ($apiProtocol == 0)
-		{
+		if ($apiProtocol == 0) {
 			$completeURL = 'http://' . $URL;
-		}
-		else
-		{
+		} else {
 			$completeURL = 'https://' . $URL;
 		}
 
 		//URL格式非法
-		if (!$completeURL || !filter_var($completeURL, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED & FILTER_FLAG_HOST_REQUIRED & FILTER_FLAG_QUERY_REQUIRED))
-		{
+		if (!$completeURL || !filter_var($completeURL, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED & FILTER_FLAG_HOST_REQUIRED & FILTER_FLAG_QUERY_REQUIRED)) {
 			$this -> returnJson['statusCode'] = '210001';
 			exitOutput($this -> returnJson);
 		}
 
 		$service = new ProxyModule;
 		$result = $service -> proxyToDesURL($method, $completeURL, $requestHeader, $param);
-
-		if ($result)
-		{
+		if (isset($fileList)) {
+			foreach ($fileList as $file) {
+				unlink($file);
+			}
+		}
+		if ($result) {
 			//判断请求参数的类型
-			if ($requestType == 0)
-			{
+			if ($requestType == 0) {
 				//表单类型
 				$requestParam = $requestParamInfo ? $requestParamInfo : array();
-			}
-			else
-			{
+			} else {
 				//源文本类型
 				$requestParam = $param;
 			}
 
-			$requestInfo = json_encode(array(
-				'apiProtocol' => $apiProtocol,
-				'method' => $method,
-				'URL' => $URL,
-				'headers' => $requestHeaderInfo ? $requestHeaderInfo : array(),
-				'requestType' => $requestType,
-				'params' => $requestParam
-			));
-			$resultInfo = json_encode(array(
-				'headers' => $result['testResult']['headers'],
-				'body' => $result['testResult']['body'],
-				'httpCode' => $result['testHttpCode'],
-				'testDeny' => $result['testDeny']
-			));
+			$requestInfo = json_encode(array('apiProtocol' => $apiProtocol, 'method' => $method, 'URL' => $URL, 'headers' => $requestHeaderInfo ? $requestHeaderInfo : array(), 'requestType' => $requestType, 'params' => $requestParam));
+			$resultInfo = json_encode(array('headers' => $result['testResult']['headers'], 'body' => $result['testResult']['body'], 'httpCode' => $result['testHttpCode'], 'testDeny' => $result['testDeny']));
 			$testTime = $result['testTime'];
 			$server = new TestHistoryModule;
 			$testID = $server -> addTestHistory($apiID, $requestInfo, $resultInfo, $testTime);
-			if ($testID)
-			{
+			if ($testID) {
 				$this -> returnJson['statusCode'] = '000000';
 				$this -> returnJson['testHttpCode'] = $result['testHttpCode'];
 				$this -> returnJson['testResult'] = $result['testResult'];
 				$this -> returnJson['testDeny'] = $result['testDeny'];
 				$this -> returnJson['testID'] = $testID;
-			}
-			else
-			{
+			} else {
 				//添加测试记录失败
 				$this -> returnJson['statusCode'] = '210009';
 			}
-		}
-		else
-		{
+		} else {
 			$this -> returnJson['statusCode'] = '210003';
 		}
 		exitOutput($this -> returnJson);
@@ -268,47 +232,43 @@ class TestController
 	/**
 	 * delete测试
 	 */
-	public function delete()
-	{
+	public function delete() {
 		$method = 'DELETE';
 		$apiProtocol = quickInput('apiProtocol');
 		$URL = quickInput('URL');
 		$headers = json_decode(quickInput('headers'), TRUE);
-		$requestParam = json_decode(quickInput('params'), TRUE);
+		$requestParams = json_decode(quickInput('params'), TRUE);
 		$apiID = securelyInput('apiID');
 
-		if (!preg_match('/^[0-9]{1,11}$/', $apiID))
-		{
+		if (!preg_match('/^[0-9]{1,11}$/', $apiID)) {
 			//apiID格式非法
 			$this -> returnJson['statusCode'] = '210008';
 			exitOutput($this -> returnJson);
 		}
 
-		if ($headers)
-		{
-			//转成数字索引的数组
-			foreach ($headers as $name => $value)
-			{
-				$requestHeader[] = $name . ': ' . $value;
-				$requestHeaderInfo[] = array(
-					'name' => $name,
-					'value' => $value
-				);
+		if ($requestParams) {
+			foreach ($requestParams as $key => $value) {
+				$requestParam[substr($key, 1)] = $value;
+				$requestParamInfo[] = array('key' => substr($key, 1), 'value' => $value, 'type' => '0');
 			}
 		}
 
-		if ($apiProtocol == 0)
-		{
-			$completeURL = 'http://' . $URL;
+		if ($headers) {
+			//转成数字索引的数组
+			foreach ($headers as $name => $value) {
+				$requestHeader[] = $name . ': ' . $value;
+				$requestHeaderInfo[] = array('name' => $name, 'value' => $value, 'type' => '0');
+			}
 		}
-		else
-		{
+
+		if ($apiProtocol == 0) {
+			$completeURL = 'http://' . $URL;
+		} else {
 			$completeURL = 'https://' . $URL;
 		}
 
 		//URL格式非法
-		if (!$completeURL || !filter_var($completeURL, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED & FILTER_FLAG_HOST_REQUIRED & FILTER_FLAG_QUERY_REQUIRED))
-		{
+		if (!$completeURL || !filter_var($completeURL, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED & FILTER_FLAG_HOST_REQUIRED & FILTER_FLAG_QUERY_REQUIRED)) {
 			$this -> returnJson['statusCode'] = '210001';
 			exitOutput($this -> returnJson);
 		}
@@ -316,41 +276,23 @@ class TestController
 		$service = new ProxyModule;
 		$result = $service -> proxyToDesURL($method, $completeURL, $requestHeader, $requestParam);
 
-		if ($result)
-		{
-			$requestInfo = json_encode(array(
-				'apiProtocol' => $apiProtocol,
-				'method' => $method,
-				'URL' => $URL,
-				'headers' => $requestHeaderInfo ? $requestHeaderInfo : array(),
-				'requestType' => 0,
-				'params' => $requestParamInfo ? $requestParamInfo : array()
-			));
-			$resultInfo = json_encode(array(
-				'headers' => $result['testResult']['headers'],
-				'body' => $result['testResult']['body'],
-				'httpCode' => $result['testHttpCode'],
-				'testDeny' => $result['testDeny']
-			));
+		if ($result) {
+			$requestInfo = json_encode(array('apiProtocol' => $apiProtocol, 'method' => $method, 'URL' => $URL, 'headers' => $requestHeaderInfo ? $requestHeaderInfo : array(), 'requestType' => 0, 'params' => $requestParamInfo ? $requestParamInfo : array()));
+			$resultInfo = json_encode(array('headers' => $result['testResult']['headers'], 'body' => $result['testResult']['body'], 'httpCode' => $result['testHttpCode'], 'testDeny' => $result['testDeny']));
 			$testTime = $result['testTime'];
 			$server = new TestHistoryModule;
 			$testID = $server -> addTestHistory($apiID, $requestInfo, $resultInfo, $testTime);
-			if ($testID)
-			{
+			if ($testID) {
 				$this -> returnJson['statusCode'] = '000000';
 				$this -> returnJson['testHttpCode'] = $result['testHttpCode'];
 				$this -> returnJson['testResult'] = $result['testResult'];
 				$this -> returnJson['testDeny'] = $result['testDeny'];
 				$this -> returnJson['testID'] = $testID;
-			}
-			else
-			{
+			} else {
 				//添加测试记录失败
 				$this -> returnJson['statusCode'] = '210009';
 			}
-		}
-		else
-		{
+		} else {
 			$this -> returnJson['statusCode'] = '210004';
 		}
 		exitOutput($this -> returnJson);
@@ -359,57 +301,43 @@ class TestController
 	/**
 	 * head测试
 	 */
-	public function head()
-	{
+	public function head() {
 		$method = 'HEAD';
 		$apiProtocol = quickInput('apiProtocol');
 		$URL = quickInput('URL');
 		$headers = json_decode(quickInput('headers'), TRUE);
-		$requestParam = json_decode(quickInput('params'), TRUE);
+		$requestParams = json_decode(quickInput('params'), TRUE);
 		$apiID = securelyInput('apiID');
 
-		if (!preg_match('/^[0-9]{1,11}$/', $apiID))
-		{
+		if (!preg_match('/^[0-9]{1,11}$/', $apiID)) {
 			//apiID格式非法
 			$this -> returnJson['statusCode'] = '210008';
 			exitOutput($this -> returnJson);
 		}
 
-		if ($headers)
-		{
-			//转成数字索引的数组
-			foreach ($headers as $name => $value)
-			{
-				$requestHeader[] = $name . ': ' . $value;
-				$requestHeaderInfo[] = array(
-					'name' => $name,
-					'value' => $value
-				);
-			}
-		}
-		if ($requestParam)
-		{
-			foreach ($requestParam as $key => $value)
-			{
-				$requestParamInfo[] = array(
-					'key' => $key,
-					'value' => $value
-				);
+		if ($requestParams) {
+			foreach ($requestParams as $key => $value) {
+				$requestParam[substr($key, 1)] = $value;
+				$requestParamInfo[] = array('key' => substr($key, 1), 'value' => $value, 'type' => '0');
 			}
 		}
 
-		if ($apiProtocol == 0)
-		{
-			$completeURL = 'http://' . $URL;
+		if ($headers) {
+			//转成数字索引的数组
+			foreach ($headers as $name => $value) {
+				$requestHeader[] = $name . ': ' . $value;
+				$requestHeaderInfo[] = array('name' => $name, 'value' => $value, 'type' => '0');
+			}
 		}
-		else
-		{
+
+		if ($apiProtocol == 0) {
+			$completeURL = 'http://' . $URL;
+		} else {
 			$completeURL = 'https://' . $URL;
 		}
 
 		//URL格式非法
-		if (!$completeURL || !filter_var($completeURL, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED & FILTER_FLAG_HOST_REQUIRED & FILTER_FLAG_QUERY_REQUIRED))
-		{
+		if (!$completeURL || !filter_var($completeURL, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED & FILTER_FLAG_HOST_REQUIRED & FILTER_FLAG_QUERY_REQUIRED)) {
 			$this -> returnJson['statusCode'] = '210001';
 			exitOutput($this -> returnJson);
 		}
@@ -417,41 +345,23 @@ class TestController
 		$service = new ProxyModule;
 		$result = $service -> proxyToDesURL($method, $completeURL, $requestHeader, $requestParam);
 
-		if ($result)
-		{
-			$requestInfo = json_encode(array(
-				'apiProtocol' => $apiProtocol,
-				'method' => $method,
-				'URL' => $URL,
-				'headers' => $requestHeaderInfo ? $requestHeaderInfo : array(),
-				'requestType' => 0,
-				'params' => $requestParamInfo ? $requestParamInfo : array()
-			));
-			$resultInfo = json_encode(array(
-				'headers' => $result['testResult']['headers'],
-				'body' => $result['testResult']['body'],
-				'httpCode' => $result['testHttpCode'],
-				'testDeny' => $result['testDeny']
-			));
+		if ($result) {
+			$requestInfo = json_encode(array('apiProtocol' => $apiProtocol, 'method' => $method, 'URL' => $URL, 'headers' => $requestHeaderInfo ? $requestHeaderInfo : array(), 'requestType' => 0, 'params' => $requestParamInfo ? $requestParamInfo : array()));
+			$resultInfo = json_encode(array('headers' => $result['testResult']['headers'], 'body' => $result['testResult']['body'], 'httpCode' => $result['testHttpCode'], 'testDeny' => $result['testDeny']));
 			$testTime = $result['testTime'];
 			$server = new TestHistoryModule;
 			$testID = $server -> addTestHistory($apiID, $requestInfo, $resultInfo, $testTime);
-			if ($testID)
-			{
+			if ($testID) {
 				$this -> returnJson['statusCode'] = '000000';
 				$this -> returnJson['testHttpCode'] = $result['testHttpCode'];
 				$this -> returnJson['testResult'] = $result['testResult'];
 				$this -> returnJson['testDeny'] = $result['testDeny'];
 				$this -> returnJson['testID'] = $testID;
-			}
-			else
-			{
+			} else {
 				//添加测试记录失败
 				$this -> returnJson['statusCode'] = '210009';
 			}
-		}
-		else
-		{
+		} else {
 			$this -> returnJson['statusCode'] = '210005';
 		}
 		exitOutput($this -> returnJson);
@@ -460,57 +370,43 @@ class TestController
 	/**
 	 * options测试
 	 */
-	public function options()
-	{
+	public function options() {
 		$method = 'OPTIONS';
 		$apiProtocol = quickInput('apiProtocol');
 		$URL = quickInput('URL');
 		$headers = json_decode(quickInput('headers'), TRUE);
-		$requestParam = json_decode(quickInput('params'), TRUE);
+		$requestParams = json_decode(quickInput('params'), TRUE);
 		$apiID = securelyInput('apiID');
 
-		if (!preg_match('/^[0-9]{1,11}$/', $apiID))
-		{
+		if (!preg_match('/^[0-9]{1,11}$/', $apiID)) {
 			//apiID格式非法
 			$this -> returnJson['statusCode'] = '210008';
 			exitOutput($this -> returnJson);
 		}
 
-		if ($headers)
-		{
-			//转成数字索引的数组
-			foreach ($headers as $name => $value)
-			{
-				$requestHeader[] = $name . ': ' . $value;
-				$requestHeaderInfo[] = array(
-					'name' => $name,
-					'value' => $value
-				);
-			}
-		}
-		if ($requestParam)
-		{
-			foreach ($requestParam as $key => $value)
-			{
-				$requestParamInfo[] = array(
-					'key' => $key,
-					'value' => $value
-				);
+		if ($requestParams) {
+			foreach ($requestParams as $key => $value) {
+				$requestParam[substr($key, 1)] = $value;
+				$requestParamInfo[] = array('key' => substr($key, 1), 'value' => $value, 'type' => '0');
 			}
 		}
 
-		if ($apiProtocol == 0)
-		{
-			$completeURL = 'http://' . $URL;
+		if ($headers) {
+			//转成数字索引的数组
+			foreach ($headers as $name => $value) {
+				$requestHeader[] = $name . ': ' . $value;
+				$requestHeaderInfo[] = array('name' => $name, 'value' => $value, 'type' => '0');
+			}
 		}
-		else
-		{
+
+		if ($apiProtocol == 0) {
+			$completeURL = 'http://' . $URL;
+		} else {
 			$completeURL = 'https://' . $URL;
 		}
 
 		//URL格式非法
-		if (!$completeURL || !filter_var($completeURL, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED & FILTER_FLAG_HOST_REQUIRED & FILTER_FLAG_QUERY_REQUIRED))
-		{
+		if (!$completeURL || !filter_var($completeURL, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED & FILTER_FLAG_HOST_REQUIRED & FILTER_FLAG_QUERY_REQUIRED)) {
 			$this -> returnJson['statusCode'] = '210001';
 			exitOutput($this -> returnJson);
 		}
@@ -518,41 +414,23 @@ class TestController
 		$service = new ProxyModule;
 		$result = $service -> proxyToDesURL($method, $completeURL, $requestHeader, $requestParam);
 
-		if ($result)
-		{
-			$requestInfo = json_encode(array(
-				'apiProtocol' => $apiProtocol,
-				'method' => $method,
-				'URL' => $URL,
-				'headers' => $requestHeaderInfo ? $requestHeaderInfo : array(),
-				'requestType' => 0,
-				'params' => $requestParamInfo ? $requestParamInfo : array()
-			));
-			$resultInfo = json_encode(array(
-				'headers' => $result['testResult']['headers'],
-				'body' => $result['testResult']['body'],
-				'httpCode' => $result['testHttpCode'],
-				'testDeny' => $result['testDeny']
-			));
+		if ($result) {
+			$requestInfo = json_encode(array('apiProtocol' => $apiProtocol, 'method' => $method, 'URL' => $URL, 'headers' => $requestHeaderInfo ? $requestHeaderInfo : array(), 'requestType' => 0, 'params' => $requestParamInfo ? $requestParamInfo : array()));
+			$resultInfo = json_encode(array('headers' => $result['testResult']['headers'], 'body' => $result['testResult']['body'], 'httpCode' => $result['testHttpCode'], 'testDeny' => $result['testDeny']));
 			$testTime = $result['testTime'];
 			$server = new TestHistoryModule;
 			$testID = $server -> addTestHistory($apiID, $requestInfo, $resultInfo, $testTime);
-			if ($testID)
-			{
+			if ($testID) {
 				$this -> returnJson['statusCode'] = '000000';
 				$this -> returnJson['testHttpCode'] = $result['testHttpCode'];
 				$this -> returnJson['testResult'] = $result['testResult'];
 				$this -> returnJson['testDeny'] = $result['testDeny'];
 				$this -> returnJson['testID'] = $testID;
-			}
-			else
-			{
+			} else {
 				//添加测试记录失败
 				$this -> returnJson['statusCode'] = '210009';
 			}
-		}
-		else
-		{
+		} else {
 			$this -> returnJson['statusCode'] = '210006';
 		}
 		exitOutput($this -> returnJson);
@@ -561,57 +439,43 @@ class TestController
 	/**
 	 * patch测试
 	 */
-	public function patch()
-	{
+	public function patch() {
 		$method = 'PATCH';
 		$apiProtocol = quickInput('apiProtocol');
 		$URL = quickInput('URL');
 		$headers = json_decode(quickInput('headers'), TRUE);
-		$requestParam = json_decode(quickInput('params'), TRUE);
+		$requestParams = json_decode(quickInput('params'), TRUE);
 		$apiID = securelyInput('apiID');
 
-		if (!preg_match('/^[0-9]{1,11}$/', $apiID))
-		{
+		if (!preg_match('/^[0-9]{1,11}$/', $apiID)) {
 			//apiID格式非法
 			$this -> returnJson['statusCode'] = '210008';
 			exitOutput($this -> returnJson);
 		}
 
-		if ($headers)
-		{
-			//转成数字索引的数组
-			foreach ($headers as $name => $value)
-			{
-				$requestHeader[] = $name . ': ' . $value;
-				$requestHeaderInfo[] = array(
-					'name' => $name,
-					'value' => $value
-				);
-			}
-		}
-		if ($requestParam)
-		{
-			foreach ($requestParam as $key => $value)
-			{
-				$requestParamInfo[] = array(
-					'key' => $key,
-					'value' => $value
-				);
+		if ($requestParams) {
+			foreach ($requestParams as $key => $value) {
+				$requestParam[substr($key, 1)] = $value;
+				$requestParamInfo[] = array('key' => substr($key, 1), 'value' => $value, 'type' => '0');
 			}
 		}
 
-		if ($apiProtocol == 0)
-		{
-			$completeURL = 'http://' . $URL;
+		if ($headers) {
+			//转成数字索引的数组
+			foreach ($headers as $name => $value) {
+				$requestHeader[] = $name . ': ' . $value;
+				$requestHeaderInfo[] = array('name' => $name, 'value' => $value, 'type' => '0');
+			}
 		}
-		else
-		{
+
+		if ($apiProtocol == 0) {
+			$completeURL = 'http://' . $URL;
+		} else {
 			$completeURL = 'https://' . $URL;
 		}
 
 		//URL格式非法
-		if (!$completeURL || !filter_var($completeURL, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED & FILTER_FLAG_HOST_REQUIRED & FILTER_FLAG_QUERY_REQUIRED))
-		{
+		if (!$completeURL || !filter_var($completeURL, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED & FILTER_FLAG_HOST_REQUIRED & FILTER_FLAG_QUERY_REQUIRED)) {
 			$this -> returnJson['statusCode'] = '210001';
 			exitOutput($this -> returnJson);
 		}
@@ -619,41 +483,23 @@ class TestController
 		$service = new ProxyModule;
 		$result = $service -> proxyToDesURL($method, $completeURL, $requestHeader, $requestParam);
 
-		if ($result)
-		{
-			$requestInfo = json_encode(array(
-				'apiProtocol' => $apiProtocol,
-				'method' => $method,
-				'URL' => $URL,
-				'headers' => $requestHeaderInfo ? $requestHeaderInfo : array(),
-				'requestType' => 0,
-				'params' => $requestParamInfo ? $requestParamInfo : array()
-			));
-			$resultInfo = json_encode(array(
-				'headers' => $result['testResult']['headers'],
-				'body' => $result['testResult']['body'],
-				'httpCode' => $result['testHttpCode'],
-				'testDeny' => $result['testDeny']
-			));
+		if ($result) {
+			$requestInfo = json_encode(array('apiProtocol' => $apiProtocol, 'method' => $method, 'URL' => $URL, 'headers' => $requestHeaderInfo ? $requestHeaderInfo : array(), 'requestType' => 0, 'params' => $requestParamInfo ? $requestParamInfo : array()));
+			$resultInfo = json_encode(array('headers' => $result['testResult']['headers'], 'body' => $result['testResult']['body'], 'httpCode' => $result['testHttpCode'], 'testDeny' => $result['testDeny']));
 			$testTime = $result['testTime'];
 			$server = new TestHistoryModule;
 			$testID = $server -> addTestHistory($apiID, $requestInfo, $resultInfo, $testTime);
-			if ($testID)
-			{
+			if ($testID) {
 				$this -> returnJson['statusCode'] = '000000';
 				$this -> returnJson['testHttpCode'] = $result['testHttpCode'];
 				$this -> returnJson['testResult'] = $result['testResult'];
 				$this -> returnJson['testDeny'] = $result['testDeny'];
 				$this -> returnJson['testID'] = $testID;
-			}
-			else
-			{
+			} else {
 				//添加测试记录失败
 				$this -> returnJson['statusCode'] = '210009';
 			}
-		}
-		else
-		{
+		} else {
 			$this -> returnJson['statusCode'] = '210007';
 		}
 		exitOutput($this -> returnJson);
@@ -662,25 +508,18 @@ class TestController
 	/**
 	 * 删除测试记录
 	 */
-	public function deleteTestHistory()
-	{
+	public function deleteTestHistory() {
 		$testID = securelyInput('testID');
 
-		if (!preg_match('/^[0-9]{1,11}$/', $testID))
-		{
+		if (!preg_match('/^[0-9]{1,11}$/', $testID)) {
 			//testID格式非法
 			$this -> returnJson['statusCode'] = '210010';
-		}
-		else
-		{
+		} else {
 			$service = new TestHistoryModule;
 			$result = $service -> deleteTestHistory($testID);
-			if ($result)
-			{
+			if ($result) {
 				$this -> returnJson['statusCode'] = '000000';
-			}
-			else
-			{
+			} else {
 				//删除测试记录失败
 				$this -> returnJson['statusCode'] = '210011';
 			}
@@ -691,21 +530,16 @@ class TestController
 	/**
 	 * 获取测试记录信息
 	 */
-	public function getTestHistory()
-	{
+	public function getTestHistory() {
 		$testID = securelyInput('testID');
 
-		if (!preg_match('/^[0-9]{1,11}$/', $testID))
-		{
+		if (!preg_match('/^[0-9]{1,11}$/', $testID)) {
 			//testID格式非法
 			$this -> returnJson['statusCode'] = '210010';
-		}
-		else
-		{
+		} else {
 			$service = new TestHistoryModule;
 			$result = $service -> getTestHistory($testID);
-			if ($result)
-			{
+			if ($result) {
 				$this -> returnJson['statusCode'] = '000000';
 				$this -> returnJson['projectID'] = $result['projectID'];
 				$this -> returnJson['apiID'] = $result['apiID'];
@@ -713,9 +547,7 @@ class TestController
 				$this -> returnJson['requestInfo'] = json_decode($result['requestInfo'], TRUE);
 				$this -> returnJson['resultInfo'] = json_decode($result['resultInfo'], TRUE);
 				$this -> returnJson['testTime'] = $result['testTime'];
-			}
-			else
-			{
+			} else {
 				$this -> returnJson['statusCode'] = '210012';
 			}
 		}
@@ -725,130 +557,127 @@ class TestController
 	/**
 	 * put测试
 	 */
-	public function put()
-	{
+	public function put() {
 		$method = 'PUT';
 		$apiProtocol = quickInput('apiProtocol');
 		$URL = quickInput('URL');
 		$headers = json_decode(quickInput('headers'), TRUE);
 		$apiID = securelyInput('apiID');
 		$requestType = quickInput('requestType');
-		switch($requestType)
-		{
-			case 0 :
-			{
-				$param = json_decode(quickInput('params'), TRUE);
-				foreach ($param as $key => $value)
-				{
-					$requestParamInfo[] = array(
-						'key' => $key,
-						'value' => $value
-					);
+		//参数中是否有文件参数
+		$hasFile = securelyInput('hasFile');
+		switch($requestType) {
+			case 0 : {
+				$params = json_decode(quickInput('params'), TRUE);
+				foreach ($params as $key => $value) {
+					if (strpos($key, '0') === 0) {
+						$key = substr($key, 1);
+						$param[$key] = $value;
+						$requestParamInfo[] = array('key' => $key, 'value' => $value, 'type' => '0');
+					} else if (strpos($key, '1') === 0) {
+						$key = substr($key, 1);
+						$requestParamInfo[] = array('key' => $key, 'value' => '', 'type' => '1');
+						//读取上传文件内容
+						$fp = fopen($value, 'br');
+						if (!$fp) {
+							$this -> returnJson['statusCode'] = '210014';
+							exitOutput($this -> returnJson);
+						}
+						//获取文件类型
+						$fpMetaData = stream_get_meta_data($fp);
+						//生成临时文件
+						$tmpFile = tempnam(sys_get_temp_dir(), 'php');
+						$fileList[] = $tmpFile;
+						//将文件内容写入
+						file_put_contents($tmpFile, stream_get_contents($fp));
+						//设置文件参数
+						if (version_compare(PHP_VERSION, '5.5.0') >= 0) {
+							$param[$key] = new CURLFile($tmpFile, $fpMetaData['mediatype']);
+						} else {
+							$param[$key] = '@' . $tmpFile;
+						}
+						fclose($fp);
+					} else {
+						$this -> returnJson['statusCode'] = '210013';
+						exitOutput($this -> returnJson);
+					}
 				}
 				break;
 			}
-			case 1 :
-			{
+			case 1 : {
 				$param = quickInput('params');
 				break;
 			}
-			default :
-			{
+			default : {
 				//请求参数类型错误
 				$this -> returnJson['statusCode'] = '210013';
 				exitOutput($this -> returnJson);
 			}
 		}
 
-		if (!preg_match('/^[0-9]{1,11}$/', $apiID))
-		{
+		if (!preg_match('/^[0-9]{1,11}$/', $apiID)) {
 			//apiID格式非法
 			$this -> returnJson['statusCode'] = '210008';
 			exitOutput($this -> returnJson);
 		}
 
-		if ($headers)
-		{
+		if ($headers) {
 			//转成数字索引的数组
-			foreach ($headers as $name => $value)
-			{
+			foreach ($headers as $name => $value) {
 				$requestHeader[] = $name . ': ' . $value;
-				$requestHeaderInfo[] = array(
-					'name' => $name,
-					'value' => $value
-				);
+				$requestHeaderInfo[] = array('name' => $name, 'value' => $value);
 			}
 		}
 
-		if ($apiProtocol == 0)
-		{
+		if ($apiProtocol == 0) {
 			$completeURL = 'http://' . $URL;
-		}
-		else
-		{
+		} else {
 			$completeURL = 'https://' . $URL;
 		}
 
 		//URL格式非法
-		if (!$completeURL || !filter_var($completeURL, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED & FILTER_FLAG_HOST_REQUIRED & FILTER_FLAG_QUERY_REQUIRED))
-		{
+		if (!$completeURL || !filter_var($completeURL, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED & FILTER_FLAG_HOST_REQUIRED & FILTER_FLAG_QUERY_REQUIRED)) {
 			$this -> returnJson['statusCode'] = '210001';
 			exitOutput($this -> returnJson);
 		}
 
 		$service = new ProxyModule;
 		$result = $service -> proxyToDesURL($method, $completeURL, $requestHeader, $param);
-
-		if ($result)
-		{
+		if (isset($fileList)) {
+			foreach ($fileList as $file) {
+				unlink($file);
+			}
+		}
+		if ($result) {
 			//判断请求参数的类型
-			if ($requestType == 0)
-			{
+			if ($requestType == 0) {
 				//表单类型
 				$requestParam = $requestParamInfo ? $requestParamInfo : array();
-			}
-			else
-			{
+			} else {
 				//源文本类型
 				$requestParam = $param;
 			}
 
-			$requestInfo = json_encode(array(
-				'apiProtocol' => $apiProtocol,
-				'method' => $method,
-				'URL' => $URL,
-				'headers' => $requestHeaderInfo ? $requestHeaderInfo : array(),
-				'requestType' => $requestType,
-				'params' => $requestParam
-			));
-			$resultInfo = json_encode(array(
-				'headers' => $result['testResult']['headers'],
-				'body' => $result['testResult']['body'],
-				'httpCode' => $result['testHttpCode'],
-				'testDeny' => $result['testDeny']
-			));
+			$requestInfo = json_encode(array('apiProtocol' => $apiProtocol, 'method' => $method, 'URL' => $URL, 'headers' => $requestHeaderInfo ? $requestHeaderInfo : array(), 'requestType' => $requestType, 'params' => $requestParam));
+			$resultInfo = json_encode(array('headers' => $result['testResult']['headers'], 'body' => $result['testResult']['body'], 'httpCode' => $result['testHttpCode'], 'testDeny' => $result['testDeny']));
 			$testTime = $result['testTime'];
 			$server = new TestHistoryModule;
 			$testID = $server -> addTestHistory($apiID, $requestInfo, $resultInfo, $testTime);
-			if ($testID)
-			{
+			if ($testID) {
 				$this -> returnJson['statusCode'] = '000000';
 				$this -> returnJson['testHttpCode'] = $result['testHttpCode'];
 				$this -> returnJson['testResult'] = $result['testResult'];
 				$this -> returnJson['testDeny'] = $result['testDeny'];
 				$this -> returnJson['testID'] = $testID;
-			}
-			else
-			{
+			} else {
 				//添加测试记录失败
 				$this -> returnJson['statusCode'] = '210009';
 			}
-		}
-		else
-		{
-			$this -> returnJson['statusCode'] = '210013';
+		} else {
+			$this -> returnJson['statusCode'] = '210015';
 		}
 		exitOutput($this -> returnJson);
 	}
+
 }
 ?>

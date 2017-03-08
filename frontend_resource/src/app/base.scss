@@ -43,6 +43,12 @@ $buttonPrimaryBorderColor:#009dd8;
 $buttonPrimaryFocusBgColor:#009dd8;
 $buttonPrimaryFocusColor:#fff;
 $buttonPrimaryFocusBorderColor:#008dc5;
+$buttonDeleteBgColor:#f2f2f2;
+$buttonDeleteColor:#a3a3a3;
+$buttonDeleteBorderColor:#e5e5e5;
+$buttonDeleteFocusBgColor:#D32F2F;
+$buttonDeleteFocusBorderColor:#C62828;
+$buttonDeleteFocusColor:#fff;
 * {
     font-family: $defaultFontFamily;
     margin: 0;
@@ -189,6 +195,13 @@ $borderColor) {
     }
 }
 
+.eo-checkbox {
+    border: 1px solid #e5e5e5;
+    @include eo-line(17px);
+    width: 17px;
+    display: inline-block;
+}
+
 .eo-button-success {
     @include eo-button($buttonSuccessBgColor,
     $buttonSuccessColor,
@@ -249,6 +262,13 @@ $borderColor) {
         @include eo-button($buttonPrimaryFocusBgColor,
         $buttonPrimaryFocusColor,
         $buttonPrimaryFocusBorderColor);
+    }
+}
+
+.eo-button-delete {
+    @include eo-button($buttonDeleteBgColor, $buttonDeleteColor, $buttonDeleteBorderColor);
+    &:hover {
+        @include eo-button($buttonDeleteFocusBgColor, $buttonDeleteFocusColor, $buttonDeleteFocusBorderColor);
     }
 }
 

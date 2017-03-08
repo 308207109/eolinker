@@ -21,7 +21,7 @@
                 }
                 init();
                 $scope.mouseLeave = true;
-                ngModel.$parsers.push(function(value) {// 页面交互时调用函数
+                ngModel.$parsers.push(function(value) {//ng-model输入内容执行函数
                     $scope.headerQuery = [];
                     angular.forEach($scope.array, function(val, key) {
                         if (val.toUpperCase().indexOf(value.toUpperCase()) > -1) {
@@ -29,18 +29,18 @@
                         }
                     })
                     if ($scope.headerQuery.length <= 0) {
-                        angular.element().next().addClass('hidden');
+                        angular.element(elem).next().addClass('hidden');
                     } else {
                         angular.element(elem).next().removeClass('hidden');
                     }
                     return value;
                 });
-                $scope.changeSwitch = function() {// 展开下拉列表
+                $scope.changeSwitch = function() {//单击下拉按钮显示下拉菜单函数
                     if (!!ngModel.$modelValue) {
                         $scope.headerQuery = [];
                         angular.forEach($scope.array, function(val, key) {
                             if (val.toUpperCase().indexOf(ngModel.$modelValue.toUpperCase()) > -1) {
-                                $scope.headerQuery.push(val);
+                                $scope.headerQuery.push(val); 
                             }
                         })
                     } else {
@@ -48,11 +48,11 @@
                     }
                     angular.element(elem).next().removeClass('hidden');
                 }
-                $scope.changeText = function(info) {// 选择下拉列表中的值
+                $scope.changeText = function(info) {//选中下拉框单项内容执行函数
                     $scope.model = info;
                     angular.element(elem).next().addClass('hidden');
                 }
-                elem.bind('blur', function(e) { //失焦且鼠标移开时下拉列表收缩
+                elem.bind('blur', function(e) {//节点失去焦点执行函数
                     if ($scope.mouseLeave) {
                         angular.element(elem).next().addClass('hidden');
                     }

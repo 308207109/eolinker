@@ -146,47 +146,6 @@
                 <pre class="request-param-raw-content" id="request-param-div-js"></pre>
             </div>
         </div>
-        <div class="third-part">
-            <header>
-                <ul>
-                    <li class="pull-left"><b >返回示例：</b></li>
-                    <li class="pull-left test-nav-li " ng-class="{'active':!projectApiDetailCtrl.isSuccess}" data-ng-click="projectApiDetailCtrl.changeMockStatus()">成功结果</li>
-                    <li class="pull-left test-nav-li" ng-class="{'active':projectApiDetailCtrl.isSuccess}" data-ng-click="projectApiDetailCtrl.changeMockStatus()">失败结果</li>
-                    <li class="pull-right" ng-class="{'hidden':projectApiDetailCtrl.isSuccess}">
-                        <button class="eo-button-info change-type-btn send-format" arrange-json="apiResult_js" ng-model="projectApiDetailCtrl.detail.baseInfo.apiSuccessMock" is-json="projectApiDetailCtrl.format.successMock" textarea-json="textarea_js"><span class="iconfont icon-magic"></span>格式整理</button>
-                    </li>
-                    <li class="pull-right" ng-class="{'hidden':!projectApiDetailCtrl.isSuccess}">
-                        <button class="eo-button-info change-type-btn send-format" arrange-json="apiResult_js_1" ng-model="projectApiDetailCtrl.detail.baseInfo.apiFailureMock" is-json="projectApiDetailCtrl.format.failureMock" textarea-json="textarea_js_1" ><span class="iconfont icon-magic"></span>格式整理</button>
-                    </li>
-                </ul>
-            </header>
-            <article ng-class="{'hidden':projectApiDetailCtrl.isSuccess}">
-                <div class="copy-url-box">
-                    <ul>
-                        <li copy-directive copy-id="mock-success-js" copy-class="mock-success" copy-model="projectApiDetailCtrl.detail.baseInfo.successMockCode" ng-model="projectApiDetailCtrl.isSuccess" is-double="true">
-                        </li>
-                    </ul>
-                </div>
-                <div>
-                    <pre class="back-result-content " id="apiResult_js">
-                    </pre>
-                    <pre class="back-result-content hidden" id="textarea_js" readonly></pre>
-                </div>
-            </article>
-            <article ng-class="{'hidden':!projectApiDetailCtrl.isSuccess}">
-                <div class="copy-url-box">
-                    <ul>
-                        <li copy-directive copy-id="mock-failure-js" copy-class="mock-failure" copy-model="projectApiDetailCtrl.detail.baseInfo.failureMockCode" ng-model="projectApiDetailCtrl.isSuccess" is-double="true">
-                        </li>
-                    </ul>
-                </div>
-                <div>
-                    <pre class="back-result-content " id="apiResult_js_1">
-                    </pre>
-                    <pre class="back-result-content hidden" id="textarea_js_1" readonly></pre>
-                </div>
-            </article>
-        </div>
         <div class="forth-part" ng-class="{'hidden':projectApiDetailCtrl.detail.resultInfo.length<1}">
             <table>
                 <thead>
@@ -229,6 +188,47 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="third-part">
+            <header>
+                <ul>
+                    <li class="pull-left"><b >返回示例：</b></li>
+                    <li class="pull-left test-nav-li " ng-class="{'active':!projectApiDetailCtrl.isSuccess}" data-ng-click="projectApiDetailCtrl.changeMockStatus()">成功结果</li>
+                    <li class="pull-left test-nav-li" ng-class="{'active':projectApiDetailCtrl.isSuccess}" data-ng-click="projectApiDetailCtrl.changeMockStatus()">失败结果</li>
+                    <li class="pull-right" ng-class="{'hidden':projectApiDetailCtrl.isSuccess}">
+                        <button class="eo-button-info change-type-btn send-format" arrange-json="apiResult_js" ng-model="projectApiDetailCtrl.detail.baseInfo.apiSuccessMock" is-json="projectApiDetailCtrl.format.successMock" textarea-json="textarea_js"><span class="iconfont icon-magic"></span>格式整理</button>
+                    </li>
+                    <li class="pull-right" ng-class="{'hidden':!projectApiDetailCtrl.isSuccess}">
+                        <button class="eo-button-info change-type-btn send-format" arrange-json="apiResult_js_1" ng-model="projectApiDetailCtrl.detail.baseInfo.apiFailureMock" is-json="projectApiDetailCtrl.format.failureMock" textarea-json="textarea_js_1" ><span class="iconfont icon-magic"></span>格式整理</button>
+                    </li>
+                </ul>
+            </header>
+            <article ng-class="{'hidden':projectApiDetailCtrl.isSuccess}">
+                <div class="copy-url-box">
+                    <ul>
+                        <li copy-directive copy-id="mock-success-js" copy-class="mock-success" copy-model="projectApiDetailCtrl.detail.baseInfo.successMockCode" ng-model="projectApiDetailCtrl.isSuccess" is-double="true">
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <pre class="back-result-content " id="apiResult_js">
+                    </pre>
+                    <pre class="back-result-content hidden" id="textarea_js" readonly></pre>
+                </div>
+            </article>
+            <article ng-class="{'hidden':!projectApiDetailCtrl.isSuccess}">
+                <div class="copy-url-box">
+                    <ul>
+                        <li copy-directive copy-id="mock-failure-js" copy-class="mock-failure" copy-model="projectApiDetailCtrl.detail.baseInfo.failureMockCode" ng-model="projectApiDetailCtrl.isSuccess" is-double="true">
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <pre class="back-result-content " id="apiResult_js_1">
+                    </pre>
+                    <pre class="back-result-content hidden" id="textarea_js_1" readonly></pre>
+                </div>
+            </article>
         </div>
         <div class="fifth-part" ng-class="{'hidden':!projectApiDetailCtrl.detail.baseInfo.apiNote}">
             <table class="header">

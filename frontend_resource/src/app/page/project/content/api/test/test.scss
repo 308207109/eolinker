@@ -2,123 +2,124 @@
     margin: 63px 5px 0 217px;
     z-index: 0;
     header {
-            @include eo-line(32px);
-            .go-back,
-            .go-more,
-            .switch-detail,
-            .switch-test {
-                border-radius: 3px;
-                @include eo-line(30px);
-                font-size: 14px;
-                width: 82px;
-                text-align: center;
-                background: #fff;
-                border: 1px solid #e5e5e5;
-                text-align: center;
-                cursor: pointer;
+        @include eo-line(32px);
+        .go-back,
+        .go-more,
+        .switch-detail,
+        .switch-test {
+            border-radius: 3px;
+            @include eo-line(30px);
+            font-size: 14px;
+            width: 82px;
+            text-align: center;
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            text-align: center;
+            cursor: pointer;
+            color: #999;
+            .icon-back {
                 color: #999;
+                font-size: 12px;
+            }
+            &:hover {
+                color: #333;
                 .icon-back {
+                    color: #333;
+                }
+            }
+        }
+        .switch-detail,
+        .switch-test {
+            .iconfont {
+                cursor: pointer;
+                font-size: 13px;
+                margin: 0 2px;
+            }
+            &:hover {
+                color: #fff;
+                background: $buttonSuccessBgColor;
+                .iconfont {
+                    color: #fff;
+                }
+            }
+        }
+        .switch-test {
+            background: $buttonSuccessBgColor;
+            border-radius: 3px;
+            color: #fff;
+            .iconfont {
+                color: #fff;
+            }
+        }
+        .switch-detail {
+            color: #333;
+            border-radius: 3px;
+            .iconfont {
+                color: #333;
+            }
+        }
+        .go-back,
+        .switch-test,
+        .switch-detail {
+            margin-right: 5px;
+        }
+        .nav-btn {
+            @include eo-line(30px);
+            display: inline-table;
+            .go-more {
+                @include eo-line(30px);
+                width: 82px;
+                font-size: 14px;
+                .iconfont {
                     color: #999;
-                    font-size: 12px;
+                    font-size: 13px;
+                }
+                .list-function-wrap {
+                    position: absolute;
+                    cursor: default;
+                    margin-top: -1px;
+                    box-shadow: 0 10px 15px rgba(0, 0, 0, .05);
+                }
+                .nav-function {
+                    display: none;
+                    .iconfont {
+                        margin-right: 3px;
+                    }
                 }
                 &:hover {
-                    color: #333;
-                    .icon-back {
+                    .iconfont {
+                        height: 30px;
                         color: #333;
                     }
-                }
-            }
-            .switch-detail,
-            .switch-test {
-                .iconfont {
-                    cursor: pointer;
-                    font-size: 13px;
-                    margin: 0 2px;
-                }
-                &:hover {
-                    color: #fff;
-                    background: $buttonSuccessBgColor;
-                    .iconfont {
-                        color: #fff;
-                    }
-                }
-            }
-            .switch-test {
-                background: $buttonSuccessBgColor;
-                border-radius: 3px;
-                color: #fff;
-                .iconfont {
-                    color: #fff;
-                }
-            }
-            .switch-detail {
-                color: #333;
-                border-radius: 3px;
-                .iconfont {
-                    color: #333;
-                }
-            }
-            .go-back,
-            .switch-test,
-            .switch-detail {
-                margin-right: 5px;
-            }
-            .nav-btn {
-                @include eo-line(30px);
-                display: inline-table;
-                .go-more {
-                    @include eo-line(30px);
-                    width: 82px;
-                    font-size: 14px;
-                    .iconfont {
-                        color: #999;
-                        font-size: 13px;
-                    }
-                    .list-function-wrap {
-                        position: absolute;
-                        cursor: default;
-                        margin-top: -1px;
-                    }
                     .nav-function {
-                        display: none;
-                        .iconfont {
-                            margin-right: 3px;
-                        }
-                    }
-                    &:hover {
-                        .iconfont {
-                            height: 30px;
-                            color: #333;
-                        }
-                        .nav-function {
-                            display: block;
-                        }
-                    }
-                }
-            }
-            .nav-function {
-                width: 134px;
-                margin-left: 0;
-                background-color: #fff;
-                border: 1px solid #e5e5e5;
-                border-radius: 3px;
-                margin-top: 5px;
-                li {
-                    cursor: pointer;
-                    text-align: left;
-                    text-indent: 18px;
-                    @include eo-line(33px);
-                    &:hover,
-                    &:focus,
-                    &:active {
-                        @include eo-button($buttonDefaultFocusBgColor, $buttonDefaultFocusColor, $buttonDefaultBorderColor);
-                        border: none;
-                        border-radius: 0;
-                        line-height: 33px;
+                        display: block;
                     }
                 }
             }
         }
+        .nav-function {
+            width: 134px;
+            margin-left: 0;
+            background-color: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 3px;
+            margin-top: 5px;
+            li {
+                cursor: pointer;
+                text-align: left;
+                text-indent: 18px;
+                @include eo-line(33px);
+                &:hover,
+                &:focus,
+                &:active {
+                    @include eo-button($buttonDefaultFocusBgColor, $buttonDefaultFocusColor, $buttonDefaultBorderColor);
+                    border: none;
+                    border-radius: 0;
+                    line-height: 33px;
+                }
+            }
+        }
+    }
     article {
         .first-part,
         .part,
@@ -301,7 +302,7 @@
                         }
                     }
                     .param-info {
-                        margin-left: 89px;
+                        margin-left: 60px;
                         li:last-child {
                             padding-top: 0;
                         }
@@ -315,16 +316,32 @@
                             @include eo-line(30px);
                         }
                         .last-li {
-                            margin-left: 435px;
+                            margin-left: 460px;
                             margin-right: -3px;
                         }
-                        input {
+                        .eo-input {
                             width: 100%;
                         }
+                        .eo-button-info {
+                            width: 100px;
+                            @include eo-line(28px);
+                            text-align: center;
+                            margin-left: -102px;
+                        }
+                        .file-btn {
+                            z-index: 1;
+                            opacity: 0;
+                            font-size: 0;
+                        }
                         .iconfont {
-                            margin-left: -26px;
+                            margin-left: -35px;
                             display: inline-block;
                             cursor: pointer;
+                            background-color: #fff;
+                            height: 28px;
+                            margin-top: 1px;
+                            padding: 0 9px;
+                            border-radius: 3px;
                         }
                     }
                     .request-param-icon-form {
@@ -335,10 +352,13 @@
                             cursor: pointer;
                         }
                     }
+                    .request-type-select {
+                        width: 104px;
+                    }
                     .auto-complete-message {
                         position: absolute;
                         height: 100px;
-                        @include eo-width(100%, 760px);
+                        @include eo-width(100%, 790px);
                         background-color: #fff;
                         border: 1px solid #e5e5e5;
                         overflow-y: scroll;
@@ -346,9 +366,12 @@
                         li {
                             font-size: 13px;
                             margin-right: 0;
-                            line-height: 20px;
                             text-indent: 5px;
                             cursor: pointer;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            @include eo-line(30px);
                             &:hover {
                                 background-color: #fafafa;
                             }
@@ -361,7 +384,7 @@
             margin-bottom: 10px;
             header {
                 .change-type-btn {
-                    width: 135px;
+                    width: 100px;
                     @include eo-line(24px);
                     border: none;
                 }
@@ -498,7 +521,7 @@
                     }
                 }
                 .param-info {
-                    margin-left: 89px;
+                    margin-left: 60px;
                     li:last-child {
                         padding-top: 0;
                     }
@@ -518,10 +541,18 @@
                 }
                 .request-header-icon-form {
                     display: inline-block;
+                    position: relative;
                     .iconfont {
-                        margin-left: -26px;
                         display: inline-block;
                         cursor: pointer;
+                        background-color: #fff;
+                        margin-top: 1px;
+                        padding: 0 7px;
+                        border-radius: 3px;
+                        position: absolute;
+                        right: 6px;
+                        top: 5px;
+                        z-index: 1;
                     }
                 }
                 .auto-complete-message {
@@ -537,6 +568,7 @@
                         line-height: 20px;
                         text-indent: 5px;
                         cursor: pointer;
+                        overflow: hidden;
                         &:hover {
                             background-color: #fafafa;
                         }

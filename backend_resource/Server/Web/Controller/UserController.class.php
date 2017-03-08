@@ -117,7 +117,7 @@ class UserController
 		$userName = securelyInput('userName');
 
 		//验证用户名,4~16位非纯数字，英文数字下划线组合，只能以英文开头
-		if (!preg_match('/^[a-zA-Z][0-9a-zA-Z_]{3,15}$/', $userName))
+		if (!preg_match('/^[a-zA-Z][0-9a-zA-Z_]{3,59}$/', $userName))
 		{
 			//用户名非法
 			$this -> returnJson['statusCode'] = '130001';

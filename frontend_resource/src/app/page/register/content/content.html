@@ -10,7 +10,7 @@
             <ul>
                 <li>
                     <label>用户名</label>
-                    <input class="eo-input" name="username" data-ng-model="registerContentCtrl.info.userName" type="text" placeholder="请输入用户名" ng-pattern="/^[a-zA-Z][a-zA-Z0-9_]{3,16}$/" uib-popover="{{registerContentCtrl.alert.user}}" popover-trigger="focus" popover-placement="right" ng-class="{'eo-input-error':registerForm.username.$invalid&&(registerForm.username.$dirty||registerContentCtrl.template.submited)||registerContentCtrl.unavailable}" data-ng-change="registerContentCtrl.textChange()" maxlength="16" required />
+                    <input class="eo-input" name="username" data-ng-model="registerContentCtrl.info.userName" type="text" placeholder="请输入用户名" ng-pattern="/^[a-zA-Z][a-zA-Z0-9_]{3,64}$/" uib-popover="{{registerContentCtrl.alert.user}}" popover-trigger="focus" popover-placement="right" ng-class="{'eo-input-error':registerForm.username.$invalid&&(registerForm.username.$dirty||registerContentCtrl.template.submited)||registerContentCtrl.unavailable}" data-ng-change="registerContentCtrl.textChange()" maxlength="64" required />
                 </li>
                 <li>
                     <label>密码</label>

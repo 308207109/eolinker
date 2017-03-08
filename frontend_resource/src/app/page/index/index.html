@@ -13,7 +13,7 @@
                         <form name="loginForm">
                             <ul>
                                 <li>
-                                    <input class="eo-input" id="username_input_js" name="username" data-ng-class="{'eo-input-error':indexCtrl.submitted&&loginForm.username.$invalid}" type="text" placeholder="用户名" data-ng-model="indexCtrl.info.loginName" maxlength="32" autofocus="autofocus" required />
+                                    <input class="eo-input" id="username_input_js" name="username" data-ng-class="{'eo-input-error':indexCtrl.submitted&&loginForm.username.$invalid}" type="text" placeholder="用户名" data-ng-model="indexCtrl.info.loginName" maxlength="64" autofocus="autofocus" required />
                                 </li>
                                 <li>
                                     <input class="eo-input" name="password" ng-if="!indexCtrl.eye" data-ng-class="{'eo-input-error':indexCtrl.submitted&&loginForm.password.$invalid}" type="password" placeholder="密码" data-ng-model="indexCtrl.templatePassword" required maxlength="32" />

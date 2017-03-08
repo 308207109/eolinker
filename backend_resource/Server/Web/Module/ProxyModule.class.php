@@ -53,9 +53,12 @@ class ProxyModule
 			case 'PATCH' :
 				curl_setopt($require, CURLOPT_CUSTOMREQUEST, 'PATCH');
 				break;
-			case 'PUT' :
-				curl_setopt($require, CURLOPT_CUSTOMREQUEST, 'PUT');
-				break;
+			case 'PUT':
+			 curl_setopt($require, CURLOPT_CUSTOMREQUEST, 'PUT');
+			 if($paramArray){
+			 curl_setopt($require, CURLOPT_POSTFIELDS, $paramArray);
+			 }
+			 break;
 			default :
 				return FALSE;
 		}

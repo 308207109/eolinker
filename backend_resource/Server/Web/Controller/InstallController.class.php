@@ -55,7 +55,7 @@ class InstallController
 	}
 
 	/**
-	 * 安装eoapi
+	 * 安装eolinker
 	 */
 	public function start()
 	{

@@ -247,7 +247,8 @@
                 "paramValue": "",
                 "paramLimit": "",
                 "paramNote": "",
-                "paramValueList": []
+                "paramValueList": [],
+                "default": 0
             }
             vm.addRequestParamList(info);
             vm.detail.apiRequestParam.push(info);
@@ -265,6 +266,11 @@
         }
         vm.deleteRequestParamList = function(query, index) { // 删除请求参数值可能性
             query.paramValueList.splice(index, 1);
+            if (index < query.default) {
+                query.default--;
+            } else if (index == query.default) {
+                query.default = -1;
+            }
         }
         vm.addResultList = function() { // 添加返回说明
             var info = {

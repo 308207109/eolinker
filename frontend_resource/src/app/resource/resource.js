@@ -2,8 +2,8 @@
     'use strict';
 
     angular.module('eolinker')
-    /* 接口调用信息服务定义 */
-    .factory('Api', Api)
+        /* 接口调用信息服务定义 */
+        .factory('Api', Api)
         .constant('CODE', {
             SUCCESS: '000000',
             UNAUTH: '120005',

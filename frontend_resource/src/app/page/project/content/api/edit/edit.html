@@ -82,9 +82,8 @@
                     <li class="param-form" data-ng-repeat="query in projectApiEditCtrl.detail.apiHeader" sv-element="projectApiEditCtrl.soft.headerForm">
                         <ul>
                             <li class="pull-left nessarity">
-                                <label class="eo-sv-handle" sv-handle>{{$index+1}}</label>
-                                <label>
-                                    <a class="iconfont icon-move eo-button-success" data-ng-click="projectApiEditCtrl.deleteHeaderList($index)"></a> 
+                                <label class="eo-sv-handle iconfont icon-paixu1" sv-handle></label>
+                                    <a class="iconfont icon-move eo-button-delete" data-ng-click="projectApiEditCtrl.deleteHeaderList($index)"></a>
                                 </label>
                             </li>
                             <li>
@@ -141,9 +140,8 @@
                     <li class="param-form " data-ng-repeat="query in projectApiEditCtrl.detail.apiRequestParam" sv-element="projectApiEditCtrl.soft.requestParamForm">
                         <ul>
                             <li class="pull-left nessarity">
-                                <label class="eo-sv-handle" sv-handle>{{$index+1}}</label>
-                                <label>
-                                    <a class="iconfont icon-move eo-button-success" data-ng-click="projectApiEditCtrl.deleteRequestList($index)"></a>
+                                <label class="eo-sv-handle iconfont icon-paixu1" sv-handle></label>
+                                    <a class="iconfont icon-move eo-button-delete" data-ng-click="projectApiEditCtrl.deleteRequestList($index)"></a>
                                 </label>
                                 <select class="eo-input" data-ng-model="query.paramNotNull">
                                     <option value="0">必填</option>
@@ -207,7 +205,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li class="request-result " data-ng-class="{'hidden':!query.moreParam}">
+                            <li class="request-result " data-ng-class="{'hidden':!query.moreParam||query.paramType=='1'}">
                                 <ul class="pull-left">
                                     <li>值可能性：</li>
                                 </ul>
@@ -215,17 +213,21 @@
                                     <li class="request-param-form-ul" sv-root sv-part="query.paramValueList">
                                         <ul data-ng-repeat="list in query.paramValueList" sv-element="projectApiEditCtrl.soft.requestParamForm.child">
                                             <li class="pull-left num-label">
-                                                <label class="eo-sv-handle" sv-handle>{{$index+1}}</label>
-                                                <label>
-                                                    <a class="iconfont icon-move eo-button-success" data-ng-click="projectApiEditCtrl.deleteRequestParamList(query,$index)"></a>
+                                                <label class="eo-sv-handle iconfont icon-paixu1" sv-handle></label>
+                                                    <a class="iconfont icon-move eo-button-delete" data-ng-click="projectApiEditCtrl.deleteRequestParamList(query,$index)"></a>
                                                 </label>
                                             </li>
                                             <li class="pull-left">
                                                 <input class="eo-input" data-ng-class="{'eo-input-error':(projectApiEditCtrl.submited&&!list.value&&list.valueDescription)}" type="text" name="" data-ng-model="list.value" maxlength="65530">
                                             </li>
-                                            <li>
+                                            <li class="pull-left">
                                                 <label>字段说明：</label>
                                                 <input class="eo-input" type="text" name="" data-ng-model="list.valueDescription" maxlength="255">
+                                            </li>
+                                            <li>
+                                                <label class="pull-left">默认：</label>
+                                                <input class="hidden" type="radio" name="request-param-form-default-{{$outerIndex}}" id="request-param-form-default-{{$outerIndex}}-{{$index}}" data-ng-model="query.default" value="{{$index}}">
+                                                <label for="request-param-form-default-{{$outerIndex}}-{{$index}}" class="eo-checkbox iconfont" data-ng-class="{'icon-check':query.default==$index}">{{query.default==$index?'':'&nbsp;'}}</label>
                                             </li>
                                         </ul>
                                     </li>
@@ -246,6 +248,73 @@
             </article>
             <footer ng-class="{'hidden':projectApiEditCtrl.detail.apiRequestParamType=='1'}">
                 <button class="eo-button-success add-param-btn" data-ng-click="projectApiEditCtrl.addRequestList()">添加<span class="iconfont icon-add"></span></button>
+            </footer>
+        </div>
+        <div class="forth-part">
+            <header>返回说明：</header>
+            <article>
+                <ng-form name="editParamForm">
+                    <ul class="response-form-ul" sv-root sv-part="projectApiEditCtrl.detail.apiResultParam">
+                        <li class="param-form" data-ng-repeat="query in projectApiEditCtrl.detail.apiResultParam" sv-element="projectApiEditCtrl.soft.responseParamForm">
+                            <ul>
+                                <li class="pull-left nessarity">
+                                    <label class="eo-sv-handle iconfont icon-paixu1" sv-handle></label>
+                                    <label>
+                                        <a class="iconfont icon-move eo-button-delete" data-ng-click="projectApiEditCtrl.deleteResultList($index)"></a>
+                                    </label>
+                                    <select class="eo-input" data-ng-model="query.paramNotNull">
+                                        <option value="0">必含</option>
+                                        <option value="1">非必含</option>
+                                    </select>
+                                </li>
+                                <li>
+                                    <ul class="param-info response-param-info">
+                                        <li class="pull-left">
+                                            <label>字段名称：</label>
+                                            <input class="eo-input" type="text" data-ng-model="query.paramKey" data-ng-class="{'eo-input-error':(projectApiEditCtrl.submited&&!query.paramKey)}" maxlength="255" required>
+                                        </li>
+                                        <li>
+                                            <label>字段说明：</label>
+                                            <input class="eo-input" type="text" name="" data-ng-model="query.paramName" maxlength="255">
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="response-result">
+                                    <ul class="pull-left">
+                                        <li>值可能性：</li>
+                                    </ul>
+                                    <ul class="param-info response-result-info">
+                                        <li class="response-param-form-ul" sv-root sv-part="query.paramValueList">
+                                            <ul data-ng-repeat="list in query.paramValueList" sv-element="projectApiEditCtrl.soft.responseParamForm.child">
+                                                <li class="pull-left num-label">
+                                                    <label class="eo-sv-handle iconfont icon-paixu1" sv-handle></label>
+                                                        <a class="iconfont icon-move eo-button-delete" data-ng-click="projectApiEditCtrl.deleteResultParamList(query,$index)"></a>
+                                                    </label>
+                                                </li>
+                                                <li class="pull-left">
+                                                    <input class="eo-input" type="text" name="" data-ng-model="list.value" data-ng-class="{'eo-input-error':(projectApiEditCtrl.submited&&!list.value&&list.valueDescription)}" maxlength="255">
+                                                </li>
+                                                <li class="response-result-desc">
+                                                    <label>值说明：</label>
+                                                    <input class="eo-input" type="text" name="" data-ng-model="list.valueDescription" maxlength="255">
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                    <ul class="footer">
+                                        <li>
+                                            <button class="eo-button-success add-param-btn" data-ng-click="projectApiEditCtrl.addResultParamList(query)">添加<span class="iconfont icon-add"></span></button>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </ng-form>
+            </article>
+            <footer> 
+                <button class="eo-button-success add-param-btn" data-ng-click="projectApiEditCtrl.addResultList()">添加<span class="iconfont icon-add"></span></button>
+                <span set-json-to-params="paramKey" item="{{projectApiEditCtrl.template.resultItem}}" value-item="{{projectApiEditCtrl.template.resultValueItem}}" reset-result="projectApiEditCtrl.detail.apiResultParam" set-value="paramValueList" set-value-key="value"></span>
             </footer>
         </div>
         <div class="third-part">
@@ -327,74 +396,6 @@
                     </textarea>
                 </div>
             </article>
-        </div>
-        <div class="forth-part">
-            <header>返回说明：</header>
-            <article>
-                <ng-form name="editParamForm">
-                    <ul class="response-form-ul" sv-root sv-part="projectApiEditCtrl.detail.apiResultParam">
-                        <li class="param-form" data-ng-repeat="query in projectApiEditCtrl.detail.apiResultParam" sv-element="projectApiEditCtrl.soft.responseParamForm">
-                            <ul>
-                                <li class="pull-left nessarity">
-                                    <label class="eo-sv-handle" sv-handle>{{$index+1}}</label>
-                                    <label>
-                                        <a class="iconfont icon-move eo-button-success" data-ng-click="projectApiEditCtrl.deleteResultList($index)"></a>
-                                    </label>
-                                    <select class="eo-input" data-ng-model="query.paramNotNull">
-                                        <option value="0">必含</option>
-                                        <option value="1">非必含</option>
-                                    </select>
-                                </li>
-                                <li>
-                                    <ul class="param-info response-param-info">
-                                        <li class="pull-left">
-                                            <label>字段名称：</label>
-                                            <input class="eo-input" type="text" data-ng-model="query.paramKey" data-ng-class="{'eo-input-error':(projectApiEditCtrl.submited&&!query.paramKey)}" maxlength="255" required>
-                                        </li>
-                                        <li>
-                                            <label>字段说明：</label>
-                                            <input class="eo-input" type="text" name="" data-ng-model="query.paramName" maxlength="255">
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="response-result">
-                                    <ul class="pull-left">
-                                        <li>值可能性：</li>
-                                    </ul>
-                                    <ul class="param-info response-result-info">
-                                        <li class="response-param-form-ul" sv-root sv-part="query.paramValueList">
-                                            <ul data-ng-repeat="list in query.paramValueList" sv-element="projectApiEditCtrl.soft.responseParamForm.child">
-                                                <li class="pull-left num-label">
-                                                    <label class="eo-sv-handle" sv-handle>{{$index+1}}</label>
-                                                    <label>
-                                                        <a class="iconfont icon-move eo-button-success" data-ng-click="projectApiEditCtrl.deleteResultParamList(query,$index)"></a>
-                                                    </label>
-                                                </li>
-                                                <li class="pull-left">
-                                                    <input class="eo-input" type="text" name="" data-ng-model="list.value" data-ng-class="{'eo-input-error':(projectApiEditCtrl.submited&&!list.value&&list.valueDescription)}" maxlength="255">
-                                                </li>
-                                                <li class="response-result-desc">
-                                                    <label>值说明：</label>
-                                                    <input class="eo-input" type="text" name="" data-ng-model="list.valueDescription" maxlength="255">
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                    <ul class="footer">
-                                        <li>
-                                            <button class="eo-button-success add-param-btn" data-ng-click="projectApiEditCtrl.addResultParamList(query)">添加<span class="iconfont icon-add"></span></button>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </ng-form>
-            </article>
-            <footer> 
-                <button class="eo-button-success add-param-btn" data-ng-click="projectApiEditCtrl.addResultList()">添加<span class="iconfont icon-add"></span></button>
-                <span set-json-to-params="paramKey" item="{{projectApiEditCtrl.template.resultItem}}" value-item="{{projectApiEditCtrl.template.resultValueItem}}" reset-result="projectApiEditCtrl.detail.apiResultParam" set-value="paramValueList" set-value-key="value"></span>
-            </footer>
         </div>
         <div class="forth-part remark-part">
             <header>备注：

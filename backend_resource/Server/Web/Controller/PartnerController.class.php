@@ -41,7 +41,7 @@ class PartnerController
 		$userName = securelyInput('userName');
 		$projectID = securelyInput('projectID');
 
-		if (!preg_match('/^([a-zA-Z][0-9a-zA-Z_]{3,15})$/', $userName))
+		if (!preg_match('/^([a-zA-Z][0-9a-zA-Z_]{3,59})$/', $userName))
 		{
 			//userName格式非法
 			$this -> returnJson['statusCode'] = '250001';
@@ -86,7 +86,7 @@ class PartnerController
 		$userName = securelyInput('userName');
 		$projectID = securelyInput('projectID');
 
-		if (!preg_match('/^([a-zA-Z][0-9a-zA-Z_]{3,15})$/', $userName))
+		if (!preg_match('/^([a-zA-Z][0-9a-zA-Z_]{3,59})$/', $userName))
 		{
 			//userName格式非法
 			$this -> returnJson['statusCode'] = '250001';

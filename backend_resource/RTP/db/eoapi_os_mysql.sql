@@ -208,7 +208,7 @@ CREATE TABLE `eo_project_status_code_group` (
 DROP TABLE IF EXISTS `eo_user`;
 CREATE TABLE `eo_user` (
   `userID` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `userName` varchar(16) NOT NULL,
+  `userName` varchar(60) NOT NULL,
   `userPassword` varchar(60) NOT NULL,
   `userNickName` varchar(16) NOT NULL DEFAULT '',
   PRIMARY KEY (`userID`)
