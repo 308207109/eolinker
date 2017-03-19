@@ -13,11 +13,12 @@
         }
     }])
 
-    databaseSidebarCtroller.$inject = ['$scope', 'Api', '$state', 'CODE', '$uibModal', '$rootScope'];
+    databaseSidebarCtroller.$inject = ['$scope', 'Api', '$state', 'CODE', '$uibModal', '$rootScope','TitleService'];
 
-    function databaseSidebarCtroller($scope, Api, $state, CODE, $uibModal, $rootScope) {
+    function databaseSidebarCtroller($scope, Api, $state, CODE, $uibModal, $rootScope,TitleService) {
         var vm = this;
         var code = CODE.SUCCESS;
+        var constantTitle = TitleService.get()||'eolinker开源版';
         vm.info = {
             dbID: $state.params.dbID,
             tableID: $state.params.tableID
@@ -31,13 +32,13 @@
                     if (!vm.info.tableID && vm.query.length > 0) {
                         vm.info.tableID = vm.query[0].tableID;
                         vm.query[0].isClick = true;
-                        window.document.title = vm.query[0].tableName + ' - eolinker开源版';
+                        window.document.title = vm.query[0].tableName + ' - ' + constantTitle;
                         $state.go('database.list', { 'dbID': vm.info.dbID, 'tableID': vm.info.tableID });
                     } else {
                         angular.forEach(vm.query, function(val, key) {
                             if (val.tableID == vm.info.tableID) {
                                 val.isClick = true;
-                                window.document.title = val.tableName + ' - eolinker开源版';
+                                window.document.title = val.tableName + ' - ' + constantTitle;
                             }
                         })
                     }
@@ -52,7 +53,7 @@
             });
             query.isClick = true;
             vm.info.tableID = tableID;
-            window.document.title = query.tableName + ' - eolinker开源版';
+            window.document.title = query.tableName +  ' - ' + constantTitle;
             $state.go('database.list', { 'dbID': vm.info.dbID, 'tableID': tableID });
         }
         vm.edit = function(val) { // 修改/新增表

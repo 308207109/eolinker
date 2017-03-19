@@ -7,8 +7,6 @@ CREATE TABLE `eo_api` (
   `apiFailureMock` text COLLATE utf8_bin,
   `apiSuccessMock` text COLLATE utf8_bin,
   `apiRequestType` tinyint(1) unsigned NOT NULL,
-  `apiSuccessMockType` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `apiFailureMockType` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `apiStatus` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `apiUpdateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `groupID` int(11) unsigned NOT NULL,

@@ -14,20 +14,17 @@
  * 再次感谢您的使用，希望我们能够共同维护国内的互联网开源文明和正常商业秩序。
  *
  */
-class ProjectController
-{
+class ProjectController {
 	// 返回json类型
 	private $returnJson = array('type' => 'project');
-	
+
 	/**
 	 * 检查登录状态
 	 */
-	public function __construct()
-	{
+	public function __construct() {
 		// 身份验证
 		$server = new GuestModule;
-		if (!$server -> checkLogin())
-		{
+		if (!$server -> checkLogin()) {
 			$this -> returnJson['statusCode'] = '120005';
 			exitOutput($this -> returnJson);
 		}
@@ -36,37 +33,29 @@ class ProjectController
 	/**
 	 * 创建项目
 	 */
-	public function addProject()
-	{
+	public function addProject() {
 		$nameLen = mb_strlen(quickInput('projectName'), 'utf8');
 		$projectName = securelyInput('projectName');
 		$projectType = securelyInput('projectType');
 		$projectVersion = quickInput('projectVersion');
 
 		// 验证项目名和项目类型格式
-		if (!($nameLen >= 1 && $nameLen <= 32 && preg_match('/^[0-3]{1}$/', $projectType)))
-		{
+		if (!($nameLen >= 1 && $nameLen <= 32 && preg_match('/^[0-3]{1}$/', $projectType))) {
 			// 项目名或项目类型不合法
 			$this -> returnJson['statusCode'] = '140002';
-		}
-		elseif (!(is_float(floatval($projectVersion)) && intval($projectVersion)))
-		{
+		} elseif (!(is_float(floatval($projectVersion)) && intval($projectVersion))) {
 			// 项目版本不合法
 			$this -> returnJson['statusCode'] = '140017';
-		}
-		else
-		{
+		} else {
 			// 项目名和项目类型合法
 			$service = new ProjectModule();
 			$result = $service -> addProject($projectName, $projectType, $projectVersion);
 			// 判断新建项目是否成功
-			if ($result)
-			{
+			if ($result) {
 				// 新建项目成功
 				$this -> returnJson['statusCode'] = '000000';
 				$this -> returnJson['projectInfo'] = $result;
-			}
-			else
+			} else
 				// 新建项目失败
 				$this -> returnJson['statusCode'] = '140001';
 		}
@@ -76,13 +65,11 @@ class ProjectController
 	/**
 	 * 删除项目
 	 */
-	public function deleteProject()
-	{
+	public function deleteProject() {
 		$projectID = securelyInput('projectID');
 
 		// 判断项目ID是否合法
-		if (preg_match('/^[0-9]{1,11}$/', $projectID))
-		{
+		if (preg_match('/^[0-9]{1,11}$/', $projectID)) {
 			// 项目ID合法
 			$service = new ProjectModule();
 			$result = $service -> deleteProject($projectID);
@@ -93,9 +80,7 @@ class ProjectController
 			else
 				// 删除项目失败
 				$this -> returnJson['statusCode'] = '140003';
-		}
-		else
-		{
+		} else {
 			// 项目ID不合法
 			$this -> returnJson['statusCode'] = '140004';
 		}
@@ -105,30 +90,23 @@ class ProjectController
 	/**
 	 * 获取项目列表
 	 */
-	public function getProjectList()
-	{
+	public function getProjectList() {
 		$nameLen = mb_strlen(quickInput('projectName'), 'utf8');
 		$projectType = securelyInput('projectType');
 		$projectName = securelyInput('projectName');
-		if (!preg_match('/^[0-3]|[-1]{1}$/', $projectType) || ($nameLen != 0 && $nameLen < 1 || $nameLen > 30))
-		{
+		if (!preg_match('/^[0-3]|[-1]{1}$/', $projectType) || ($nameLen != 0 && $nameLen < 1 || $nameLen > 30)) {
 			// 项目类型或项目名称不合法
 			$this -> returnJson['statusCode'] = '140002';
 			exitOutput($this -> returnJson);
-		}
-		else
-		{
+		} else {
 			$service = new ProjectModule();
 			$result = $service -> getProjectList($projectType, $projectName);
 
-			if ($result)
-			{
+			if ($result) {
 				// 获取项目列表成功
 				$this -> returnJson['statusCode'] = '000000';
 				$this -> returnJson['projectList'] = $result;
-			}
-			else
-			{
+			} else {
 				// 项目列表为空
 				$this -> returnJson['statusCode'] = '140005';
 			}
@@ -141,8 +119,7 @@ class ProjectController
 	/**
 	 * 更改项目
 	 */
-	public function editProject()
-	{
+	public function editProject() {
 		$nameLen = mb_strlen(quickInput('projectName'), 'utf8');
 		$projectID = securelyInput('projectID');
 		$projectType = securelyInput('projectType');
@@ -150,18 +127,13 @@ class ProjectController
 		$projectVersion = quickInput('projectVersion');
 
 		// 判断项目参数格式是否合法
-		if (!(preg_match('/^[0-9]{1,11}$/', $projectID) && $nameLen >= 1 && $nameLen <= 32 && preg_match('/^[0-3]{1}$/', $projectType)))
-		{
+		if (!(preg_match('/^[0-9]{1,11}$/', $projectID) && $nameLen >= 1 && $nameLen <= 32 && preg_match('/^[0-3]{1}$/', $projectType))) {
 			// 项目参数格式不合法
 			$this -> returnJson['statusCode'] = '140007';
-		}
-		elseif (!(is_float(floatval($projectVersion)) && intval($projectVersion)))
-		{
+		} elseif (!(is_float(floatval($projectVersion)) && intval($projectVersion))) {
 			// 项目版本不合法
 			$this -> returnJson['statusCode'] = '140017';
-		}
-		else
-		{
+		} else {
 			// 项目参数格式合法
 			$service = new ProjectModule();
 			$result = $service -> editProject($projectID, $projectName, $projectType, $projectVersion);
@@ -181,26 +153,19 @@ class ProjectController
 	/**
 	 * 获取项目信息
 	 */
-	public function getProject()
-	{
+	public function getProject() {
 		$projectID = securelyInput('projectID');
-		if (preg_match('/^[0-9]{1,11}$/', $projectID))
-		{
+		if (preg_match('/^[0-9]{1,11}$/', $projectID)) {
 			$service = new ProjectModule;
 			$result = $service -> getProject($projectID);
 
-			if ($result)
-			{
+			if ($result) {
 				$this -> returnJson['statusCode'] = '000000';
 				$this -> returnJson = array_merge($this -> returnJson, $result);
-			}
-			else
-			{
+			} else {
 				$this -> returnJson['statusCode'] = '140005';
 			}
-		}
-		else
-		{
+		} else {
 			$this -> returnJson['statusCode'] = '140007';
 		}
 		exitOutput($this -> returnJson);
@@ -209,26 +174,19 @@ class ProjectController
 	/**
 	 * 获取项目环境列表
 	 */
-	public function getEnvList()
-	{
+	public function getEnvList() {
 		$projectID = securelyInput('projectID');
 
-		if (!preg_match('/^[0-9]{1,11}$/', $projectID))
-		{
+		if (!preg_match('/^[0-9]{1,11}$/', $projectID)) {
 			//项目ID不合法
 			$this -> returnJson['statusCode'] = '140004';
-		}
-		else
-		{
+		} else {
 			$service = new ProjectModule;
 			$result = $service -> getEnvList($projectID);
-			if ($result)
-			{
+			if ($result) {
 				$this -> returnJson['statusCode'] = '000000';
 				$this -> returnJson['envList'] = $result;
-			}
-			else
-			{
+			} else {
 				//环境列表为空
 				$this -> returnJson['statusCode'] = '140018';
 			}
@@ -239,28 +197,21 @@ class ProjectController
 	/**
 	 * 添加项目环境
 	 */
-	public function addEnv()
-	{
+	public function addEnv() {
 		$projectID = securelyInput('projectID');
 		$envName = securelyInput('envName');
 		$envURI = securelyInput('envURI');
 
-		if (!preg_match('/^[0-9]{1,11}$/', $projectID))
-		{
+		if (!preg_match('/^[0-9]{1,11}$/', $projectID)) {
 			//项目ID不合法
 			$this -> returnJson['statusCode'] = '140004';
-		}
-		else
-		{
+		} else {
 			$service = new ProjectModule;
 			$result = $service -> addEnv($projectID, $envName, $envURI);
-			if ($result)
-			{
+			if ($result) {
 				$this -> returnJson['statusCode'] = '000000';
 				$this -> returnJson['envID'] = $result;
-			}
-			else
-			{
+			} else {
 				$this -> returnJson['statusCode'] = '140019';
 			}
 		}
@@ -270,30 +221,21 @@ class ProjectController
 	/**
 	 * 删除项目环境
 	 */
-	public function deleteEnv()
-	{
+	public function deleteEnv() {
 		$projectID = securelyInput('projectID');
 		$envID = securelyInput('envID');
 
-		if (!preg_match('/^[0-9]{1,11}$/', $projectID))
-		{
+		if (!preg_match('/^[0-9]{1,11}$/', $projectID)) {
 			//项目ID不合法
 			$this -> returnJson['statusCode'] = '140004';
-		}
-		elseif (!preg_match('/^[0-9]{1,11}$/', $envID))
-		{
+		} elseif (!preg_match('/^[0-9]{1,11}$/', $envID)) {
 			//环境ID不合法
 			$this -> returnJson['statusCode'] = '140022';
-		}
-		else
-		{
+		} else {
 			$service = new ProjectModule;
-			if ($service -> deleteEnv($projectID, $envID))
-			{
+			if ($service -> deleteEnv($projectID, $envID)) {
 				$this -> returnJson['statusCode'] = '000000';
-			}
-			else
-			{
+			} else {
 				//删除环境失败，projectID与envID不匹配
 				$this -> returnJson['statusCode'] = '140020';
 			}
@@ -304,32 +246,23 @@ class ProjectController
 	/**
 	 * 修改项目环境
 	 */
-	public function editEnv()
-	{
+	public function editEnv() {
 		$projectID = securelyInput('projectID');
 		$envID = securelyInput('envID');
 		$envName = securelyInput('envName');
 		$envURI = securelyInput('envURI');
 
-		if (!preg_match('/^[0-9]{1,11}$/', $projectID))
-		{
+		if (!preg_match('/^[0-9]{1,11}$/', $projectID)) {
 			//项目ID不合法
 			$this -> returnJson['statusCode'] = '140004';
-		}
-		elseif (!preg_match('/^[0-9]{1,11}$/', $envID))
-		{
+		} elseif (!preg_match('/^[0-9]{1,11}$/', $envID)) {
 			//环境ID不合法
 			$this -> returnJson['statusCode'] = '140022';
-		}
-		else
-		{
+		} else {
 			$service = new ProjectModule;
-			if ($service -> editEnv($projectID, $envID, $envName, $envURI))
-			{
+			if ($service -> editEnv($projectID, $envID, $envName, $envURI)) {
 				$this -> returnJson['statusCode'] = '000000';
-			}
-			else
-			{
+			} else {
 				//修改失败
 				$this -> returnJson['statusCode'] = '140021';
 			}
@@ -340,25 +273,42 @@ class ProjectController
 	/**
 	 * 导出项目
 	 */
-	public function dumpProject()
-	{
+	public function dumpProject() {
 		$projectID = securelyInput('projectID');
-		if (!preg_match('/^[0-9]{1,11}$/', $projectID))
-		{
+		if (!preg_match('/^[0-9]{1,11}$/', $projectID)) {
 			//项目ID不合法
 			$this -> returnJson['statusCode'] = '140004';
+			exitOutput($this -> returnJson);
 		}
 		$service = new ProjectModule;
 		$fileName = $service -> dumpProject($projectID);
-		if ($fileName)
-		{
+		if ($fileName) {
 			$this -> returnJson['statusCode'] = '000000';
 			$this -> returnJson['fileName'] = $fileName;
-		}
-		else
-		{
+		} else {
 			//修改失败
 			$this -> returnJson['statusCode'] = '140021';
+		}
+		exitOutput($this -> returnJson);
+	}
+
+	/**
+	 * 获取api数量
+	 */
+	public function getApiNum() {
+		$projectID = securelyInput('projectID');
+		if (!preg_match('/^[0-9]{1,11}$/', $projectID)) {
+			//项目ID不合法
+			$this -> returnJson['statusCode'] = '140004';
+			exitOutput($this -> returnJson);
+		}
+		$service = new ProjectModule;
+		$result = $service -> getApiNum($projectID);
+		if ($result) {
+			$this -> returnJson['statusCode'] = '000000';
+			$this -> returnJson['num'] = $result['num'];
+		} else {
+			$this -> returnJson['statusCode'] = '140023';
 		}
 		exitOutput($this -> returnJson);
 	}

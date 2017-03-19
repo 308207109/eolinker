@@ -14,10 +14,8 @@
  * 再次感谢您的使用，希望我们能够共同维护国内的互联网开源文明和正常商业秩序。
  *
  */
-class ApiModule
-{
-	public function __construct()
-	{
+class ApiModule {
+	public function __construct() {
 		@session_start();
 	}
 
@@ -27,9 +25,7 @@ class ApiModule
 	 * @param $apiURI 接口地址
 	 * @param $apiProtocol 请求协议 [0/1]=>[HTTP/HTTPS]
 	 * @param $apiSuccessMock 访问成功结果，默认为NULL
-	 * @param $apiSuccessMockType 访问成功结果类型 [0/1/2/3]=>[JSON/XML/HTML/TEXT]，默认为0
 	 * @param $apiFailureMock 访问失败结果，默认为NULL
-	 * @param $apiFailureMockType 访问失败结果类型 [0/1/2/3]=>[JSON/XML/HTML/TEXT]，默认为0
 	 * @param $apiRequestType 请求类型 [0/1/2/3/4/5/6]=>[POST/GET/PUT/DELETE/HEAD/OPTIONS/PATCH]
 	 * @param $apiStatus 接口状态 [0/1/2]=>[启用/维护/弃用]
 	 * @param $groupID 接口分组ID
@@ -43,44 +39,35 @@ class ApiModule
 	 * @param $apiRequestParamType 请求参数类型 [0/1]=>[表单类型/源数据类型]，默认为0
 	 * @param $apiRequestRaw 请求参数源数据，默认为NULL
 	 */
-	public function addApi(&$apiName, &$apiURI, &$apiProtocol, &$apiSuccessMock, &$apiSuccessMockType, &$apiFailureMock, &$apiFailureMockType, &$apiRequestType, &$apiStatus, &$groupID, &$apiHeader, &$apiRequestParam, &$apiResultParam, &$starred, &$apiNoteType, &$apiNoteRaw, &$apiNote, &$apiRequestParamType, &$apiRequestRaw)
-	{
+	public function addApi(&$apiName, &$apiURI, &$apiProtocol, &$apiSuccessMock, &$apiFailureMock, &$apiRequestType, &$apiStatus, &$groupID, &$apiHeader, &$apiRequestParam, &$apiResultParam, &$starred, &$apiNoteType, &$apiNoteRaw, &$apiNote, &$apiRequestParamType, &$apiRequestRaw) {
 		//判断部分请求参数是否为空，如果为空值则赋值成为空字符串
-		if (empty($apiSuccessMock))
-		{
+		if (empty($apiSuccessMock)) {
 			$apiSuccessMock = '';
 		}
-		if (empty($apiFailureMock))
-		{
+		if (empty($apiFailureMock)) {
 			$apiFailureMock = '';
 		}
-		if (empty($apiRequestRaw))
-		{
+		if (empty($apiRequestRaw)) {
 			$apiRequestRaw = '';
 		}
-		if (empty($apiNote) || $apiNote == '&lt;p&gt;&lt;br&gt;&lt;/p&gt;')
-		{
+		if (empty($apiNote) || $apiNote == '&lt;p&gt;&lt;br&gt;&lt;/p&gt;') {
 			$apiNote = '';
 		}
-		if (empty($apiNoteRaw))
-		{
+		if (empty($apiNoteRaw)) {
 			$apiNoteRaw = '';
 		}
 
 		$apiDao = new ApiDao;
 		$groupDao = new GroupDao;
 		$projectDao = new ProjectDao;
-		if ($projectID = $groupDao -> checkGroupPermission($groupID, $_SESSION['userID']))
-		{
+		if ($projectID = $groupDao -> checkGroupPermission($groupID, $_SESSION['userID'])) {
 			$projectDao -> updateProjectUpdateTime($projectID);
 
 			//生成缓存数据
 			$cacheJson['baseInfo']['apiName'] = $apiName;
 			$cacheJson['baseInfo']['apiURI'] = $apiURI;
 			$cacheJson['baseInfo']['apiProtocol'] = intval($apiProtocol);
-			$cacheJson['baseInfo']['apiSuccessMockType'] = intval($apiSuccessMockType);
 			$cacheJson['baseInfo']['apiSuccessMock'] = $apiSuccessMock;
-			$cacheJson['baseInfo']['apiFailureMockType'] = intval($apiFailureMockType);
 			$cacheJson['baseInfo']['apiFailureMock'] = $apiFailureMock;
 			$cacheJson['baseInfo']['apiRequestType'] = intval($apiRequestType);
 			$cacheJson['baseInfo']['apiStatus'] = intval($apiStatus);
@@ -119,9 +106,8 @@ class ApiModule
 			$cacheJson['resultInfo'] = $apiResultParam;
 			$cacheJson = json_encode($cacheJson);
 
-			return $apiDao -> addApi($apiName, $apiURI, $apiProtocol, $apiSuccessMock, $apiSuccessMockType, $apiFailureMock, $apiFailureMockType, $apiRequestType, $apiStatus, $groupID, $apiHeader, $apiRequestParam, $apiResultParam, $starred, $apiNoteType, $apiNoteRaw, $apiNote, $projectID, $apiRequestParamType, $apiRequestRaw, $cacheJson, $updateTime);
-		}
-		else
+			return $apiDao -> addApi($apiName, $apiURI, $apiProtocol, $apiSuccessMock, $apiFailureMock, $apiRequestType, $apiStatus, $groupID, $apiHeader, $apiRequestParam, $apiResultParam, $starred, $apiNoteType, $apiNoteRaw, $apiNote, $projectID, $apiRequestParamType, $apiRequestRaw, $cacheJson, $updateTime);
+		} else
 			return FALSE;
 	}
 
@@ -132,9 +118,7 @@ class ApiModule
 	 * @param $apiURI 接口地址
 	 * @param $apiProtocol 请求协议 [0/1]=>[HTTP/HTTPS]
 	 * @param $apiSuccessMock 访问成功结果，默认为NULL
-	 * @param $apiSuccessMockType 访问成功结果类型 [0/1/2/3]=>[JSON/XML/HTML/TEXT]，默认为0
 	 * @param $apiFailureMock 访问失败结果，默认为NULL
-	 * @param $apiFailureMockType 访问失败结果类型 [0/1/2/3]=>[JSON/XML/HTML/TEXT]，默认为0
 	 * @param $apiRequestType 请求类型 [0/1/2/3/4/5/6]=>[POST/GET/PUT/DELETE/HEAD/OPTIONS/PATCH]
 	 * @param $apiStatus 接口状态 [0/1/2]=>[启用/维护/弃用]
 	 * @param $groupID 接口分组ID
@@ -148,46 +132,36 @@ class ApiModule
 	 * @param $apiRequestParamType 请求参数类型 [0/1]=>[表单类型/源数据类型]，默认为0
 	 * @param $apiRequestRaw 请求参数源数据，默认为NULL
 	 */
-	public function editApi(&$apiID, &$apiName, &$apiURI, &$apiProtocol, &$apiSuccessMock, &$apiSuccessMockType, &$apiFailureMock, &$apiFailureMockType, &$apiRequestType, &$apiStatus, &$groupID, &$apiHeader, &$apiRequestParam, &$apiResultParam, &$starred, &$apiNoteType, &$apiNoteRaw, &$apiNote, &$apiRequestParamType, &$apiRequestRaw)
-	{
+	public function editApi(&$apiID, &$apiName, &$apiURI, &$apiProtocol, &$apiSuccessMock, &$apiFailureMock, &$apiRequestType, &$apiStatus, &$groupID, &$apiHeader, &$apiRequestParam, &$apiResultParam, &$starred, &$apiNoteType, &$apiNoteRaw, &$apiNote, &$apiRequestParamType, &$apiRequestRaw) {
 		//判断部分请求参数是否为空，如果为空值则赋值成为空字符串
-		if (empty($apiSuccessMock))
-		{
+		if (empty($apiSuccessMock)) {
 			$apiSuccessMock = '';
 		}
-		if (empty($apiFailureMock))
-		{
+		if (empty($apiFailureMock)) {
 			$apiFailureMock = '';
 		}
-		if (empty($apiRequestRaw))
-		{
+		if (empty($apiRequestRaw)) {
 			$apiRequestRaw = '';
 		}
-		if (empty($apiNote) || $apiNote == '&lt;p&gt;&lt;br&gt;&lt;/p&gt;')
-		{
+		if (empty($apiNote) || $apiNote == '&lt;p&gt;&lt;br&gt;&lt;/p&gt;') {
 			$apiNote = '';
 		}
-		if (empty($apiNoteRaw))
-		{
+		if (empty($apiNoteRaw)) {
 			$apiNoteRaw = '';
 		}
 
 		$apiDao = new ApiDao;
 		$groupDao = new GroupDao;
 		$projectDao = new ProjectDao;
-		if ($apiDao -> checkApiPermission($apiID, $_SESSION['userID']))
-		{
-			if ($projectID = $groupDao -> checkGroupPermission($groupID, $_SESSION['userID']))
-			{
+		if ($apiDao -> checkApiPermission($apiID, $_SESSION['userID'])) {
+			if ($projectID = $groupDao -> checkGroupPermission($groupID, $_SESSION['userID'])) {
 				$projectDao -> updateProjectUpdateTime($projectID);
 
 				//生成缓存数据
 				$cacheJson['baseInfo']['apiName'] = $apiName;
 				$cacheJson['baseInfo']['apiURI'] = $apiURI;
 				$cacheJson['baseInfo']['apiProtocol'] = intval($apiProtocol);
-				$cacheJson['baseInfo']['apiSuccessMockType'] = intval($apiSuccessMockType);
 				$cacheJson['baseInfo']['apiSuccessMock'] = $apiSuccessMock;
-				$cacheJson['baseInfo']['apiFailureMockType'] = intval($apiFailureMockType);
 				$cacheJson['baseInfo']['apiFailureMock'] = $apiFailureMock;
 				$cacheJson['baseInfo']['apiRequestType'] = intval($apiRequestType);
 				$cacheJson['baseInfo']['apiStatus'] = intval($apiStatus);
@@ -226,12 +200,10 @@ class ApiModule
 				$cacheJson['resultInfo'] = $apiResultParam;
 				$cacheJson = json_encode($cacheJson);
 
-				return $apiDao -> editApi($apiID, $apiName, $apiURI, $apiProtocol, $apiSuccessMock, $apiSuccessMockType, $apiFailureMock, $apiFailureMockType, $apiRequestType, $apiStatus, $groupID, $apiHeader, $apiRequestParam, $apiResultParam, $starred, $apiNoteType, $apiNoteRaw, $apiNote, $apiRequestParamType, $apiRequestRaw, $cacheJson, $updateTime);
-			}
-			else
+				return $apiDao -> editApi($apiID, $apiName, $apiURI, $apiProtocol, $apiSuccessMock, $apiFailureMock, $apiRequestType, $apiStatus, $groupID, $apiHeader, $apiRequestParam, $apiResultParam, $starred, $apiNoteType, $apiNoteRaw, $apiNote, $apiRequestParamType, $apiRequestRaw, $cacheJson, $updateTime);
+			} else
 				return FALSE;
-		}
-		else
+		} else
 			return FALSE;
 	}
 
@@ -239,16 +211,13 @@ class ApiModule
 	 * 删除api,将其移入回收站
 	 * @param $apiID 接口ID
 	 */
-	public function removeApi(&$apiID)
-	{
+	public function removeApi(&$apiID) {
 		$apiDao = new ApiDao;
 		$projectDao = new ProjectDao;
-		if ($projectID = $apiDao -> checkApiPermission($apiID, $_SESSION['userID']))
-		{
+		if ($projectID = $apiDao -> checkApiPermission($apiID, $_SESSION['userID'])) {
 			$projectDao -> updateProjectUpdateTime($projectID);
 			return $apiDao -> removeApi($apiID);
-		}
-		else
+		} else
 			return FALSE;
 	}
 
@@ -256,16 +225,13 @@ class ApiModule
 	 * 恢复api
 	 * @param $apiID 接口ID
 	 */
-	public function recoverApi(&$apiID)
-	{
+	public function recoverApi(&$apiID) {
 		$apiDao = new ApiDao;
 		$projectDao = new ProjectDao;
-		if ($projectID = $apiDao -> checkApiPermission($apiID, $_SESSION['userID']))
-		{
+		if ($projectID = $apiDao -> checkApiPermission($apiID, $_SESSION['userID'])) {
 			$projectDao -> updateProjectUpdateTime($projectID);
 			return $apiDao -> recoverApi($apiID);
-		}
-		else
+		} else
 			return FALSE;
 	}
 
@@ -273,16 +239,13 @@ class ApiModule
 	 * 彻底删除api
 	 * @param $apiID 接口ID
 	 */
-	public function deleteApi(&$apiID)
-	{
+	public function deleteApi(&$apiID) {
 		$apiDao = new ApiDao;
 		$projectDao = new ProjectDao;
-		if ($projectID = $apiDao -> checkApiPermission($apiID, $_SESSION['userID']))
-		{
+		if ($projectID = $apiDao -> checkApiPermission($apiID, $_SESSION['userID'])) {
 			$projectDao -> updateProjectUpdateTime($projectID);
 			return $apiDao -> deleteApi($apiID);
-		}
-		else
+		} else
 			return FALSE;
 	}
 
@@ -290,15 +253,12 @@ class ApiModule
 	 * 清空回收站
 	 * @param $projectID 项目ID
 	 */
-	public function cleanRecyclingStation(&$projectID)
-	{
+	public function cleanRecyclingStation(&$projectID) {
 		$apiDao = new ApiDao;
 		$projectDao = new ProjectDao;
-		if ($projectDao -> checkProjectPermission($projectID, $_SESSION['userID']))
-		{
+		if ($projectDao -> checkProjectPermission($projectID, $_SESSION['userID'])) {
 			return $apiDao -> cleanRecyclingStation($projectID);
-		}
-		else
+		} else
 			return FALSE;
 	}
 
@@ -307,16 +267,13 @@ class ApiModule
 	 * @param $groupID 接口分组ID
 	 * @param $asc 排序 [0/1]=>[升序/降序]
 	 */
-	public function getApiListOrderByName(&$groupID, &$asc = 0)
-	{
+	public function getApiListOrderByName(&$groupID, &$asc = 0) {
 		$apiDao = new ApiDao;
 		$groupDao = new GroupDao;
-		if ($groupDao -> checkGroupPermission($groupID, $_SESSION['userID']))
-		{
+		if ($groupDao -> checkGroupPermission($groupID, $_SESSION['userID'])) {
 			$asc = $asc == 0 ? 'ASC' : 'DESC';
 			return $apiDao -> getApiListOrderByName($groupID, $asc);
-		}
-		else
+		} else
 			return FALSE;
 	}
 
@@ -325,16 +282,13 @@ class ApiModule
 	 * @param $groupID 接口分组ID
 	 * @param $asc 排序 [0/1]=>[升序/降序]
 	 */
-	public function getApiListOrderByTime(&$groupID, &$asc = 0)
-	{
+	public function getApiListOrderByTime(&$groupID, &$asc = 0) {
 		$apiDao = new ApiDao;
 		$groupDao = new GroupDao;
-		if ($groupDao -> checkGroupPermission($groupID, $_SESSION['userID']))
-		{
+		if ($groupDao -> checkGroupPermission($groupID, $_SESSION['userID'])) {
 			$asc = $asc == 0 ? 'ASC' : 'DESC';
 			return $apiDao -> getApiListOrderByTime($groupID, $asc);
-		}
-		else
+		} else
 			return FALSE;
 	}
 
@@ -343,16 +297,13 @@ class ApiModule
 	 * @param $groupID 接口分组ID
 	 * @param $asc 排序 [0/1]=>[升序/降序]
 	 */
-	public function getApiListOrderByStarred(&$groupID, &$asc = 0)
-	{
+	public function getApiListOrderByStarred(&$groupID, &$asc = 0) {
 		$apiDao = new ApiDao;
 		$groupDao = new GroupDao;
-		if ($groupDao -> checkGroupPermission($groupID, $_SESSION['userID']))
-		{
+		if ($groupDao -> checkGroupPermission($groupID, $_SESSION['userID'])) {
 			$asc = $asc == 0 ? 'ASC' : 'DESC';
 			return $apiDao -> getApiListOrderByStarred($groupID, $asc);
-		}
-		else
+		} else
 			return FALSE;
 	}
 
@@ -361,16 +312,13 @@ class ApiModule
 	 * @param $projectID 项目ID
 	 * @param $asc 排序 [0/1]=>[升序/降序]
 	 */
-	public function getRecyclingStationApiListOrderByName(&$projectID, &$asc = 0)
-	{
+	public function getRecyclingStationApiListOrderByName(&$projectID, &$asc = 0) {
 		$apiDao = new ApiDao;
 		$projectDao = new ProjectDao;
-		if ($projectDao -> checkProjectPermission($projectID, $_SESSION['userID']))
-		{
+		if ($projectDao -> checkProjectPermission($projectID, $_SESSION['userID'])) {
 			$asc = $asc == 0 ? 'ASC' : 'DESC';
 			return $apiDao -> getRecyclingStationApiListOrderByName($projectID, $asc);
-		}
-		else
+		} else
 			return FALSE;
 	}
 
@@ -379,16 +327,13 @@ class ApiModule
 	 * @param $projectID 项目ID
 	 * @param $asc 排序 [0/1]=>[升序/降序]
 	 */
-	public function getRecyclingStationApiListOrderByRemoveTime(&$projectID, &$asc = 0)
-	{
+	public function getRecyclingStationApiListOrderByRemoveTime(&$projectID, &$asc = 0) {
 		$apiDao = new ApiDao;
 		$projectDao = new ProjectDao;
-		if ($projectDao -> checkProjectPermission($projectID, $_SESSION['userID']))
-		{
+		if ($projectDao -> checkProjectPermission($projectID, $_SESSION['userID'])) {
 			$asc = $asc == 0 ? 'ASC' : 'DESC';
 			return $apiDao -> getRecyclingStationApiListOrderByRemoveTime($projectID, $asc);
-		}
-		else
+		} else
 			return FALSE;
 	}
 
@@ -397,16 +342,13 @@ class ApiModule
 	 * @param $projectID 项目ID
 	 * @param $asc 排序 [0/1]=>[升序/降序]
 	 */
-	public function getRecyclingStationApiListOrderByStarred(&$projectID, &$asc = 0)
-	{
+	public function getRecyclingStationApiListOrderByStarred(&$projectID, &$asc = 0) {
 		$apiDao = new ApiDao;
 		$projectDao = new ProjectDao;
-		if ($projectDao -> checkProjectPermission($projectID, $_SESSION['userID']))
-		{
+		if ($projectDao -> checkProjectPermission($projectID, $_SESSION['userID'])) {
 			$asc = $asc == 0 ? 'ASC' : 'DESC';
 			return $apiDao -> getRecyclingStationApiListOrderByStarred($projectID, $asc);
-		}
-		else
+		} else
 			return FALSE;
 	}
 
@@ -414,19 +356,16 @@ class ApiModule
 	 * 获取api详情
 	 * @param $apiID 接口ID
 	 */
-	public function getApi(&$apiID)
-	{
+	public function getApi(&$apiID) {
 		$apiDao = new ApiDao;
 		$groupDao = new GroupDao;
-		if ($apiDao -> checkApiPermission($apiID, $_SESSION['userID']))
-		{
+		if ($apiDao -> checkApiPermission($apiID, $_SESSION['userID'])) {
 			$result = $apiDao -> getApi($apiID);
 			//将mock数据转码以适应前端直接显示html代码
 			$result['baseInfo']['apiSuccessMock'] = htmlspecialchars($result['baseInfo']['apiSuccessMock']);
 			$result['baseInfo']['apiFailureMock'] = htmlspecialchars($result['baseInfo']['apiFailureMock']);
 			return $result;
-		}
-		else
+		} else
 			return FALSE;
 	}
 
@@ -435,16 +374,13 @@ class ApiModule
 	 * @param $projectID 项目ID
 	 * @param $asc 排序 [0/1]=>[升序/降序]
 	 */
-	public function getAllApiListOrderByName(&$projectID, &$asc = 0)
-	{
+	public function getAllApiListOrderByName(&$projectID, &$asc = 0) {
 		$apiDao = new ApiDao;
 		$projectDao = new ProjectDao;
-		if ($projectDao -> checkProjectPermission($projectID, $_SESSION['userID']))
-		{
+		if ($projectDao -> checkProjectPermission($projectID, $_SESSION['userID'])) {
 			$asc = $asc == 0 ? 'ASC' : 'DESC';
 			return $apiDao -> getAllApiListOrderByName($projectID, $asc);
-		}
-		else
+		} else
 			return FALSE;
 	}
 
@@ -453,16 +389,13 @@ class ApiModule
 	 * @param $projectID 项目ID
 	 * @param $asc 排序 [0/1]=>[升序/降序]
 	 */
-	public function getAllApiListOrderByTime(&$projectID, &$asc = 0)
-	{
+	public function getAllApiListOrderByTime(&$projectID, &$asc = 0) {
 		$apiDao = new ApiDao;
 		$projectDao = new ProjectDao;
-		if ($projectDao -> checkProjectPermission($projectID, $_SESSION['userID']))
-		{
+		if ($projectDao -> checkProjectPermission($projectID, $_SESSION['userID'])) {
 			$asc = $asc == 0 ? 'ASC' : 'DESC';
 			return $apiDao -> getAllApiListOrderByTime($projectID, $asc);
-		}
-		else
+		} else
 			return FALSE;
 	}
 
@@ -471,16 +404,13 @@ class ApiModule
 	 * @param $projectID 项目ID
 	 * @param $asc 排序 [0/1]=>[升序/降序]
 	 */
-	public function getAllApiListOrderByStarred(&$projectID, &$asc = 0)
-	{
+	public function getAllApiListOrderByStarred(&$projectID, &$asc = 0) {
 		$apiDao = new ApiDao;
 		$projectDao = new ProjectDao;
-		if ($projectDao -> checkProjectPermission($projectID, $_SESSION['userID']))
-		{
+		if ($projectDao -> checkProjectPermission($projectID, $_SESSION['userID'])) {
 			$asc = $asc == 0 ? 'ASC' : 'DESC';
 			return $apiDao -> getAllApiListOrderByStarred($projectID, $asc);
-		}
-		else
+		} else
 			return FALSE;
 	}
 
@@ -489,15 +419,12 @@ class ApiModule
 	 * @param $tips 搜索关键字
 	 * @param $projectID 项目ID
 	 */
-	public function searchApi(&$tips, &$projectID)
-	{
+	public function searchApi(&$tips, &$projectID) {
 		$apiDao = new ApiDao;
 		$projectDao = new ProjectDao;
-		if ($projectDao -> checkProjectPermission($projectID, $_SESSION['userID']))
-		{
+		if ($projectDao -> checkProjectPermission($projectID, $_SESSION['userID'])) {
 			return $apiDao -> searchApi($tips, $projectID);
-		}
-		else
+		} else
 			return FALSE;
 	}
 
@@ -505,14 +432,11 @@ class ApiModule
 	 * 添加星标
 	 * @param $apiID 接口ID
 	 */
-	public function addStar(&$apiID)
-	{
+	public function addStar(&$apiID) {
 		$apiDao = new ApiDao;
-		if ($apiDao -> checkApiPermission($apiID, $_SESSION['userID']))
-		{
+		if ($apiDao -> checkApiPermission($apiID, $_SESSION['userID'])) {
 			return $apiDao -> addStar($apiID);
-		}
-		else
+		} else
 			return FALSE;
 	}
 
@@ -520,14 +444,11 @@ class ApiModule
 	 * 去除星标
 	 * @param $apiID 接口ID
 	 */
-	public function removeStar(&$apiID)
-	{
+	public function removeStar(&$apiID) {
 		$apiDao = new ApiDao;
-		if ($apiDao -> checkApiPermission($apiID, $_SESSION['userID']))
-		{
+		if ($apiDao -> checkApiPermission($apiID, $_SESSION['userID'])) {
 			return $apiDao -> removeStar($apiID);
-		}
-		else
+		} else
 			return FALSE;
 	}
 

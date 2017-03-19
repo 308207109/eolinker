@@ -45,11 +45,12 @@
             <ul class="group-ul">
                 <li class="background-group-li" ng-class="{'elem-active':query.isClick}" data-ng-repeat='query in projectSidebarCtrl.query'>
                     <div class="group-li" data-ng-click="projectSidebarCtrl.click(query.groupID,query,$index)">
-                        <span class="title-icon iconfont " ng-class="{'icon-sort':$index==0,'icon-delete':query.groupID==-2,'icon-trianglerightfill':query.groupID>0&&!query.isClick&&query.childGroupList.length>0,'icon-triangledownfill':query.groupID>0&&query.isClick&&query.childGroupList.length>0}">   
+                        <span class="title-icon iconfont " ng-class="{'icon-sort':$index==0,'icon-delete':query.groupID==-2,'icon-trianglerightfill':query.groupID>0&&!query.isClick&&query.childGroupList.length>0,'icon-triangledownfill':query.groupID>0&&query.isClick&&query.childGroupList.length>0}">    
                         </span>
                         <span class="group-name" ng-class="{'pull-left':query.groupID>0,'is-no-child':query.childGroupList.length<=0}">
                             {{query.groupName}}
                         </span>
+                        <span ng-show="$index==0">({{projectSidebarCtrl.info.num}})</span>
                         <span class="active " ng-if="query.groupID>0">
                             <a class="iconfont icon-list" data-ng-click="query.listIsClick=true;" data-ng-mouseleave="query.listIsClick=false">
                                 <ul class="sidebar-function" data-ng-class="{'hidden':!query.listIsClick,'envFirst':$first}">

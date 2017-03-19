@@ -14,20 +14,17 @@
  * 再次感谢您的使用，希望我们能够共同维护国内的互联网开源文明和正常商业秩序。
  *
  */
-class StatusCodeController
-{
+class StatusCodeController {
 	// 返回json类型
 	private $returnJson = array('type' => 'status_code');
-	
+
 	/**
 	 * 检查登录状态
 	 */
-	public function __construct()
-	{
+	public function __construct() {
 		// 身份验证
 		$server = new GuestModule;
-		if (!$server -> checkLogin())
-		{
+		if (!$server -> checkLogin()) {
 			$this -> returnJson['statusCode'] = '120005';
 			exitOutput($this -> returnJson);
 		}
@@ -36,41 +33,30 @@ class StatusCodeController
 	/**
 	 * 添加状态码
 	 */
-	public function addCode()
-	{
+	public function addCode() {
 		$codeLen = mb_strlen(quickInput('code'), 'utf8');
 		$codeDescLen = mb_strlen(quickInput('codeDesc'), 'utf8');
 		$groupID = securelyInput('groupID');
 		$code = securelyInput('code');
 		$codeDesc = securelyInput('codeDesc');
 
-		if (!preg_match('/^[0-9]{1,11}$/', $groupID))
-		{
+		if (!preg_match('/^[0-9]{1,11}$/', $groupID)) {
 			//分组ID格式不合法
 			$this -> returnJson['statusCode'] = '190002';
-		}
-		elseif (!($codeLen >= 1 && $codeLen <= 255))
-		{
+		} elseif (!($codeLen >= 1 && $codeLen <= 255)) {
 			//状态码格式不合法
 			$this -> returnJson['statusCode'] = '190008';
-		}
-		elseif (!($codeDescLen >= 1 && $codeDescLen <= 255))
-		{
+		} elseif (!($codeDescLen >= 1 && $codeDescLen <= 255)) {
 			//状态码描述格式不合法
 			$this -> returnJson['statusCode'] = '190003';
-		}
-		else
-		{
+		} else {
 			$service = new StatusCodeModule;
 			$result = $service -> addCode($groupID, $codeDesc, $code);
 
-			if ($result)
-			{
+			if ($result) {
 				$this -> returnJson['statusCode'] = '000000';
 				$this -> returnJson['codeID'] = $result;
-			}
-			else
-			{
+			} else {
 				$this -> returnJson['statusCode'] = '190004';
 			}
 		}
@@ -80,26 +66,19 @@ class StatusCodeController
 	/**
 	 * 删除状态码
 	 */
-	public function deleteCode()
-	{
+	public function deleteCode() {
 		$codeID = securelyInput('codeID');
 
-		if (!preg_match('/^[0-9]{1,11}$/', $codeID))
-		{
+		if (!preg_match('/^[0-9]{1,11}$/', $codeID)) {
 			//状态码ID格式不合法
 			$this -> returnJson['statusCode'] = '190005';
-		}
-		else
-		{
+		} else {
 			$service = new StatusCodeModule;
 			$result = $service -> deleteCode($codeID);
 
-			if ($result)
-			{
+			if ($result) {
 				$this -> returnJson['statusCode'] = '000000';
-			}
-			else
-			{
+			} else {
 				$this -> returnJson['statusCode'] = '190006';
 			}
 		}
@@ -109,27 +88,20 @@ class StatusCodeController
 	/**
 	 * 获取状态码列表
 	 */
-	public function getCodeList()
-	{
+	public function getCodeList() {
 		$groupID = securelyInput('groupID');
 
-		if (!preg_match('/^[0-9]{1,11}$/', $groupID))
-		{
+		if (!preg_match('/^[0-9]{1,11}$/', $groupID)) {
 			//分组ID格式不合法
 			$this -> returnJson['statusCode'] = '190002';
-		}
-		else
-		{
+		} else {
 			$service = new StatusCodeModule;
 			$result = $service -> getCodeList($groupID);
 
-			if ($result)
-			{
+			if ($result) {
 				$this -> returnJson['statusCode'] = '000000';
 				$this -> returnJson['codeList'] = $result;
-			}
-			else
-			{
+			} else {
 				$this -> returnJson['statusCode'] = '190001';
 			}
 		}
@@ -139,27 +111,20 @@ class StatusCodeController
 	/**
 	 * 获取所有状态码列表
 	 */
-	public function getAllCodeList()
-	{
+	public function getAllCodeList() {
 		$projectID = securelyInput('projectID');
 
-		if (!preg_match('/^[0-9]{1,11}$/', $projectID))
-		{
+		if (!preg_match('/^[0-9]{1,11}$/', $projectID)) {
 			//项目ID格式不合法
 			$this -> returnJson['statusCode'] = '190007';
-		}
-		else
-		{
+		} else {
 			$service = new StatusCodeModule;
 			$result = $service -> getAllCodeList($projectID);
 
-			if ($result)
-			{
+			if ($result) {
 				$this -> returnJson['statusCode'] = '000000';
 				$this -> returnJson['codeList'] = $result;
-			}
-			else
-			{
+			} else {
 				$this -> returnJson['statusCode'] = '190001';
 			}
 		}
@@ -169,8 +134,7 @@ class StatusCodeController
 	/**
 	 * 修改状态码
 	 */
-	public function editCode()
-	{
+	public function editCode() {
 		$codeLen = mb_strlen(quickInput('code'), 'utf8');
 		$codeDescLen = mb_strlen(quickInput('codeDesc'), 'utf8');
 		$codeID = securelyInput('codeID');
@@ -178,37 +142,25 @@ class StatusCodeController
 		$code = securelyInput('code');
 		$codeDesc = securelyInput('codeDesc');
 
-		if (!preg_match('/^[0-9]{1,11}$/', $codeID))
-		{
+		if (!preg_match('/^[0-9]{1,11}$/', $codeID)) {
 			//状态码ID格式非法
 			$this -> returnJson['statusCode'] = '190005';
-		}
-		elseif (!preg_match('/^[0-9]{1,11}$/', $groupID))
-		{
+		} elseif (!preg_match('/^[0-9]{1,11}$/', $groupID)) {
 			//分组ID格式非法
 			$this -> returnJson['statusCode'] = '190002';
-		}
-		elseif (!($codeLen >= 1 && $codeLen <= 255))
-		{
+		} elseif (!($codeLen >= 1 && $codeLen <= 255)) {
 			//状态码格式非法
 			$this -> returnJson['statusCode'] = '190008';
-		}
-		elseif (!($codeDescLen >= 1 && $codeDescLen <= 255))
-		{
+		} elseif (!($codeDescLen >= 1 && $codeDescLen <= 255)) {
 			//状态码描述格式非法
 			$this -> returnJson['statusCode'] = '190003';
-		}
-		else
-		{
+		} else {
 			$service = new StatusCodeModule;
 			$result = $service -> editCode($groupID, $codeID, $code, $codeDesc);
 
-			if ($result)
-			{
+			if ($result) {
 				$this -> returnJson['statusCode'] = '000000';
-			}
-			else
-			{
+			} else {
 				$this -> returnJson['statusCode'] = '190009';
 			}
 		}
@@ -218,35 +170,47 @@ class StatusCodeController
 	/**
 	 * 搜索状态码
 	 */
-	public function searchStatusCode()
-	{
+	public function searchStatusCode() {
 		$projectID = securelyInput('projectID');
 		$tipsLen = mb_strlen(quickInput('tips'), 'utf8');
 		$tips = securelyInput('tips');
 
-		if (!preg_match('/^[0-9]{1,11}$/', $projectID))
-		{
+		if (!preg_match('/^[0-9]{1,11}$/', $projectID)) {
 			//项目ID格式不合法
 			$this -> returnJson['statusCode'] = '190007';
-		}
-		elseif (!($tipsLen >= 1 && $tipsLen <= 255))
-		{
+		} elseif (!($tipsLen >= 1 && $tipsLen <= 255)) {
 			$this -> returnJson['statusCode'] = '190008';
-		}
-		else
-		{
+		} else {
 			$service = new StatusCodeModule;
 			$result = $service -> searchStatusCode($projectID, $tips);
 
-			if ($result)
-			{
+			if ($result) {
 				$this -> returnJson['statusCode'] = '000000';
 				$this -> returnJson['codeList'] = $result;
-			}
-			else
-			{
+			} else {
 				$this -> returnJson['statusCode'] = '190001';
 			}
+		}
+		exitOutput($this -> returnJson);
+	}
+
+	/*
+	 * 获取状态码数量
+	 */
+	public function getStatusCodeNum() {
+		$projectID = securelyInput('projectID');
+		if (!preg_match('/^[0-9]{1,11}$/', $projectID)) {
+			//项目ID格式不合法
+			$this -> returnJson['statusCode'] = '190007';
+		} else {
+			$service = new StatusCodeModule;
+			$result = $service -> getStatusCodeNum($projectID);
+
+			if ($result) {
+				$this -> returnJson['statusCode'] = '000000';
+				$this -> returnJson['num'] = $result['num'];
+			} else
+				$this -> returnJson['statusCode'] = '190010';
 		}
 		exitOutput($this -> returnJson);
 	}

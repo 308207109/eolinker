@@ -50,6 +50,22 @@
             }
 
         );
+        /*
+         * 获取网站名称
+         */
+        API['WebName'] = $resource(serverUrl + '?g=Web&c=Index&o=:operate', {
+
+            }, {
+                Get: {
+                    params: { operate:'getWebsiteName'},
+                    method: method
+                },
+                Allow: {
+                    params: { operate:'allowRegister'},
+                    method: method
+                }
+            }
+        );
 
         /*
          * 导入postman文件/Web/Import/ImportPostMan
@@ -121,7 +137,7 @@
         /*
          * 安装/Web/Install/start
          * 环境检测/Web/Install/checkoutEnv
-         * 检查是否安装/Web/Install/checkConfig
+         * 检查是否安装/Web/Install/checkConfig 
          */
         API['Install'] = $resource(serverUrl + '?g=Web&c=Install&o=:operate', {
 
@@ -147,6 +163,7 @@
          * 删除项目/Web/Project/deleteProject
          * 获取项目详情/Web/Project/getProject
          * 导出项目/Web/Project/dumpProject
+         * 获取api数量/Web/Project/getApiNum
          */
         API['Project'] = $resource(serverUrl + '?g=Web&c=Project&o=:operate', {
 
@@ -173,6 +190,10 @@
                 },
                 Dump: {
                     params: { operate: 'dumpProject' },
+                    method: method
+                },
+                Num: {
+                    params: { operate: 'getApiNum' },
                     method: method
                 }
             }
@@ -356,6 +377,7 @@
          * 删除状态码/Web/StatusCode/deleteCode
          * 编辑状态码/Web/StatusCode/editCode
          * 搜索状态码/Web/StatusCode/searchStatusCode
+         * 获取所有状态码/Web/StatusCode/getStatusCodeNum
          */
         API['Code'] = $resource(serverUrl + '?g=Web&c=StatusCode&o=:operate', {
 
@@ -382,6 +404,10 @@
                 },
                 Search: {
                     params: { operate: 'searchStatusCode' },
+                    method: method
+                },
+                Num: {
+                    params: { operate: 'getStatusCodeNum' },
                     method: method
                 }
             }

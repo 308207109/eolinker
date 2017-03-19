@@ -29,6 +29,9 @@ defined('ALLOW_REGISTER') or define('ALLOW_REGISTER', TRUE);
 
 //是否允许更新项目，如果设置为FALSE，那么自动更新和手动更新都将失效
 defined('ALLOW_UPDATE') or define('ALLOW_UPDATE', TRUE);
+
+//网站名称
+defined('WEBSITE_NAME') or define('WEBSITE_NAME', 'eolinker开源版');
 ?>";
 
 $configFile = file_put_contents(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'eo_config.php', $config);

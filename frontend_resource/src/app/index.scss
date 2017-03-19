@@ -16,19 +16,19 @@
 
 @import "./page/database/database.scss";
 
-@import "./page/index/index.scss";
+@import "./page/guide/guide.scss";
 
 @import "./page/home/home.scss";
+
+@import "./page/index/index.scss";
 
 @import "./page/project/project.scss";
 
 @import "./page/register/register.scss";
 
-@import "./page/guide/guide.scss";
+@import "./page/guide/error/error.scss";
 
 @import "./page/guide/finish/finish.scss";
-
-@import "./page/guide/error/error.scss";
 
 @import "./page/guide/first_step/first_step.scss";
 
@@ -44,9 +44,9 @@
 
 @import "./page/home/content/user/user.scss";
 
-@import "./page/project/content/api/edit/edit.scss";
-
 @import "./page/project/content/api/detail/detail.scss";
+
+@import "./page/project/content/api/edit/edit.scss";
 
 @import "./page/project/content/api/list/list.scss";
 
@@ -56,8 +56,8 @@
 
 @import "./page/project/content/code/list/list.scss";
 
-@import "./page/home/content/project/content/api/api.scss";
-
 @import "./page/home/content/project/content/database/database.scss";
+
+@import "./page/home/content/project/content/api/api.scss";
 
 // endinjector

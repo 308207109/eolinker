@@ -35,17 +35,20 @@
                     vm.info.dbName = info.name;
                     vm.info.dbUser = info.userName;
                     vm.info.dbPassword = info.password;
+                    vm.info.pageTitle = info.pageTitle;
                 } catch (e) {
                     vm.info.dbURL = 'localhost';
                     vm.info.dbName = 'eolinker_os';
                     vm.info.dbUser = '';
                     vm.info.dbPassword = '';
+                    vm.info.pageTitle = 'eolinker开源版';
                 }
             } else {
                 vm.info.dbURL = 'localhost';
                 vm.info.dbName = 'eolinker_os';
                 vm.info.dbUser = '';
                 vm.info.dbPassword = '';
+                vm.info.pageTitle = 'eolinker开源版';
             }
         }
         init();
@@ -56,7 +59,8 @@
                     master: vm.info.dbURL,
                     name: vm.info.dbName,
                     userName: vm.info.dbUser,
-                    password: vm.info.dbPassword
+                    password: vm.info.dbPassword,
+                    pageTitle:vm.info.pageTitle
                 }
                 window.localStorage.setItem('INSTALLINFO', JSON.stringify(userInfo));
                 $state.go('guide.third_step');

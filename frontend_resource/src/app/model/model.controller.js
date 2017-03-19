@@ -282,7 +282,7 @@
             hasNewVersion: false,
             updating: false,
             updateFail: false,
-            version: '当前版本为2.1.1，更新时间为2017年3月5日。',
+            version: '当前版本为2.1.2，更新时间为2017年3月15日。',
             tips: '',
             updateTips: '',
             ok: '确定',
@@ -1110,9 +1110,10 @@
                     groupID: $scope.info.childGroupID > 0 ? $scope.info.childGroupID : $scope.info.groupID,
                     codeDesc: $scope.info.codeDesc,
                     code: $scope.info.code
-                }).$promise.then(function(data) {
+                }).$promise.then(function(data) { 
                     if (code == data.statusCode) {
                         $scope.InfoModel("添加成功！", 'success');
+                        $scope.$emit('$numChange',0);
                         $scope.submited = false;
                         $scope.info = {
                             groupID: info.groupID == -1 ? $scope.query[0].groupID : parseInt(info.groupID),
@@ -1145,6 +1146,7 @@
                         code: $scope.info.code
                     }).$promise.then(function(data) {
                         if (code == data.statusCode) {
+                            $scope.$emit('$numChange',0);
                             $uibModalInstance.close(true);
                         } else {
                             $scope.submited = true;

@@ -10,15 +10,16 @@
         }
     }])
 
-    registerCtroller.$inject = ['$scope', '$timeout', '$state', '$uibModal'];
+    registerCtroller.$inject = ['$scope', '$timeout', '$state', '$uibModal','TitleService'];
 
-    function registerCtroller($scope, $timeout, $state,  $uibModal) {
+    function registerCtroller($scope, $timeout, $state,  $uibModal,TitleService) {
 
         var vm = this;
+        var constantTitle = TitleService.get()||'eolinker开源版';
         vm.isProtocol=false;
        
         function init() {// 初始化注册页面
-            window.document.title='eolinker开源版';
+            window.document.title=constantTitle;
             // 加载particles-js
             particlesJS.load('particles-js', 'vendor/particles.js/demo/particles.json', function() {
                 console.log('callback - particles.js config loaded');

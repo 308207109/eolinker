@@ -14,23 +14,17 @@
  * 再次感谢您的使用，希望我们能够共同维护国内的互联网开源文明和正常商业秩序。
  *
  */
-class StatusCodeDao
-{
+class StatusCodeDao {
 	/**
 	 * 添加状态码
 	 * @param $groupID 分组ID
 	 * @param $codeDesc 状态码描述，默认为NULL
 	 * @param $code 状态码
 	 */
-	public function addCode(&$groupID, &$codeDesc, &$code)
-	{
+	public function addCode(&$groupID, &$codeDesc, &$code) {
 		$db = getDatabase();
 
-		$db -> prepareExecute('INSERT INTO eo_project_status_code (eo_project_status_code.groupID,eo_project_status_code.code,eo_project_status_code.codeDescription) VALUES (?,?,?);', array(
-			$groupID,
-			$code,
-			$codeDesc
-		));
+		$db -> prepareExecute('INSERT INTO eo_project_status_code (eo_project_status_code.groupID,eo_project_status_code.code,eo_project_status_code.codeDescription) VALUES (?,?,?);', array($groupID, $code, $codeDesc));
 
 		if ($db -> getAffectRow() < 1)
 			return FALSE;
@@ -43,8 +37,7 @@ class StatusCodeDao
 	 * 删除状态码
 	 * @param $codeID 状态码ID
 	 */
-	public function deleteCode(&$codeID)
-	{
+	public function deleteCode(&$codeID) {
 		$db = getDatabase();
 
 		$db -> prepareExecute('DELETE FROM eo_project_status_code WHERE eo_project_status_code.codeID = ?;', array($codeID));
@@ -59,8 +52,7 @@ class StatusCodeDao
 	 * 获取状态码列表
 	 * @param $groupID 分组ID
 	 */
-	public function getCodeList(&$groupID)
-	{
+	public function getCodeList(&$groupID) {
 		$db = getDatabase();
 
 		$result = $db -> prepareExecuteAll('SELECT eo_project_status_code.codeID,eo_project_status_code.code,eo_project_status_code.codeDescription,eo_project_status_code_group.groupName,eo_project_status_code_group.groupID,eo_project_status_code_group.parentGroupID FROM eo_project_status_code INNER JOIN eo_project_status_code_group ON eo_project_status_code.groupID = eo_project_status_code_group.groupID WHERE eo_project_status_code.groupID = ? ORDER BY eo_project_status_code.code ASC;', array($groupID));
@@ -75,8 +67,7 @@ class StatusCodeDao
 	 * 获取所有状态码列表
 	 * @param $projectID 项目ID
 	 */
-	public function getAllCodeList(&$projectID)
-	{
+	public function getAllCodeList(&$projectID) {
 		$db = getDatabase();
 
 		$result = $db -> prepareExecuteAll('SELECT eo_project_status_code_group.groupID,eo_project_status_code_group.parentGroupID,eo_project_status_code_group.groupName,eo_project_status_code.codeID,eo_project_status_code.code,eo_project_status_code.codeDescription FROM eo_project_status_code INNER JOIN eo_project_status_code_group ON eo_project_status_code.groupID = eo_project_status_code_group.groupID WHERE projectID = ? ORDER BY eo_project_status_code.code ASC;', array($projectID));
@@ -89,21 +80,15 @@ class StatusCodeDao
 
 	/**
 	 * 修改状态码
-	 * @param $groupID 分组ID 
+	 * @param $groupID 分组ID
 	 * @param $codeID 状态码ID
 	 * @param $code 状态码
 	 * @param $codeDesc 状态码描述，默认为NULL
 	 */
-	public function editCode(&$groupID, &$codeID, &$code, &$codeDesc)
-	{
+	public function editCode(&$groupID, &$codeID, &$code, &$codeDesc) {
 		$db = getDatabase();
 
-		$db -> prepareExecute('UPDATE eo_project_status_code SET eo_project_status_code.groupID = ?, eo_project_status_code.code = ? ,eo_project_status_code.codeDescription = ? WHERE codeID = ?;', array(
-			$groupID,
-			$code,
-			$codeDesc,
-			$codeID
-		));
+		$db -> prepareExecute('UPDATE eo_project_status_code SET eo_project_status_code.groupID = ?, eo_project_status_code.code = ? ,eo_project_status_code.codeDescription = ? WHERE codeID = ?;', array($groupID, $code, $codeDesc, $codeID));
 
 		if ($db -> getAffectRow() < 1)
 			return FALSE;
@@ -116,14 +101,10 @@ class StatusCodeDao
 	 * @param $codeID 状态码ID
 	 * @param $userID 用户ID
 	 */
-	public function checkStatusCodePermission(&$codeID, &$userID)
-	{
+	public function checkStatusCodePermission(&$codeID, &$userID) {
 		$db = getDatabase();
 
-		$result = $db -> prepareExecute('SELECT eo_conn_project.projectID FROM eo_project_status_code INNER JOIN eo_conn_project INNER JOIN eo_project_status_code_group ON eo_conn_project.projectID = eo_project_status_code_group.projectID AND eo_project_status_code_group.groupID = eo_project_status_code.groupID WHERE codeID = ? AND userID = ?;', array(
-			$codeID,
-			$userID
-		));
+		$result = $db -> prepareExecute('SELECT eo_conn_project.projectID FROM eo_project_status_code INNER JOIN eo_conn_project INNER JOIN eo_project_status_code_group ON eo_conn_project.projectID = eo_project_status_code_group.projectID AND eo_project_status_code_group.groupID = eo_project_status_code.groupID WHERE codeID = ? AND userID = ?;', array($codeID, $userID));
 
 		if (empty($result))
 			return FALSE;
@@ -136,15 +117,25 @@ class StatusCodeDao
 	 * @param $projectID 项目ID
 	 * @param $tips 搜索关键字
 	 */
-	public function searchStatusCode(&$projectID, &$tips)
-	{
+	public function searchStatusCode(&$projectID, &$tips) {
 		$db = getDatabase();
 
-		$result = $db -> prepareExecuteAll('SELECT eo_project_status_code_group.groupID,eo_project_status_code_group.parentGroupID,eo_project_status_code_group.groupName,eo_project_status_code.codeID,eo_project_status_code.code,eo_project_status_code.codeDescription FROM eo_project_status_code INNER JOIN eo_project_status_code_group ON eo_project_status_code.groupID = eo_project_status_code_group.groupID WHERE projectID = ? AND (eo_project_status_code.code LIKE ? OR eo_project_status_code.codeDescription Like ?);', array(
-			$projectID,
-			'%' . $tips . '%',
-			'%' . $tips . '%'
-		));
+		$result = $db -> prepareExecuteAll('SELECT eo_project_status_code_group.groupID,eo_project_status_code_group.parentGroupID,eo_project_status_code_group.groupName,eo_project_status_code.codeID,eo_project_status_code.code,eo_project_status_code.codeDescription FROM eo_project_status_code INNER JOIN eo_project_status_code_group ON eo_project_status_code.groupID = eo_project_status_code_group.groupID WHERE projectID = ? AND (eo_project_status_code.code LIKE ? OR eo_project_status_code.codeDescription Like ?);', array($projectID, '%' . $tips . '%', '%' . $tips . '%'));
+
+		if (empty($result))
+			return FALSE;
+		else
+			return $result;
+	}
+
+	/**
+	 * 获取状态码数量
+	 * @param $projectID 项目ID
+	 */
+	public function getStatusCodeNum(&$projectID) {
+		$db = getDatabase();
+
+		$result = $db -> prepareExecute('SELECT COUNT(*) as num FROM eo_project_status_code LEFT JOIN eo_project_status_code_group ON eo_project_status_code.groupID = eo_project_status_code_group.groupID WHERE eo_project_status_code_group.projectID = ?;', array($projectID));
 
 		if (empty($result))
 			return FALSE;

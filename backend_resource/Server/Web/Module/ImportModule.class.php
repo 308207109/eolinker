@@ -14,10 +14,8 @@
  * 再次感谢您的使用，希望我们能够共同维护国内的互联网开源文明和正常商业秩序。
  *
  */
-class ImportModule
-{
-	function __construct()
-	{
+class ImportModule {
+	function __construct() {
 		@session_start();
 	}
 
@@ -25,8 +23,7 @@ class ImportModule
 	 * 导入eoapi
 	 * @param $data 从eoapi导出的Json格式数据
 	 */
-	public function eoapiImport(&$data)
-	{
+	public function eoapiImport(&$data) {
 		$dao = new ImportDao;
 		return $dao -> importEoapi($data, $_SESSION['userID']);
 	}
@@ -35,46 +32,26 @@ class ImportModule
 	 * 导入DHC
 	 * @param $data 从DHC导出的Json格式数据
 	 */
-	public function importDHC(&$data)
-	{
-		try
-		{
-			$projectInfo = array(
-				'projectName' => $data['nodes'][0]['name'],
-				'projectType' => 0,
-				'projectVersion' => 1.0
-			);
+	public function importDHC(&$data) {
+		try {
+			$projectInfo = array('projectName' => $data['nodes'][0]['name'], 'projectType' => 0, 'projectVersion' => 1.0);
 
 			//生成分组信息
-			$groupInfoList[] = array(
-				'groupName' => 'DHC导入',
-				'id' => $data['nodes'][0]['id']
-			);
-			if (is_array($data['nodes']))
-			{
-				foreach ($data['nodes'] as $element)
-				{
-					if ($element['type'] == 'Service')
-					{
-						$groupInfoList[] = array(
-							'groupName' => $element['name'],
-							'id' => $element['id']
-						);
+			$groupInfoList[] = array('groupName' => 'DHC导入', 'id' => $data['nodes'][0]['id']);
+			if (is_array($data['nodes'])) {
+				foreach ($data['nodes'] as $element) {
+					if ($element['type'] == 'Service') {
+						$groupInfoList[] = array('groupName' => $element['name'], 'id' => $element['id']);
 					}
 				}
 			}
 
-			if (is_array($groupInfoList))
-			{
-				foreach ($groupInfoList as &$groupInfo)
-				{
+			if (is_array($groupInfoList)) {
+				foreach ($groupInfoList as &$groupInfo) {
 					$apiList = array();
-					if (is_array($data['nodes']))
-					{
-						foreach ($data['nodes'] as $element)
-						{
-							if ($element['type'] != 'Request' || $element['parentId'] != $groupInfo['id'])
-							{
+					if (is_array($data['nodes'])) {
+						foreach ($data['nodes'] as $element) {
+							if ($element['type'] != 'Request' || $element['parentId'] != $groupInfo['id']) {
 								continue;
 							}
 
@@ -83,8 +60,6 @@ class ImportModule
 							$apiInfo['baseInfo']['apiProtocol'] = ($element['uri']['scheme']['name'] == 'http') ? 0 : 1;
 							$apiInfo['baseInfo']['apiStatus'] = 0;
 							$apiInfo['baseInfo']['starred'] = 0;
-							$apiInfo['baseInfo']['apiSuccessMockType'] = 0;
-							$apiInfo['baseInfo']['apiFailureMockType'] = 0;
 							$apiInfo['baseInfo']['apiSuccessMock'] = '';
 							$apiInfo['baseInfo']['apiFailureMock'] = '';
 							$apiInfo['baseInfo']['apiRequestParamType'] = 0;
@@ -93,8 +68,7 @@ class ImportModule
 							$apiInfo['baseInfo']['apiNote'] = '';
 							$apiInfo['baseInfo']['apiNoteRaw'] = '';
 							$apiInfo['baseInfo']['apiUpdateTime'] = date("Y-m-d H:i:s", time());
-							switch($element['method']['name'])
-							{
+							switch($element['method']['name']) {
 								case 'POST' :
 									$apiInfo['baseInfo']['apiRequestType'] = 0;
 									break;
@@ -120,27 +94,19 @@ class ImportModule
 
 							$headerInfo = array();
 
-							if (is_array($element['headers']))
-							{
-								foreach ($element['headers'] as $header)
-								{
-									$headerInfo[] = array(
-										'headerName' => $header['name'],
-										'headerValue' => $header['value']
-									);
+							if (is_array($element['headers'])) {
+								foreach ($element['headers'] as $header) {
+									$headerInfo[] = array('headerName' => $header['name'], 'headerValue' => $header['value']);
 								}
 							}
 							$apiInfo['headerInfo'] = $headerInfo;
 							unset($headerInfo);
 
 							$apiRequestParam = array();
-							if ($element['method']['requestBody'])
-							{
+							if ($element['method']['requestBody']) {
 								$items = $element['body']['formBody']['items'];
-								if (is_array($items))
-								{
-									foreach ($items as $item)
-									{
+								if (is_array($items)) {
+									foreach ($items as $item) {
 										$param['paramKey'] = $item['name'];
 										$param['paramValue'] = $item['value'];
 										$param['paramType'] = ($item['type'] == 'Text') ? 0 : 1;
@@ -167,9 +133,7 @@ class ImportModule
 			}
 			$dao = new ImportDao;
 			return $dao -> importOther($projectInfo, $groupInfoList, $_SESSION['userID']);
-		}
-		catch(\PDOException $e)
-		{
+		} catch(\PDOException $e) {
 			return FALSE;
 		}
 	}
@@ -178,34 +142,22 @@ class ImportModule
 	 * 导入V1版本postman
 	 * @param $data 从Postman V1版本导出的Json格式数据
 	 */
-	public function importPostmanV1(&$data)
-	{
-		try
-		{
-			$projectInfo = array(
-				'projectName' => $data['name'],
-				'projectType' => 0,
-				'projectVersion' => 1.0
-			);
+	public function importPostmanV1(&$data) {
+		try {
+			$projectInfo = array('projectName' => $data['name'], 'projectType' => 0, 'projectVersion' => 1.0);
 
 			$groupInfoList[] = array('groupName' => 'PostMan导入');
 
 			$apiList = array();
-			if (is_array($groupInfoList))
-			{
-				foreach ($groupInfoList as &$groupInfo)
-				{
-					if (is_array($data['requests']))
-					{
-						foreach ($data['requests'] as $request)
-						{
+			if (is_array($groupInfoList)) {
+				foreach ($groupInfoList as &$groupInfo) {
+					if (is_array($data['requests'])) {
+						foreach ($data['requests'] as $request) {
 							$apiInfo['baseInfo']['apiName'] = $request['name'];
 							$apiInfo['baseInfo']['apiURI'] = $request['url'];
 							$apiInfo['baseInfo']['apiProtocol'] = (strpos($request['url'], 'https') !== 0) ? 0 : 1;
 							$apiInfo['baseInfo']['apiStatus'] = 0;
 							$apiInfo['baseInfo']['starred'] = 0;
-							$apiInfo['baseInfo']['apiSuccessMockType'] = 0;
-							$apiInfo['baseInfo']['apiFailureMockType'] = 0;
 							$apiInfo['baseInfo']['apiSuccessMock'] = '';
 							$apiInfo['baseInfo']['apiFailureMock'] = '';
 							$apiInfo['baseInfo']['apiRequestParamType'] = 0;
@@ -214,8 +166,7 @@ class ImportModule
 							$apiInfo['baseInfo']['apiNote'] = '';
 							$apiInfo['baseInfo']['apiNoteRaw'] = '';
 							$apiInfo['baseInfo']['apiUpdateTime'] = date("Y-m-d H:i:s", time());
-							switch($request['method'])
-							{
+							switch($request['method']) {
 								case 'POST' :
 									$apiInfo['baseInfo']['apiRequestType'] = 0;
 									break;
@@ -242,17 +193,11 @@ class ImportModule
 							$headerInfo = array();
 							$header_rows = array_filter(explode(chr(10), $request['headers']), "trim");
 
-							if (is_array($header_rows))
-							{
-								foreach ($header_rows as $row)
-								{
+							if (is_array($header_rows)) {
+								foreach ($header_rows as $row) {
 									$keylen = strpos($row, ':');
-									if ($keylen)
-									{
-										$headerInfo[] = array(
-											'headerName' => substr($row, 0, $keylen),
-											'headerValue' => trim(substr($row, $keylen + 1))
-										);
+									if ($keylen) {
+										$headerInfo[] = array('headerName' => substr($row, 0, $keylen), 'headerValue' => trim(substr($row, $keylen + 1)));
 									}
 								}
 							}
@@ -261,10 +206,8 @@ class ImportModule
 
 							$apiRequestParam = array();
 							$items = $request['data'];
-							if (is_array($items))
-							{
-								foreach ($items as $item)
-								{
+							if (is_array($items)) {
+								foreach ($items as $item) {
 									$param['paramKey'] = $item['key'];
 									$param['paramValue'] = $item['value'];
 									$param['paramType'] = ($item['type'] == 'text') ? 0 : 1;
@@ -290,9 +233,7 @@ class ImportModule
 			}
 			$dao = new ImportDao;
 			return $dao -> importOther($projectInfo, $groupInfoList, $_SESSION['userID']);
-		}
-		catch(\PDOException $e)
-		{
+		} catch(\PDOException $e) {
 			return FALSE;
 		}
 	}
@@ -301,35 +242,23 @@ class ImportModule
 	 * 导入V2版本postman
 	 * @param $data 从Postman V2版本导出的Json格式数据
 	 */
-	public function importPostmanV2(&$data)
-	{
-		try
-		{
-			$projectInfo = array(
-				'projectName' => $data['info']['name'],
-				'projectType' => 0,
-				'projectVersion' => 1.0
-			);
+	public function importPostmanV2(&$data) {
+		try {
+			$projectInfo = array('projectName' => $data['info']['name'], 'projectType' => 0, 'projectVersion' => 1.0);
 
 			$groupInfoList[] = array('groupName' => 'PostMan导入');
 
 			$apiList = array();
 
-			if (is_array($groupInfoList))
-			{
-				foreach ($groupInfoList as &$groupInfo)
-				{
-					if (is_array($data['item']))
-					{
-						foreach ($data['item'] as $item)
-						{
+			if (is_array($groupInfoList)) {
+				foreach ($groupInfoList as &$groupInfo) {
+					if (is_array($data['item'])) {
+						foreach ($data['item'] as $item) {
 							$apiInfo['baseInfo']['apiName'] = $item['name'];
 							$apiInfo['baseInfo']['apiURI'] = $item['request']['url'];
 							$apiInfo['baseInfo']['apiProtocol'] = (strpos($item['request']['url'], 'https') !== 0) ? 0 : 1;
 							$apiInfo['baseInfo']['apiStatus'] = 0;
 							$apiInfo['baseInfo']['starred'] = 0;
-							$apiInfo['baseInfo']['apiSuccessMockType'] = 0;
-							$apiInfo['baseInfo']['apiFailureMockType'] = 0;
 							$apiInfo['baseInfo']['apiSuccessMock'] = '';
 							$apiInfo['baseInfo']['apiFailureMock'] = '';
 							$apiInfo['baseInfo']['apiRequestParamType'] = 0;
@@ -338,8 +267,7 @@ class ImportModule
 							$apiInfo['baseInfo']['apiNote'] = '';
 							$apiInfo['baseInfo']['apiNoteRaw'] = '';
 							$apiInfo['baseInfo']['apiUpdateTime'] = date("Y-m-d H:i:s", time());
-							switch($item['request']['method'])
-							{
+							switch($item['request']['method']) {
 								case 'POST' :
 									$apiInfo['baseInfo']['apiRequestType'] = 0;
 									break;
@@ -364,27 +292,19 @@ class ImportModule
 							}
 
 							$headerInfo = array();
-							if (is_array($item['request']['header']))
-							{
-								foreach ($item['request']['header'] as $header)
-								{
-									$headerInfo[] = array(
-										'headerName' => $header['key'],
-										'headerValue' => $header['value']
-									);
+							if (is_array($item['request']['header'])) {
+								foreach ($item['request']['header'] as $header) {
+									$headerInfo[] = array('headerName' => $header['key'], 'headerValue' => $header['value']);
 								}
 							}
 							$apiInfo['headerInfo'] = $headerInfo;
 							unset($headerInfo);
 
 							$apiRequestParam = array();
-							if ($item['request']['body']['mode'] == 'formdata')
-							{
+							if ($item['request']['body']['mode'] == 'formdata') {
 								$parameters = $item['request']['body']['formdata'];
-								if (is_array($parameters))
-								{
-									foreach ($parameters as $parameter)
-									{
+								if (is_array($parameters)) {
+									foreach ($parameters as $parameter) {
 										$param['paramKey'] = $parameter['key'];
 										$param['paramValue'] = $parameter['value'];
 										$param['paramType'] = ($parameter['type'] == 'text') ? 0 : 1;
@@ -412,9 +332,7 @@ class ImportModule
 			}
 			$dao = new ImportDao;
 			return $dao -> importOther($projectInfo, $groupInfoList, $_SESSION['userID']);
-		}
-		catch(\PDOException $e)
-		{
+		} catch(\PDOException $e) {
 			return FALSE;
 		}
 	}

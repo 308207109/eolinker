@@ -115,6 +115,7 @@
                     Api.Code.Delete({ codeID: codeID }).$promise.then(function(data) {
                         if (data.statusCode == code) {
                             vm.query.splice(index, 1);
+                            $scope.$emit('$numChange',1);
                             vm.InfoModel('状态码删除成功', 'success');
                         }
                     })

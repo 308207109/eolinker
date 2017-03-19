@@ -219,6 +219,7 @@
                         if (data.statusCode == code) {
                             vm.back();
                             vm.InfoModel('Api删除成功，已移入回收站', 'success');
+                            $scope.$emit('$numChange',1);
                         }
                     })
                 }

@@ -14,10 +14,8 @@
  * 再次感谢您的使用，希望我们能够共同维护国内的互联网开源文明和正常商业秩序。
  *
  */
-class ProjectModule
-{
-	public function __construct()
-	{
+class ProjectModule {
+	public function __construct() {
 		@session_start();
 	}
 
@@ -27,8 +25,7 @@ class ProjectModule
 	 * @param $projectType 项目类型 [0/1/2/3]=>[Web/App/PC/其他]
 	 * @param $projectVersion 项目版本，默认为1.0
 	 */
-	public function addProject(&$projectName, &$projectType = 0, &$projectVersion = 1.0)
-	{
+	public function addProject(&$projectName, &$projectType = 0, &$projectVersion = 1.0) {
 		$projectDao = new ProjectDao;
 		$projectInfo = $projectDao -> addProject($projectName, $projectType, $projectVersion, $_SESSION['userID']);
 		$groupDao = new GroupDao;
@@ -41,14 +38,11 @@ class ProjectModule
 	 * 删除项目
 	 * @param $projectID 项目ID
 	 */
-	public function deleteProject(&$projectID)
-	{
+	public function deleteProject(&$projectID) {
 		$dao = new ProjectDao;
-		if ($dao -> checkProjectPermission($projectID, $_SESSION['userID']))
-		{
+		if ($dao -> checkProjectPermission($projectID, $_SESSION['userID'])) {
 			return $dao -> deleteProject($projectID);
-		}
-		else
+		} else
 			return FALSE;
 	}
 
@@ -57,8 +51,7 @@ class ProjectModule
 	 * @param $projectType 项目类型 [-1/0/1/2/3]=>[全部/Web/App/PC/其他]
 	 * @param $projectName 项目名
 	 */
-	public function getProjectList(&$projectType = -1, &$projectName = NULL)
-	{
+	public function getProjectList(&$projectType = -1, &$projectName = NULL) {
 		$dao = new ProjectDao;
 		return $dao -> getProjectList($_SESSION['userID'], $projectType, $projectName);
 	}
@@ -70,14 +63,11 @@ class ProjectModule
 	 * @param $projectType 项目类型 [0/1/2/3]=>[Web/App/PC/其他]
 	 * @param $projectVersion 项目版本，默认为1.0
 	 */
-	public function editProject(&$projectID, &$projectName, &$projectType, &$projectVersion = 1.0)
-	{
+	public function editProject(&$projectID, &$projectName, &$projectType, &$projectVersion = 1.0) {
 		$dao = new ProjectDao;
-		if ($dao -> checkProjectPermission($projectID, $_SESSION['userID']))
-		{
+		if ($dao -> checkProjectPermission($projectID, $_SESSION['userID'])) {
 			return $dao -> editProject($projectID, $projectName, $projectType, $projectVersion);
-		}
-		else
+		} else
 			return FALSE;
 	}
 
@@ -85,14 +75,11 @@ class ProjectModule
 	 * 获取项目信息
 	 * @param $projectID 项目ID
 	 */
-	public function getProject(&$projectID)
-	{
+	public function getProject(&$projectID) {
 		$dao = new ProjectDao;
-		if ($dao -> checkProjectPermission($projectID, $_SESSION['userID']))
-		{
+		if ($dao -> checkProjectPermission($projectID, $_SESSION['userID'])) {
 			return $dao -> getProject($projectID, $_SESSION['userID']);
-		}
-		else
+		} else
 			return FALSE;
 	}
 
@@ -100,8 +87,7 @@ class ProjectModule
 	 * 更新项目更新时间
 	 * @param $projectID 项目ID
 	 */
-	public function updateProjectUpdateTime(&$projectID)
-	{
+	public function updateProjectUpdateTime(&$projectID) {
 		$dao = new ProjectDao;
 		if ($dao -> updateProjectUpdateTime($projectID))
 			return TRUE;
@@ -113,14 +99,11 @@ class ProjectModule
 	 * 获取环境列表
 	 * @param $projectID 项目ID
 	 */
-	public function getEnvList(&$projectID)
-	{
+	public function getEnvList(&$projectID) {
 		$dao = new ProjectDao;
-		if ($dao -> checkProjectPermission($projectID, $_SESSION['userID']))
-		{
+		if ($dao -> checkProjectPermission($projectID, $_SESSION['userID'])) {
 			return $dao -> getEnvList($projectID);
-		}
-		else
+		} else
 			return FALSE;
 	}
 
@@ -130,14 +113,11 @@ class ProjectModule
 	 * @param $envName 环境名
 	 * @param $envURI 环境地址
 	 */
-	public function addEnv(&$projectID, &$envName, &$envURI)
-	{
+	public function addEnv(&$projectID, &$envName, &$envURI) {
 		$dao = new ProjectDao;
-		if ($dao -> checkProjectPermission($projectID, $_SESSION['userID']))
-		{
+		if ($dao -> checkProjectPermission($projectID, $_SESSION['userID'])) {
 			return $dao -> addEnv($projectID, $envName, $envURI);
-		}
-		else
+		} else
 			return FALSE;
 	}
 
@@ -146,14 +126,11 @@ class ProjectModule
 	 * @param $projectID 项目ID
 	 * @param $envID 环境ID
 	 */
-	public function deleteEnv(&$projectID, &$envID)
-	{
+	public function deleteEnv(&$projectID, &$envID) {
 		$dao = new ProjectDao;
-		if ($dao -> checkProjectPermission($projectID, $_SESSION['userID']))
-		{
+		if ($dao -> checkProjectPermission($projectID, $_SESSION['userID'])) {
 			return $dao -> deleteEnv($projectID, $envID);
-		}
-		else
+		} else
 			return FALSE;
 	}
 
@@ -164,14 +141,11 @@ class ProjectModule
 	 * @param $envName 环境名
 	 * @param $envURI 环境地址
 	 */
-	public function editEnv(&$projectID, &$envID, &$envName, &$envURI)
-	{
+	public function editEnv(&$projectID, &$envID, &$envName, &$envURI) {
 		$dao = new ProjectDao;
-		if ($dao -> checkProjectPermission($projectID, $_SESSION['userID']))
-		{
+		if ($dao -> checkProjectPermission($projectID, $_SESSION['userID'])) {
 			return $dao -> editEnv($envID, $envName, $envURI);
-		}
-		else
+		} else
 			return FALSE;
 	}
 
@@ -179,17 +153,26 @@ class ProjectModule
 	 * 导出项目
 	 * @param $projectID 项目ID
 	 */
-	public function dumpProject(&$projectID)
-	{
+	public function dumpProject(&$projectID) {
 		$dao = new ProjectDao;
-		if ($dao -> checkProjectPermission($projectID, $_SESSION['userID']))
-		{
+		if ($dao -> checkProjectPermission($projectID, $_SESSION['userID'])) {
 			$dumpJson = json_encode($dao -> dumpProject($projectID));
 			$fileName = 'eoapi_dump_' . $_SESSION['userName'] . '_' . time() . '.json';
 			if (file_put_contents(realpath('./dump') . DIRECTORY_SEPARATOR . $fileName, $dumpJson))
 				return $fileName;
-		}
-		else
+		} else
+			return FALSE;
+	}
+
+	/**
+	 * 获取api数量
+	 * @param $projectID 项目ID
+	 */
+	public function getApiNum(&$projectID) {
+		$dao = new ProjectDao;
+		if ($dao -> checkProjectPermission($projectID, $_SESSION['userID'])) {
+			return $dao -> getApiNum($projectID);
+		} else
 			return FALSE;
 	}
 

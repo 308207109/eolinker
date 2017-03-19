@@ -14,20 +14,17 @@
  * 再次感谢您的使用，希望我们能够共同维护国内的互联网开源文明和正常商业秩序。
  *
  */
-class ImportController
-{
+class ImportController {
 	// 返回json类型
 	private $returnJson = array('type' => 'import');
-	
+
 	/**
 	 * 检查登录状态
 	 */
-	public function __construct()
-	{
+	public function __construct() {
 		// 身份验证
 		$server = new GuestModule;
-		if (!$server -> checkLogin())
-		{
+		if (!$server -> checkLogin()) {
 			$this -> returnJson['statusCode'] = '120005';
 			exitOutput($this -> returnJson);
 		}
@@ -36,23 +33,18 @@ class ImportController
 	/**
 	 * 导入eoapi数据
 	 */
-	public function importEoapi()
-	{
+	public function importEoapi() {
 		$json = quickInput('data');
 		$data = json_decode($json, TRUE);
-		if (!$data)
-		{
+		if (!$data) {
 			$this -> returnJson['statusCode'] = '310004';
 			exitOutput($this -> returnJson);
 		}
 		$server = new ImportModule;
 		$result = $server -> eoapiImport($data);
-		if ($result)
-		{
+		if ($result) {
 			$this -> returnJson['statusCode'] = '000000';
-		}
-		else
-		{
+		} else {
 			$this -> returnJson['statusCode'] = '310005';
 		}
 		exitOutput($this -> returnJson);
@@ -61,23 +53,18 @@ class ImportController
 	/**
 	 * 导入DHC数据
 	 */
-	public function importDHC()
-	{
+	public function importDHC() {
 		$json = quickInput('data');
 		$data = json_decode($json, TRUE);
-		if (!$data)
-		{
+		if (!$data) {
 			$this -> returnJson['statusCode'] = '310004';
 			exitOutput($this -> returnJson);
 		}
 		$server = new ImportModule;
 		$result = $server -> importDHC($data);
-		if ($result)
-		{
+		if ($result) {
 			$this -> returnJson['statusCode'] = '000000';
-		}
-		else
-		{
+		} else {
 			$this -> returnJson['statusCode'] = '310001';
 		}
 		exitOutput($this -> returnJson);
@@ -86,36 +73,26 @@ class ImportController
 	/**
 	 * 导入postman数据
 	 */
-	public function importPostman()
-	{
+	public function importPostman() {
 		$json = quickInput('data');
 		$data = json_decode($json, TRUE);
 		$version = securelyInput('version');
-		if (!$data)
-		{
+		if (!$data) {
 			$this -> returnJson['statusCode'] = '310004';
 			exitOutput($this -> returnJson);
-		}
-		elseif ($version != 1 and $version != 2)
-		{
+		} elseif ($version != 1 and $version != 2) {
 			$this -> returnJson['statusCode'] = '310002';
 			exitOutput($this -> returnJson);
 		}
 		$server = new ImportModule;
-		if ($version == 1)
-		{
+		if ($version == 1) {
 			$result = $server -> importPostmanV1($data);
-		}
-		else
-		{
+		} else {
 			$result = $server -> importPostmanV2($data);
 		}
-		if ($result)
-		{
+		if ($result) {
 			$this -> returnJson['statusCode'] = '000000';
-		}
-		else
-		{
+		} else {
 			$this -> returnJson['statusCode'] = '310003';
 		}
 		exitOutput($this -> returnJson);

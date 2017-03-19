@@ -14,8 +14,7 @@
  * 再次感谢您的使用，希望我们能够共同维护国内的互联网开源文明和正常商业秩序。
  *
  */
-class InstallModule
-{
+class InstallModule {
 	/**
 	 * 检测环境
 	 * @param $dbURL 数据库主机地址
@@ -23,60 +22,61 @@ class InstallModule
 	 * @param $dbUser 数据库用户名
 	 * @param $dbPassword 数据库密码
 	 */
-	public function checkoutEnv(&$dbURL, &$dbName, &$dbUser, &$dbPassword)
-	{
-		//检测配置目录写入权限
-		if (@file_put_contents(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'fileWriteTest.txt', 'ok'))
-		{
-			$result['fileWrite'] = 1;
-			unlink(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'fileWriteTest.txt');
-
-			//检测导出目录写入权限
-			if (@file_put_contents('./dump' . DIRECTORY_SEPARATOR . 'fileWriteTest.txt', 'ok'))
-			{
+	public function checkoutEnv(&$dbURL, &$dbName, &$dbUser, &$dbPassword) {
+		try {
+			//检测配置目录写入权限
+			if (@file_put_contents(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'fileWriteTest.txt', 'ok')) {
 				$result['fileWrite'] = 1;
-				unlink('./dump' . DIRECTORY_SEPARATOR . 'fileWriteTest.txt');
+				unlink(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'fileWriteTest.txt');
 
-				//检测根目录写入权限
-				if (@file_put_contents('../fileWriteTest.txt', 'ok'))
-				{
+				//检测导出目录写入权限
+				if (@file_put_contents('./dump' . DIRECTORY_SEPARATOR . 'fileWriteTest.txt', 'ok')) {
 					$result['fileWrite'] = 1;
-					unlink('../fileWriteTest.txt');
-				}
-				else
+					unlink('./dump' . DIRECTORY_SEPARATOR . 'fileWriteTest.txt');
+
+					//检测根目录写入权限
+					if (@file_put_contents('../fileWriteTest.txt', 'ok')) {
+						$result['fileWrite'] = 1;
+						unlink('../fileWriteTest.txt');
+					} else
+						$result['fileWrite'] = 0;
+				} else
 					$result['fileWrite'] = 0;
-			}
-			else
+			} else
 				$result['fileWrite'] = 0;
-		}
-		else
-			$result['fileWrite'] = 0;
-			
-		//检测数据库连接
-		$dbURL = explode(':', $dbURL);
-		if (empty($dbURL[1]))
-			$dbURL[1] = '3306';
 
-		$conInfo = 'mysql:host=' . $dbURL[0] . ';port=' . $dbURL[1] . ';dbname=' . $dbName . ';charset=utf8';
-		try
-		{
-			@$con = new \PDO($conInfo, $dbUser, $dbPassword);
-			$result['db'] = 1;
-		}
-		catch(\PDOException $e)
-		{
-			$result['db'] = 0;
-		}
+			//检测数据库连接
+			$dbURL = explode(':', $dbURL);
+			if (empty($dbURL[1]))
+				$dbURL[1] = '3306';
 
-		//检测CURL
-		@$ch = curl_init(realpath('./index.php'));
-		if ($ch)
-		{
-			curl_close($ch);
-			$result['curl'] = 1;
+			if (!class_exists('PDO')) {
+				var_dump('error');
+				$result['db'] = 0;
+			} else {
+				$conInfo = 'mysql:host=' . $dbURL[0] . ';port=' . $dbURL[1] . ';dbname=' . $dbName . ';charset=utf8';
+				try {
+					@$con = new \PDO($conInfo, $dbUser, $dbPassword);
+					$result['db'] = 1;
+				} catch(\PDOException $e) {
+					$result['db'] = 0;
+				}
+			}
+
+			//检测CURL
+			if (!function_exists('curl_init')) {
+				$result['curl'] = 0;
+			} else {
+				@$ch = curl_init(realpath('./index.php'));
+				if ($ch) {
+					curl_close($ch);
+					$result['curl'] = 1;
+				} else
+					$result['curl'] = 0;
+			}
+		} catch(\PDOException $e) {
+			return array('error' => $e -> getMessage());
 		}
-		else
-			$result['curl'] = 0;
 
 		return $result;
 	}
@@ -88,10 +88,8 @@ class InstallModule
 	 * @param $dbUser 数据库用户名
 	 * @param $dbPassword 数据库密码
 	 */
-	public function createConfigFile(&$dbURL, &$dbName, &$dbUser, &$dbPassword)
-	{
-		if (file_exists(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'eo_config.php'))
-		{
+	public function createConfigFile(&$dbURL, &$dbName, &$dbUser, &$dbPassword, &$websiteName) {
+		if (file_exists(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'eo_config.php')) {
 			//不存在配置文件，需要跳转至引导页面进行安装
 			unlink(realpath(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'eo_config.php'));
 		}
@@ -99,6 +97,8 @@ class InstallModule
 		$dbURL = explode(':', $dbURL);
 		if (empty($dbURL[1]))
 			$dbURL[1] = '3306';
+
+		$websiteName = isset($websiteName) ? $websiteName : 'eolinker开源版';
 
 		$config = "<?php
 //主机地址
@@ -121,6 +121,9 @@ defined('ALLOW_REGISTER') or define('ALLOW_REGISTER', TRUE);
 
 //是否允许更新项目，如果设置为FALSE，那么自动更新和手动更新都将失效
 defined('ALLOW_UPDATE') or define('ALLOW_UPDATE', TRUE);
+
+//网站名称
+defined('WEBSITE_NAME') or define('WEBSITE_NAME', '{$websiteName}');
 ?>";
 		if ($configFile = file_put_contents(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'eo_config.php', $config))
 			return TRUE;
@@ -131,8 +134,7 @@ defined('ALLOW_UPDATE') or define('ALLOW_UPDATE', TRUE);
 	/**
 	 * 安装数据库
 	 */
-	public function installDatabase()
-	{
+	public function installDatabase() {
 		//读取数据库文件
 		$sql = file_get_contents(PATH_FW . DIRECTORY_SEPARATOR . 'db/eoapi_os_mysql.sql');
 		$sqlArray = array_filter(explode(';', $sql));

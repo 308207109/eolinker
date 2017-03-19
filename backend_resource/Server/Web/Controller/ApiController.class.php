@@ -14,20 +14,17 @@
  * 再次感谢您的使用，希望我们能够共同维护国内的互联网开源文明和正常商业秩序。
  *
  */
-class ApiController
-{
+class ApiController {
 	// 返回json类型
 	private $returnJson = array('type' => 'api');
-	
+
 	/**
 	 * 验证登录状态
 	 */
-	public function __construct()
-	{
+	public function __construct() {
 		// 身份验证
 		$server = new GuestModule;
-		if (!$server -> checkLogin())
-		{
+		if (!$server -> checkLogin()) {
 			$this -> returnJson['statusCode'] = '120005';
 			exitOutput($this -> returnJson);
 		}
@@ -36,16 +33,13 @@ class ApiController
 	/**
 	 * 添加api
 	 */
-	public function addApi()
-	{
+	public function addApi() {
 		$apiName = securelyInput('apiName');
 		$apiURI = securelyInput('apiURI');
 		$apiProtocol = securelyInput('apiProtocol');
 		$apiRequestType = securelyInput('apiRequestType');
 		$apiSuccessMock = quickInput('apiSuccessMock');
-		$apiSuccessMockType = securelyInput('apiSuccessMockType');
 		$apiFailureMock = quickInput('apiFailureMock');
-		$apiFailureMockType = securelyInput('apiFailureMockType');
 		$apiStatus = securelyInput('apiStatus');
 		$groupID = securelyInput('groupID');
 		$starred = securelyInput('starred');
@@ -59,15 +53,12 @@ class ApiController
 		$apiResultParam = json_decode($_POST['apiResultParam'], TRUE);
 
 		$service = new ApiModule;
-		$result = $service -> addApi($apiName, $apiURI, $apiProtocol, $apiSuccessMock, $apiSuccessMockType, $apiFailureMock, $apiFailureMockType, $apiRequestType, $apiStatus, $groupID, $apiHeader, $apiRequestParam, $apiResultParam, $starred, $apiNoteType, $apiNoteRaw, $apiNote, $apiRequestParamType, $apiRequestRaw);
-		if ($result)
-		{
+		$result = $service -> addApi($apiName, $apiURI, $apiProtocol, $apiSuccessMock, $apiFailureMock, $apiRequestType, $apiStatus, $groupID, $apiHeader, $apiRequestParam, $apiResultParam, $starred, $apiNoteType, $apiNoteRaw, $apiNote, $apiRequestParamType, $apiRequestRaw);
+		if ($result) {
 			$this -> returnJson['statusCode'] = '000000';
 			$this -> returnJson['apiID'] = $result['apiID'];
 			$this -> returnJson['groupID'] = $result['groupID'];
-		}
-		else
-		{
+		} else {
 			$this -> returnJson['statusCode'] = '160000';
 		}
 		exitOutput($this -> returnJson);
@@ -76,17 +67,14 @@ class ApiController
 	/**
 	 * 编辑api
 	 */
-	public function editApi()
-	{
+	public function editApi() {
 		$apiID = securelyInput('apiID');
 		$apiName = securelyInput('apiName');
 		$apiURI = securelyInput('apiURI');
 		$apiProtocol = securelyInput('apiProtocol');
 		$apiRequestType = securelyInput('apiRequestType');
 		$apiSuccessMock = quickInput('apiSuccessMock');
-		$apiSuccessMockType = securelyInput('apiSuccessMockType');
 		$apiFailureMock = quickInput('apiFailureMock');
-		$apiFailureMockType = securelyInput('apiFailureMockType');
 		$apiStatus = securelyInput('apiStatus');
 		$apiStatus = securelyInput('apiStatus');
 		$starred = securelyInput('starred');
@@ -101,15 +89,12 @@ class ApiController
 		$apiResultParam = json_decode($_POST['apiResultParam'], TRUE);
 
 		$service = new ApiModule;
-		$result = $service -> editApi($apiID, $apiName, $apiURI, $apiProtocol, $apiSuccessMock, $apiSuccessMockType, $apiFailureMock, $apiFailureMockType, $apiRequestType, $apiStatus, $groupID, $apiHeader, $apiRequestParam, $apiResultParam, $starred, $apiNoteType, $apiNoteRaw, $apiNote, $apiRequestParamType, $apiRequestRaw);
-		if ($result)
-		{
+		$result = $service -> editApi($apiID, $apiName, $apiURI, $apiProtocol, $apiSuccessMock, $apiFailureMock, $apiRequestType, $apiStatus, $groupID, $apiHeader, $apiRequestParam, $apiResultParam, $starred, $apiNoteType, $apiNoteRaw, $apiNote, $apiRequestParamType, $apiRequestRaw);
+		if ($result) {
 			$this -> returnJson['statusCode'] = '000000';
 			$this -> returnJson['apiID'] = $result['apiID'];
 			$this -> returnJson['groupID'] = $result['groupID'];
-		}
-		else
-		{
+		} else {
 			$this -> returnJson['statusCode'] = '160000';
 		}
 		exitOutput($this -> returnJson);
@@ -118,29 +103,22 @@ class ApiController
 	/**
 	 * 删除api,将其移入回收站
 	 */
-	public function removeApi()
-	{
+	public function removeApi() {
 		$apiID = securelyInput('apiID');
 		//判断apiID格式是否合法
-		if (preg_match('/^[0-9]{1,11}$/', $apiID))
-		{
+		if (preg_match('/^[0-9]{1,11}$/', $apiID)) {
 			//apiID格式合法
 			$service = new ApiModule;
 			$result = $service -> removeApi($apiID);
 			//判断删除api是否成功
-			if ($result)
-			{
+			if ($result) {
 				//删除api成功
 				$this -> returnJson['statusCode'] = '000000';
-			}
-			else
-			{
+			} else {
 				//删除api失败
 				$this -> returnJson['statusCode'] = '160008';
 			}
-		}
-		else
-		{
+		} else {
 			//apiID格式不合法
 			$this -> returnJson['statusCode'] = '160001';
 		}
@@ -150,25 +128,18 @@ class ApiController
 	/**
 	 * 恢复api
 	 */
-	public function recoverApi()
-	{
+	public function recoverApi() {
 		$apiID = securelyInput('apiID');
 		//判断apiID格式是否合法
-		if (preg_match('/^[0-9]{1,11}$/', $apiID))
-		{
+		if (preg_match('/^[0-9]{1,11}$/', $apiID)) {
 			$service = new ApiModule;
 			$result = $service -> recoverApi($apiID);
-			if ($result)
-			{
+			if ($result) {
 				$this -> returnJson['statusCode'] = '000000';
-			}
-			else
-			{
+			} else {
 				$this -> returnJson['statusCode'] = '160009';
 			}
-		}
-		else
-		{
+		} else {
 			//apiID格式不合法
 			$this -> returnJson['statusCode'] = '160001';
 		}
@@ -178,25 +149,18 @@ class ApiController
 	/**
 	 * 彻底删除api
 	 */
-	public function deleteApi()
-	{
+	public function deleteApi() {
 		$apiID = securelyInput('apiID');
 		//判断apiID格式是否合法
-		if (preg_match('/^[0-9]{1,11}$/', $apiID))
-		{
+		if (preg_match('/^[0-9]{1,11}$/', $apiID)) {
 			$service = new ApiModule;
 			$result = $service -> deleteApi($apiID);
-			if ($result)
-			{
+			if ($result) {
 				$this -> returnJson['statusCode'] = '000000';
-			}
-			else
-			{
+			} else {
 				$this -> returnJson['statusCode'] = '160010';
 			}
-		}
-		else
-		{
+		} else {
 			//apiID格式不合法
 			$this -> returnJson['statusCode'] = '160001';
 		}
@@ -206,23 +170,16 @@ class ApiController
 	/**
 	 * 清空回收站
 	 */
-	public function cleanRecyclingStation()
-	{
+	public function cleanRecyclingStation() {
 		$projectID = securelyInput('projectID');
-		if (!preg_match('/^[0-9]{1,11}$/', $projectID))
-		{
+		if (!preg_match('/^[0-9]{1,11}$/', $projectID)) {
 			$this -> returnJson['statusCode'] = '160002';
-		}
-		else
-		{
+		} else {
 			$service = new ApiModule;
 			$result = $service -> cleanRecyclingStation($projectID);
-			if ($result)
-			{
+			if ($result) {
 				$this -> returnJson['statusCode'] = '000000';
-			}
-			else
-			{
+			} else {
 				$this -> returnJson['statusCode'] = '160011';
 			}
 		}
@@ -232,51 +189,40 @@ class ApiController
 	/**
 	 * 获取回收站api列表
 	 */
-	public function getRecyclingStationApiList()
-	{
+	public function getRecyclingStationApiList() {
 		$projectID = securelyInput('projectID');
 		$orderBy = securelyInput('orderBy', 0);
 		$asc = securelyInput('asc', 0);
-		if (preg_match('/^[0-9]{1,11}$/', $projectID))
-		{
+		if (preg_match('/^[0-9]{1,11}$/', $projectID)) {
 			$service = new ApiModule;
 
 			//判断排序方式
-			switch($orderBy)
-			{
+			switch($orderBy) {
 				//名称排序
-				case 0 :
-				{
+				case 0 : {
 					$result = $service -> getRecyclingStationApiListOrderByName($projectID, $asc);
 					break;
 				}
 				//时间排序
-				case 1 :
-				{
+				case 1 : {
 					$result = $service -> getRecyclingStationApiListOrderByRemoveTime($projectID, $asc);
 					break;
 
 				}
 				//星标排序
-				case 2 :
-				{
+				case 2 : {
 					$result = $service -> getRecyclingStationApiListOrderByStarred($projectID, $asc);
 					break;
 				}
 			}
 
-			if ($result)
-			{
+			if ($result) {
 				$this -> returnJson['statusCode'] = '000000';
 				$this -> returnJson['apiList'] = $result;
-			}
-			else
-			{
+			} else {
 				$this -> returnJson['statusCode'] = '160007';
 			}
-		}
-		else
-		{
+		} else {
 			$this -> returnJson['statusCode'] = '160002';
 		}
 		exitOutput($this -> returnJson);
@@ -285,51 +231,40 @@ class ApiController
 	/**
 	 * 获取api列表
 	 */
-	public function getApiList()
-	{
+	public function getApiList() {
 		$groupID = securelyInput('groupID');
 		$orderBy = securelyInput('orderBy', 0);
 		$asc = securelyInput('asc', 0);
-		if (preg_match('/^[0-9]{1,11}$/', $groupID))
-		{
+		if (preg_match('/^[0-9]{1,11}$/', $groupID)) {
 			$service = new ApiModule;
 
 			//判断排序方式
-			switch($orderBy)
-			{
+			switch($orderBy) {
 				//名称排序
-				case 0 :
-				{
+				case 0 : {
 					$result = $service -> getApiListOrderByName($groupID, $asc);
 					break;
 				}
 				//时间排序
-				case 1 :
-				{
+				case 1 : {
 					$result = $service -> getApiListOrderByTime($groupID, $asc);
 					break;
 				}
 				//星标排序
-				case 2 :
-				{
+				case 2 : {
 					$asc = 1;
 					$result = $service -> getApiListOrderByStarred($groupID, $asc);
 					break;
 				}
 			}
 
-			if ($result)
-			{
+			if ($result) {
 				$this -> returnJson['statusCode'] = '000000';
 				$this -> returnJson['apiList'] = $result;
-			}
-			else
-			{
+			} else {
 				$this -> returnJson['statusCode'] = '160000';
 			}
-		}
-		else
-		{
+		} else {
 			$this -> returnJson['statusCode'] = '160002';
 		}
 		exitOutput($this -> returnJson);
@@ -338,30 +273,22 @@ class ApiController
 	/**
 	 * 获取api详情
 	 */
-	public function getApi()
-	{
+	public function getApi() {
 		$apiID = securelyInput('apiID');
-		if (preg_match('/^[0-9]{1,11}$/', $apiID))
-		{
+		if (preg_match('/^[0-9]{1,11}$/', $apiID)) {
 			$service = new ApiModule;
 			$result = $service -> getApi($apiID);
-			if ($result)
-			{
+			if ($result) {
 				$this -> returnJson['statusCode'] = '000000';
-				foreach ($result['testHistory'] as &$history)
-				{
+				foreach ($result['testHistory'] as &$history) {
 					$history['requestInfo'] = json_decode($history['requestInfo'], TRUE);
 					$history['resultInfo'] = json_decode($history['resultInfo'], TRUE);
 				}
 				$this -> returnJson['apiInfo'] = $result;
-			}
-			else
-			{
+			} else {
 				$this -> returnJson['statusCode'] = '160000';
 			}
-		}
-		else
-		{
+		} else {
 			$this -> returnJson['statusCode'] = '160001';
 		}
 		exitOutput($this -> returnJson);
@@ -370,50 +297,39 @@ class ApiController
 	/**
 	 * 获取所有分组的api
 	 */
-	public function getAllApiList()
-	{
+	public function getAllApiList() {
 		$projectID = securelyInput('projectID');
 		$orderBy = securelyInput('orderBy', 0);
 		$asc = securelyInput('asc', 0);
-		if (preg_match('/^[0-9]{1,11}$/', $projectID))
-		{
+		if (preg_match('/^[0-9]{1,11}$/', $projectID)) {
 			$service = new ApiModule;
 
-			switch($orderBy)
-			{
+			switch($orderBy) {
 				//名称排序
-				case 0 :
-				{
+				case 0 : {
 					$result = $service -> getAllApiListOrderByName($projectID, $asc);
 					break;
 				}
 				//时间排序
-				case 1 :
-				{
+				case 1 : {
 					$result = $service -> getAllApiListOrderByTime($projectID, $asc);
 					break;
 				}
 				//星标排序
-				case 2 :
-				{
+				case 2 : {
 					$asc = 1;
 					$result = $service -> getAllApiListOrderByStarred($projectID, $asc);
 					break;
 				}
 			}
 
-			if ($result)
-			{
+			if ($result) {
 				$this -> returnJson['statusCode'] = '000000';
 				$this -> returnJson['apiList'] = $result;
-			}
-			else
-			{
+			} else {
 				$this -> returnJson['statusCode'] = '160000';
 			}
-		}
-		else
-		{
+		} else {
 			$this -> returnJson['statusCode'] = '160003';
 		}
 		exitOutput($this -> returnJson);
@@ -422,30 +338,22 @@ class ApiController
 	/**
 	 * 搜索api
 	 */
-	public function searchApi()
-	{
+	public function searchApi() {
 		$tipsLen = mb_strlen(quickInput('tips'), 'utf8');
 		$tips = securelyInput('tips');
 		$projectID = securelyInput('projectID');
-		if (!preg_match('/^[0-9]{1,11}$/', $projectID))
-		{
+		if (!preg_match('/^[0-9]{1,11}$/', $projectID)) {
 			$this -> returnJson['statusCode'] = '160003';
 		}
-		if ($tipsLen > 255 || $tipsLen == 0)
-		{
+		if ($tipsLen > 255 || $tipsLen == 0) {
 			$this -> returnJson['statusCode'] = '160004';
-		}
-		else
-		{
+		} else {
 			$service = new ApiModule;
 			$result = $service -> searchApi($tips, $projectID);
-			if ($result)
-			{
+			if ($result) {
 				$this -> returnJson['statusCode'] = '000000';
 				$this -> returnJson['apiList'] = $result;
-			}
-			else
-			{
+			} else {
 				$this -> returnJson['statusCode'] = '160000';
 			}
 		}
@@ -455,24 +363,17 @@ class ApiController
 	/**
 	 * 添加星标
 	 */
-	public function addStar()
-	{
+	public function addStar() {
 		$apiID = securelyInput('apiID');
-		if (preg_match('/^[0-9]{1,11}$/', $apiID))
-		{
+		if (preg_match('/^[0-9]{1,11}$/', $apiID)) {
 			$service = new ApiModule;
 			$result = $service -> addStar($apiID);
-			if ($result)
-			{
+			if ($result) {
 				$this -> returnJson['statusCode'] = '000000';
-			}
-			else
-			{
+			} else {
 				$this -> returnJson['statusCode'] = '160000';
 			}
-		}
-		else
-		{
+		} else {
 			$this -> returnJson['statusCode'] = '160001';
 		}
 		exitOutput($this -> returnJson);
@@ -481,24 +382,17 @@ class ApiController
 	/**
 	 * 添加星标
 	 */
-	public function removeStar()
-	{
+	public function removeStar() {
 		$apiID = securelyInput('apiID');
-		if (preg_match('/^[0-9]{1,11}$/', $apiID))
-		{
+		if (preg_match('/^[0-9]{1,11}$/', $apiID)) {
 			$service = new ApiModule;
 			$result = $service -> removeStar($apiID);
-			if ($result)
-			{
+			if ($result) {
 				$this -> returnJson['statusCode'] = '000000';
-			}
-			else
-			{
+			} else {
 				$this -> returnJson['statusCode'] = '160000';
 			}
-		}
-		else
-		{
+		} else {
 			$this -> returnJson['statusCode'] = '160001';
 		}
 		exitOutput($this -> returnJson);

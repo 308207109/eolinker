@@ -293,6 +293,7 @@
                     Api.Api.Delete({ apiID: apiID }).$promise.then(function(data) {
                         if (data.statusCode == code) {
                             vm.back();
+                            $scope.$emit('$numChange',1);
                             vm.InfoModel('Api删除成功，已移入回收站', 'success');
                         }
                     })
@@ -358,7 +359,6 @@
                 headers: query.requestInfo.headers,
                 params: vm.message.requestType == '0' ? query.requestInfo.params : []
             }
-            console.log(message)
             vm.result = {
                 testHttpCode: query.resultInfo.httpCode,
                 testDeny: query.resultInfo.testDeny,
@@ -382,7 +382,6 @@
                         paramInfo: val.value,
                         paramType:val.type
                     };
-                    console.log(info)
                     vm.message.params.push(info);
                 });
             } else {

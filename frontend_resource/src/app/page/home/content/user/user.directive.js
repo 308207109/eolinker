@@ -10,11 +10,12 @@
         }
     }])
 
-    homeUserCtroller.$inject = ['$scope', 'Api', '$state', 'CODE', '$uibModal', 'md5', '$timeout'];
+    homeUserCtroller.$inject = ['$scope', 'Api', '$state', 'CODE', '$uibModal', 'md5', '$timeout','TitleService'];
 
-    function homeUserCtroller($scope, Api, $state, CODE, $uibModal, md5, $timeout) {
+    function homeUserCtroller($scope, Api, $state, CODE, $uibModal, md5, $timeout,TitleService) {
         var vm = this;
         var code = CODE.SUCCESS;
+        var constantTitle = TitleService.get()||'eolinker开源版';
         vm.info = {};
         vm.basic = {
             nickName: '',
@@ -24,7 +25,7 @@
         vm.userInfo = {};
 
         vm.loadingIsEnd = true;
-        window.document.title = '账户管理 - eolinker开源版';
+        window.document.title = '账户管理 - ' + constantTitle;
 
         function init() { // 初始化账户管理页面
             vm.loadingIsEnd = false;

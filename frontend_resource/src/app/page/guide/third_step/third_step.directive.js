@@ -43,6 +43,7 @@
                     vm.info.dbName = info.name;
                     vm.info.dbUser = info.userName;
                     vm.info.dbPassword = info.password;
+                    vm.info.websiteName = info.pageTitle;
                 } catch (e) {
                     $state.go('guide.second_step');
                 }

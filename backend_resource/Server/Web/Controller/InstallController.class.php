@@ -14,41 +14,41 @@
  * 再次感谢您的使用，希望我们能够共同维护国内的互联网开源文明和正常商业秩序。
  *
  */
-class InstallController
-{
+class InstallController {
 	//返回Json类型
 	private $returnJson = array('type' => 'install');
 
 	/**
 	 * 检测环境
 	 */
-	public function checkoutEnv()
-	{
+	public function checkoutEnv() {
 		//获取必要的信息
 		$dbURL = quickInput('dbURL');
 		$dbName = quickInput('dbName');
 		$dbUser = quickInput('dbUser');
 		$dbPassword = quickInput('dbPassword');
 		$server = new InstallModule;
-		$this -> returnJson['statusCode'] = '000000';
-		$this -> returnJson['envStatus'] = $server -> checkoutEnv($dbURL, $dbName, $dbUser, $dbPassword);
+		$result = $server -> checkoutEnv($dbURL, $dbName, $dbUser, $dbPassword);
+		if (isset($result['error'])) {
+			$this -> returnJson['statusCode'] = '200004';
+			$this -> returnJson['error'] = $result['error'];
+		} else {
+			$this -> returnJson['statusCode'] = '000000';
+			$this -> returnJson['envStatus'] = $result;
+		}
 		exitOutput($this -> returnJson);
 	}
 
 	/**
 	 * 检查配置
 	 */
-	public function checkConfig()
-	{
-		if (!file_exists(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'eo_config.php'))
-		{
+	public function checkConfig() {
+		if (!file_exists(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'eo_config.php')) {
 			//强化判断，是否已经定义了数据库的地址信息
 			if (@!defined(DB_URL))
 				//不存在配置文件，需要跳转至引导页面进行安装
 				$this -> returnJson['statusCode'] = '200003';
-		}
-		else
-		{
+		} else {
 			$this -> returnJson['statusCode'] = '000000';
 		}
 		exitOutput($this -> returnJson);
@@ -57,42 +57,33 @@ class InstallController
 	/**
 	 * 安装eolinker
 	 */
-	public function start()
-	{
+	public function start() {
 		//检查是否已经存在配置文件或者是否可以获取到数据库地址
-		if (file_exists(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'eo_config.php') || defined(DB_URL))
-		{
+		if (file_exists(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'eo_config.php') || defined(DB_URL)) {
 			//直接返回成功
 			$this -> returnJson['statusCode'] = '000000';
 			exitOutput($this -> returnJson);
-		}
-		elseif (!file_exists(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'eo_config.php'))
-		{
+		} elseif (!file_exists(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'eo_config.php')) {
 			//获取必要的信息
 			$dbURL = quickInput('dbURL');
 			$dbName = quickInput('dbName');
 			$dbUser = quickInput('dbUser');
 			$dbPassword = quickInput('dbPassword');
+			$websiteName = quickInput('websiteName');
 			$server = new InstallModule;
-			if ($server -> createConfigFile($dbURL, $dbName, $dbUser, $dbPassword))
-			{
+			if ($server -> createConfigFile($dbURL, $dbName, $dbUser, $dbPassword, $websiteName)) {
 				//写入成功
 				quickRequire(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'eo_config.php');
-				if ($server -> installDatabase())
-				{
+				if ($server -> installDatabase()) {
 					$this -> returnJson['statusCode'] = '000000';
 					@session_start();
 					@session_destroy();
-				}
-				else
-				{
+				} else {
 					//创建数据库失败，确认是否拥有数据库操作权限
 					$this -> returnJson['statusCode'] = '200002';
 					unlink(realpath(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'eo_config.php'));
 				}
-			}
-			else
-			{
+			} else {
 				//写入失败，确认是否拥有文件操作权限
 				$this -> returnJson['statusCode'] = '200001';
 				unlink(realpath(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'eo_config.php'));

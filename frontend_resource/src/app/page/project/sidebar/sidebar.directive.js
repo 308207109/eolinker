@@ -21,12 +21,15 @@
         vm.info = {
             projectID: $state.params.projectID,
             groupID: $state.params.groupID,
+            num: 0,
             childGroupID: $state.params.childGroupID,
             apiID: $state.params.apiID,
             tips: $state.params.search ? $state.params.search : '',
             state: $state.current.name.indexOf('api') > -1 ? 0 : 1, // 0:api;1:code;
             manualShrink: $scope.isShrink
         };
+        vm.staticCodeQuery = [{ groupID: -1, groupName: "所有状态码"}];
+        vm.staticQuery = [{ groupID: -1, groupName: "所有接口"}, { groupID: -2, groupName: "接口回收站" }];
         vm.list = {
             api: [],
             code: []
@@ -35,8 +38,6 @@
         vm.apiGroup = null;
         vm.codeGroup = [];
 
-        vm.staticQuery = [{ groupID: -1, groupName: "所有接口" }, { groupID: -2, groupName: "接口回收站" }];
-        vm.staticCodeQuery = [{ groupID: -1, groupName: "所有状态码" }];
         vm.search = {
             isSpread: false,
             countDown: 1,
@@ -50,7 +51,8 @@
             switch (vm.info.state) {
                 case 0:
                 // 接口文档
-                    {
+                    {   
+                        getNum(0);
                         Api.Group.Query(vm.info).$promise.then(function(data) {
                             if (code == data.statusCode || data.statusCode == CODE.EMPTY) {
                                 if (data.statusCode == CODE.EMPTY) {
@@ -93,7 +95,8 @@
                     }
                 case 1:
                 // 状态码文档
-                    {
+                    {   
+                        getNum(1);
                         Api.CodeGroup.Query(vm.info).$promise.then(function(data) {
                             if (code == data.statusCode || data.statusCode == '180001') {
                                 if (data.statusCode == code) {
@@ -128,11 +131,35 @@
                     }
             }
         }
-        init();
+        function getNum(which){
+            switch(which){
+                case 0:
+                {
+                    Api.Project.Num({projectID:vm.info.projectID}).$promise.then(function(data){
+                        if(data.statusCode==code){
+                            vm.info.num = data.num;
+                        }
+                    })
+                    break;
+                }
+                case 1:
+                {
+                    Api.Code.Num({projectID:vm.info.projectID}).$promise.then(function(data){
+                        if(data.statusCode==code){
+                            vm.info.num = data.num;
+                        }
+                    })
+                    break;
+                }
+            }
+        }
 
+        init();
+        
         vm.spreadUp = function() { // 展开侧边栏
             vm.search.isSpread = true;
         }
+
         vm.shrinkMouseLeave = function() { // 鼠标离开搜索栏事件
             if ($scope.isShrink) {
                 vm.search.time = setInterval(function() {
@@ -400,7 +427,6 @@
                         case 0:
                         // 接口文档页面
                             {
-
                                 Api.Group.Delete({ groupID: query.groupID }).$promise.then(function(data) {
                                     if (data.statusCode == code) {
                                         vm.query.splice(index, 1);
@@ -414,6 +440,7 @@
                                         vm.click(-1, vm.query[0]);
                                     }
                                 })
+                                getNum(0);
                                 break;
                             }
                         case 1:
@@ -432,6 +459,7 @@
                                         vm.click(-1, vm.query[0]);
                                     }
                                 })
+                                getNum(1);
                                 break;
                             }
                     }
@@ -575,6 +603,14 @@
                         val.isClick = false;
                     }
                 });
+            }
+        })
+        $scope.$on('$numAdd',function(){
+            vm.info.num++;
+        })
+        $scope.$on('$numReduce',function(){
+            if(vm.info.num>0){
+                vm.info.num--;
             }
         })
 

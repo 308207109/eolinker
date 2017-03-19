@@ -48,7 +48,7 @@
                         </div>
                     </div>
                 </li>
-                <li class="register-function " ng-class="{'hidden':navbarCtrl.check.hadLogin}">
+                <li class="register-function " ng-class="{'hidden':navbarCtrl.check.hadLogin||!navbarCtrl.check.allowregister}">
                     <a class="goto-register nav-li" ui-sref="register.content">注册</a>
                 </li>
             </ul>

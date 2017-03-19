@@ -19,6 +19,7 @@
         vm.check = {
             hadLogin: false,
             isProject: false,
+            allowregister: true,
             currentState: '0'
         }
 
@@ -75,6 +76,15 @@
                 }
             }
             initState();
+            if(!vm.check.hadLogin){
+                Api.WebName.Allow().$promise.then(function(data) {
+                    if (data.statusCode == code) {
+                        vm.check.allowregister = true;
+                    } else {
+                        vm.check.allowregister = false;
+                    }
+                });
+            }
         }
         init();
         

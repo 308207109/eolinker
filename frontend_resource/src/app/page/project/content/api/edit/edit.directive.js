@@ -443,6 +443,7 @@
                     vm.isDisable = false;
                     vm.loadingIsEnd = true;
                     if (data.statusCode == code) {
+                        $scope.$emit('$numChange',0)
                         vm.InfoModel('Api添加成功', 'success');
                         vm.detail = {
                             projectID: vm.info.projectID,
@@ -502,6 +503,7 @@
                     vm.loadingIsEnd = false;
                     Api.Api.Add(info).$promise.then(function(data) {
                         vm.isDisable = false;
+                        $scope.$emit('$numChange',0)
                         vm.loadingIsEnd = true;
                         if (data.statusCode == code) {
                             $state.go('project.api.detail', { 'projectID': vm.detail.projectID, 'groupID': vm.info.groupID, 'childGroupID': vm.info.childGroupID, 'apiID': data.apiID });

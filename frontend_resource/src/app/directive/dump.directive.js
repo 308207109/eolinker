@@ -37,7 +37,7 @@
                                 dumpBtn.download = data.fileName;
                                 dumpBtn.click();
                             } else {
-                                vm.InfoModel('导出失败', 'error');
+                                InfoModel('导出失败', 'error');
                             }
                         })
                     })

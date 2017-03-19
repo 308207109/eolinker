@@ -184,6 +184,7 @@
                     Api.Api.Delete({ apiID: apiID }).$promise.then(function(data) {
                         if (data.statusCode == code) {
                             vm.query.splice(index, 1);
+                            $scope.$emit('$numChange',1);
                             vm.InfoModel('Api删除成功，已移入回收站', 'success');
                         }
                     })

@@ -29,7 +29,7 @@
         }
 
         $rootScope.$on('$stateChangeStart', function(event, toState) {// 路由状态开始改变时触发
-            if (!toState.auth)// 判断页面权限
+            if (!toState.auth) {// 判断页面权限
                 Api.Logintype.Check().$promise.then(function(data) {
                     if (data.statusCode == CODE.UNAUTH) {
 
@@ -41,9 +41,8 @@
                         // user not login in
                         $rootScope.$broadcast(AUTH_EVENTS.notAuthorized);
                     }
-
-
                 })
+            }
         });
 
         $rootScope.$on(AUTH_EVENTS.notAuthenticated, function(data) {// 用户无权限时跳转首页
@@ -63,6 +62,20 @@
             //console.log('error')
             //$cookies.remove('userToken') ;
             //window.localStorage.clear();
+        })
+
+        $rootScope.$on('$numChange',function(obj,data){// 广播api/code数量变化
+            switch(data){
+                case 0:{
+                    $rootScope.$broadcast('$numAdd');
+                    break;
+                }
+                case 1:{
+                    $rootScope.$broadcast('$numReduce');
+                    break;
+                }
+
+            }
         })
     }
 
