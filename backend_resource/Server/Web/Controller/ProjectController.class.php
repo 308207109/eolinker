@@ -91,6 +91,11 @@ class ProjectController {
 	 * 获取项目列表
 	 */
 	public function getProjectList() {
+		if (!function_exists('mb_strlen')) {
+			$this -> returnJson['statusCode'] = '140024';
+			$this -> returnJson['msg'] = 'Please checkout your mbString module.';
+			exitOutput($this -> returnJson);
+		}
 		$nameLen = mb_strlen(quickInput('projectName'), 'utf8');
 		$projectType = securelyInput('projectType');
 		$projectName = securelyInput('projectName');
