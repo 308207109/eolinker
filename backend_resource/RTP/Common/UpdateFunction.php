@@ -7,6 +7,7 @@ $db_port = DB_PORT;
 $db_user = DB_USER;
 $db_password = DB_PASSWORD;
 $db_name = DB_NAME;
+$websiteName = defined('WEBSITE_NAME') ? WEBSITE_NAME : 'eolinker开源版';
 
 $config = "<?php
 //主机地址
@@ -31,7 +32,7 @@ defined('ALLOW_REGISTER') or define('ALLOW_REGISTER', TRUE);
 defined('ALLOW_UPDATE') or define('ALLOW_UPDATE', TRUE);
 
 //网站名称
-defined('WEBSITE_NAME') or define('WEBSITE_NAME', 'eolinker开源版');
+defined('WEBSITE_NAME') or define('WEBSITE_NAME', '{$websiteName}}');
 ?>";
 
 $configFile = file_put_contents(PATH_FW . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'eo_config.php', $config);

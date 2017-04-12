@@ -5,7 +5,8 @@
             $stateProvider
                 .state('home.project.api', {
                     url: '/api',// url相对路径/home/project/api
-                    template: '<home-project-api></home-project-api>'
+                    template: '<home-project-api></home-project-api>',
+                    title:'项目列表'
                 });
         }])
 })();

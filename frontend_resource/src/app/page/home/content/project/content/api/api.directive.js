@@ -10,19 +10,17 @@
         }
     }])
 
-    homeProjectApiCtroller.$inject = ['$scope', 'Api', '$state', 'CODE', '$uibModal', '$rootScope', '$timeout','TitleService'];
+    homeProjectApiCtroller.$inject = ['$scope', 'Api', '$state', 'CODE', '$uibModal', '$rootScope', '$timeout'];
 
-    function homeProjectApiCtroller($scope, Api, $state, CODE, $uibModal, $rootScope, $timeout,TitleService) {
+    function homeProjectApiCtroller($scope, Api, $state, CODE, $uibModal, $rootScope, $timeout) {
         var vm = this;
         var code = CODE.SUCCESS;
-        var constantTitle = TitleService.get()||'eolinker开源版';
         vm.info = {
             projectName: '',
             projectType: -1,
             isFunction: false
         };
         vm.query = [];
-        window.document.title = '项目列表 - ' + constantTitle;
         vm.loadingIsEnd = true;
 
         function init() { // 初始化项目列表页面

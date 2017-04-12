@@ -206,6 +206,7 @@
         .model-share,
         .model-crop,
         .model-message,
+        .model-plug,
         .model-error,
         .model-import,
         .model-code,
@@ -747,6 +748,7 @@
                         background-color: #fff;
                         border: 1px solid #e5e5e5;
                         overflow-y: scroll;
+                        z-index: 11;
                         li {
                             font-size: 13px;
                             margin-right: 0;

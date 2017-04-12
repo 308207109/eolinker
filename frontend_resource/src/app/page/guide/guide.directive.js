@@ -16,7 +16,6 @@
 
         var vm = this;
         function init() {// 初始化引导页面
-            window.document.title='eolinker开源版本';
             vm.projectLogo = 'app/assets/images/eolinker_os.png';
         }
         init();

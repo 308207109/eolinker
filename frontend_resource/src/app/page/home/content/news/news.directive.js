@@ -10,12 +10,11 @@
         }
     }])
 
-    homeNewsCtroller.$inject = ['$scope', 'Api', '$state', 'CODE', '$uibModal', '$rootScope', '$timeout', '$sce', '$filter','TitleService'];
+    homeNewsCtroller.$inject = ['$scope', 'Api', '$state', 'CODE', '$uibModal', '$rootScope', '$timeout', '$sce', '$filter'];
 
-    function homeNewsCtroller($scope, Api, $state, CODE, $uibModal, $rootScope, $timeout, $sce, $filter,TitleService) {
+    function homeNewsCtroller($scope, Api, $state, CODE, $uibModal, $rootScope, $timeout, $sce, $filter) {
         var vm = this;
         var code = CODE.SUCCESS;
-        var constantTitle = TitleService.get()||'eolinker开源版';
         vm.info = {
             pages: '',
             maxSize: 5,
@@ -25,7 +24,6 @@
             jumpPage: ""
         };
         vm.query = [];
-        window.document.title = '消息列表 - ' + constantTitle;
         vm.loadingIsEnd = true;
 
         function init() { // 初始化消息页面

@@ -390,8 +390,7 @@
                                 <li class="field-type">
                                     <ul>
                                         <li>类型：</li>
-                                        <li class="input-li" ng-mouseover="info.mouseLeave=false" ng-mouseleave="info.mouseLeave=true">
-                                            <input id="{{'type_js'}}" class="eo-input" type="text" name="" data-ng-model="info.fieldType" auto-complete mouse-leave="info.mouseLeave" model="info.fieldType" array="typeList" query-index="{{'type_js'}}" data-ng-change="submited=info.labelIsClick=false" data-ng-class="{'eo-input-error':(submited&&!isType)}" required>
+                                        <li class="input-li" auto-complete="{{'type_js'}}" model="info.fieldType" array="typeList" data-ng-class="{'eo-had-input-error':(submited&&!isType)}">
                                         </li>
                                     </ul>
                                 </li>

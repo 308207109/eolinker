@@ -2,9 +2,9 @@
     'use strict';
 
     angular
-        .module('eolinker')
-        /* eolinker模块全局事件 */
-        .run(appRun);
+    .module('eolinker')
+    /* eolinker模块全局事件 */
+    .run(appRun);
 
     appRun.$inject = ['$rootScope', '$state', '$stateParams', '$timeout', 'Api', '$templateCache', 'AUTH_EVENTS', 'USER_ROLES', '$cookies', 'CODE', '$uibModal'];
 
@@ -30,16 +30,22 @@
 
         $rootScope.$on('$stateChangeStart', function(event, toState) {// 路由状态开始改变时触发
             if (!toState.auth) {// 判断页面权限
+                $rootScope.hadLogin = true;
                 Api.Logintype.Check().$promise.then(function(data) {
                     if (data.statusCode == CODE.UNAUTH) {
 
                         // user is not allowed
                         $rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
+                        $rootScope.hadLogin=false;
 
                     } else if (data.type != USER_ROLES.USER) {
 
                         // user not login in
                         $rootScope.$broadcast(AUTH_EVENTS.notAuthorized);
+                        $rootScope.hadLogin=false;
+                    } else if (data.statusCode == CODE.SUCCESS) {
+
+                        $rootScope.hadLogin = true;
                     }
                 })
             }

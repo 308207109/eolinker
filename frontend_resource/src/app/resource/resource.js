@@ -50,22 +50,6 @@
             }
 
         );
-        /*
-         * 获取网站名称
-         */
-        API['WebName'] = $resource(serverUrl + '?g=Web&c=Index&o=:operate', {
-
-            }, {
-                Get: {
-                    params: { operate:'getWebsiteName'},
-                    method: method
-                },
-                Allow: {
-                    params: { operate:'allowRegister'},
-                    method: method
-                }
-            }
-        );
 
         /*
          * 导入postman文件/Web/Import/ImportPostMan

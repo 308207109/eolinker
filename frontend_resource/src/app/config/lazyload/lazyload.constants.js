@@ -20,9 +20,7 @@
                     name: 'wangEditor',
                     files: [
                         'vendor/wangEditor/dist/css/wangEditor.css',
-                        'vendor/wangEditor/dist/js/wangEditor.min.js',
-                        "vendor/wangEditor/dist/js/lib/plupload.full.min.js",
-                        "vendor/wangEditor/dist/js/lib/qiniu.min.js"
+                        'vendor/wangEditor/dist/js/wangEditor.min.js'
                     ]
                 }, {
                     name: 'markdown',

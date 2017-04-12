@@ -3,60 +3,174 @@
 
     angular.module('eolinker.directive')
     /* 自动补全指令 */
-    .directive('autoComplete', ['$compile',  function($compile) {
+    .directive('autoComplete', ['$compile', '$timeout', function($compile,$timeout) {
         return {
             restrict: 'A',
             scope: {
-                array: '=',// 可能需要补全的数组
-                model: '=',// 输入的数据
-                mouseLeave: '=',// 鼠标是否离开
-                queryIndex: '@'// 索引值   
+                array: '=', //自定义数组填充数组
+                model: '=' //输入框绑定
             },
-            require: "ngModel",
-            link: function($scope, elem, attrs, ngModel) {
-                var html = '<div class="auto-complete-message" ng-class="{hidden:!query.labelIsClick}">' + '<ul>' + '<li ng-repeat="array in headerQuery track by $index" data-ng-click="changeText(array)">{{array}}</li>' + '</ul>' + '</div>' + '<label for="{{queryIndex}}" class="iconfont icon-triangledownfill" ng-click="changeSwitch()"></label>';
-                var timer = null;
-                var init = function() {// 将补全列表插入DOM中
-                    angular.element(elem).parent().append($compile(html)($scope));
+            link: function($scope, elem, attrs, ngModel) { //attrs placeholder(插入input placeholder )、addClass插入input class 、autoComplete input相关id 
+                var html = '<div ng-mouseover="mouseLeave=false" ng-mouseleave="mouseLeave=true">' +
+                    '<input placeholder="' + (attrs.placeholder ? attrs.placeholder : '') + '" id="' + attrs.autoComplete + '"class="eo-input ' + (attrs.addClass ? attrs.addClass : '') + '" data-ng-model="model" data-ng-change="modelChange()" data-ng-blur="modelBlur()"  maxlength="255">' +
+                    '<div class="auto-complete-message" data-ng-class="{\'hidden\':template.hide!=0}">' +
+                    '<ul>' +
+                    '<li ng-repeat="item in template.array track by $index" data-ng-click="changeText(item)">{{item}}</li>' +
+                    '</ul>' +
+                    '</div>' +
+                    '<div class="auto-complete-message" data-ng-class="{\'hidden\':template.hide!=1}">' +
+                    '<ul>' +
+                    '<li ng-repeat="item in array track by $index" data-ng-click="changeText(item)">{{item}}</li>' +
+                    '</ul>' +
+                    '</div>' +
+                    '<label for="' + attrs.autoComplete + '" class="iconfont icon-triangledownfill" ng-click="changeSwitch()"></label>' +
+                    '</div>';
+                $scope.template = {
+                    hide: -1, //-1所有隐藏，0：显示过滤值，1：显示全部值,
+                    array: $scope.array,
+                    keydown: {
+                        preCount: -1,
+                        count: -1,
+                        elem: null,
+                        originParent: null,
+                        originElem: null,
+                        originNextParent: null,
+                        originNextElem: null
+                    }
+                }
+                var init = function() {
+                    angular.element(elem).append($compile(html)($scope));
                 }
                 init();
-                $scope.mouseLeave = true;
-                ngModel.$parsers.push(function(value) {//ng-model输入内容执行函数
-                    $scope.headerQuery = [];
-                    angular.forEach($scope.array, function(val, key) {
-                        if (val.toUpperCase().indexOf(value.toUpperCase()) > -1) {
-                            $scope.headerQuery.push(val);
+                var timer = $timeout(function() {
+                    $scope.template.keydown.originParent = angular.element(angular.element(elem[0].children[0])[0].children[1])[0];
+                    $scope.template.keydown.originElem = angular.element(angular.element(angular.element(elem[0].children[0])[0].children[1])[0].children[0])[0];
+                    $scope.template.keydown.originNextParent = angular.element(angular.element(elem[0].children[0])[0].children[2])[0];
+                    $scope.template.keydown.originNextElem = angular.element(angular.element(angular.element(elem[0].children[0])[0].children[2])[0].children[0])[0];
+                }, 0, true)
+                $scope.modelChange = function() { //input框信息改变触发函数
+                    $scope.template.hide = 0;
+                    if ($scope.model) {
+                        $scope.template.array = [];
+                        var template = {
+                            count: 0
                         }
-                    })
-                    if ($scope.headerQuery.length <= 0) {
-                        angular.element(elem).next().addClass('hidden');
-                    } else {
-                        angular.element(elem).next().removeClass('hidden');
-                    }
-                    return value;
-                });
-                $scope.changeSwitch = function() {//单击下拉按钮显示下拉菜单函数
-                    if (!!ngModel.$modelValue) {
-                        $scope.headerQuery = [];
                         angular.forEach($scope.array, function(val, key) {
-                            if (val.toUpperCase().indexOf(ngModel.$modelValue.toUpperCase()) > -1) {
-                                $scope.headerQuery.push(val); 
+                            var pattern = '/^' + $scope.model.toLowerCase() + '/';
+                            if (eval(pattern).test(val.toLowerCase())) {
+                                $scope.template.array.splice(template.count, 0, val);
+                                template.count++;
+                            } else if (val.toLowerCase().indexOf($scope.model.toLowerCase()) > -1) {
+                                $scope.template.array.push(val);
                             }
                         })
+                        if ($scope.template.array.length <= 0) {
+                            $scope.template.hide = -1;
+                        }
                     } else {
-                        $scope.headerQuery = $scope.array;
+                        $scope.template.array = $scope.array;
                     }
-                    angular.element(elem).next().removeClass('hidden');
                 }
-                $scope.changeText = function(info) {//选中下拉框单项内容执行函数
+                $scope.changeSwitch = function() { //单击下拉按钮显示下拉菜单函数
+                    if ($scope.template.hide == -1) {
+                        $scope.template.hide = 1;
+                    }
+
+                }
+                $scope.changeText = function(info) { //选中下拉框单项内容执行函数
                     $scope.model = info;
-                    angular.element(elem).next().addClass('hidden');
+                    $scope.template.hide = -1;
+                    $scope.reset();
                 }
-                elem.bind('blur', function(e) {//节点失去焦点执行函数
+                $scope.modelBlur = function() { //失去焦点执行函数
                     if ($scope.mouseLeave) {
-                        angular.element(elem).next().addClass('hidden');
+                        $scope.template.hide = -1;
+                        $scope.reset();
                     }
-                })
+                }
+                $scope.reset = function() {
+                    $scope.template.keydown.originParent.scrollTop = 0;
+                    $scope.template.keydown.originNextParent.scrollTop = 0;
+                    $scope.template.keydown.count = -1;
+                    if ($scope.template.keydown.elem) {
+                        $scope.template.keydown.elem.style.backgroundColor = null;
+                    }
+                    try {
+                        $scope.$digest();
+                    } catch (e) {}
+
+                }
+                elem.on('keydown', function(e) { //监听keydown函数
+                    switch (e.keyCode) {
+                        case 38:
+                            { // up
+                                e.preventDefault();
+                                var template = {
+                                    parent: $scope.template.hide == 0 ? $scope.template.keydown.originParent : $scope.template.keydown.originNextParent,
+                                    origin: $scope.template.hide == 0 ? $scope.template.keydown.originElem : $scope.template.keydown.originNextElem
+                                };
+                                $scope.template.keydown.preCount = $scope.template.keydown.count;
+                                if ($scope.template.keydown.elem) {
+                                    $scope.template.keydown.elem.style.backgroundColor = null;
+                                }
+                                if ($scope.template.keydown.count == -1 || $scope.template.keydown.count == 0) {
+                                    $scope.template.keydown.count = template.origin.childElementCount - 1;
+                                } else {
+                                    $scope.template.keydown.count--;
+                                }
+                                $scope.template.keydown.elem = angular.element(template.origin.children[$scope.template.keydown.count])[0];
+                                $scope.template.keydown.elem.style.backgroundColor = '#fafafa';
+                                if ($scope.template.keydown.count < $scope.template.keydown.preCount) {
+                                    template.parent.scrollTop = ($scope.template.keydown.count - 4) * $scope.template.keydown.elem.offsetHeight;
+                                } else {
+                                    template.parent.scrollTop = $scope.template.keydown.count * $scope.template.keydown.elem.offsetHeight;
+                                }
+                                return false;
+                                break;
+                            }
+
+                        case 40:
+                            { // down
+                                e.preventDefault();
+                                var template = {
+                                    parent: $scope.template.hide == 0 ? $scope.template.keydown.originParent : $scope.template.keydown.originNextParent,
+                                    origin: $scope.template.hide == 0 ? $scope.template.keydown.originElem : $scope.template.keydown.originNextElem
+                                };
+                                $scope.template.keydown.preCount = $scope.template.keydown.count;
+                                if ($scope.template.keydown.elem) {
+                                    $scope.template.keydown.elem.style.backgroundColor = null;
+                                }
+                                if ($scope.template.keydown.count == (template.origin.childElementCount - 1)) {
+                                    $scope.template.keydown.count = 0;
+                                } else {
+                                    $scope.template.keydown.count++;
+                                }
+                                $scope.template.keydown.elem = angular.element(template.origin.children[$scope.template.keydown.count])[0];
+                                $scope.template.keydown.elem.style.backgroundColor = '#fafafa';
+                                if ($scope.template.keydown.count > 4) {
+                                    template.parent.scrollTop = ($scope.template.keydown.count - 4) * $scope.template.keydown.elem.offsetHeight;
+                                } else if ($scope.template.keydown.count < $scope.template.keydown.preCount) {
+                                    template.parent.scrollTop = 0;
+                                }
+                                return false;
+                                break;
+                            }
+                        case 13:
+                            { //enter
+                                e.preventDefault();
+                                if ($scope.template.keydown.elem) {
+                                    $scope.changeText($scope.template.keydown.elem.innerText);
+                                }
+                                return false;
+                                break;
+                            }
+                    }
+                });
+                $scope.$on('$destroy', function() { //页面更改消除计时器
+                    if (timer) {
+                        $timeout.cancel(timer);
+                    }
+                });
             }
         };
     }]);

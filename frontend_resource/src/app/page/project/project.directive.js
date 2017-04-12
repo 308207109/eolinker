@@ -10,15 +10,13 @@
         }
     }])
 
-    projectPage.$inject = ['$scope', '$timeout', 'Api', '$state', 'CODE', '$cookies', '$uibModal','TitleService'];
+    projectPage.$inject = ['$rootScope','$scope', '$timeout', 'Api', '$state', 'CODE', '$cookies', '$uibModal'];
 
-    function projectPage($scope, $timeout, Api, $state, CODE, $cookies, $uibModal,TitleService) {
+    function projectPage($rootScope,$scope, $timeout, Api, $state, CODE, $cookies, $uibModal) {
 
         var vm = this;
         var code = CODE.SUCCESS;
-        var constantTitle = TitleService.get();
         vm.info = {
-            constantTitle: constantTitle||'eolinker开源版',
             apiName: '',
             groupName: '',
             projectName: ''
@@ -49,16 +47,16 @@
             if (attr) {
                 if (attr.apiName) {
                     vm.info.apiName = attr.apiName;
-                    window.document.title = attr.apiName + ' - ' + vm.info.projectName + ' - '+ vm.info.constantTitle;
+                    window.document.title = attr.apiName + ' - ' + vm.info.projectName + ' - '+ $rootScope.user.title;
                 } else {
                     vm.info.groupName = attr.groupName;
-                    window.document.title = attr.groupName + ' - ' + vm.info.projectName + ' - '+ vm.info.constantTitle;
+                    window.document.title = attr.groupName + ' - ' + vm.info.projectName + ' - '+ $rootScope.user.title;
                 }
             } else {
                 if (vm.info.groupName) {
-                    window.document.title = vm.info.groupName + ' - ' + vm.info.projectName + ' - '+ vm.info.constantTitle;
+                    window.document.title = vm.info.groupName + ' - ' + vm.info.projectName + ' - '+ $rootScope.user.title;
                 } else {
-                    window.document.title = vm.info.projectName + ' - '+ vm.info.constantTitle;
+                    window.document.title = vm.info.projectName + ' - '+ $rootScope.user.title;
                 }
             }
         });

@@ -36,7 +36,7 @@
                                             <li>交流社区<span class="iconfont icon-index-bubble"></span></li>
                                         </a>
                                         <a>
-                                            <li data-ng-click="navbarCtrl.update()">版本更新
+                                            <li data-ng-click="navbarCtrl.update()" ng-class='{"hidden":!navbarCtrl.check.allowUpdate}'>版本更新
                                                 <span class="iconfont icon-gengxin"></span></li>
                                         </a>
                                         <a>
@@ -48,8 +48,9 @@
                         </div>
                     </div>
                 </li>
-                <li class="register-function " ng-class="{'hidden':navbarCtrl.check.hadLogin||!navbarCtrl.check.allowregister}">
+                <li class="register-function " ng-class="{'hidden':navbarCtrl.check.hadLogin||!navbarCtrl.check.allowRegister}">
                     <a class="goto-register nav-li" ui-sref="register.content">注册</a>
+                    <span class='hidden'></span>
                 </li>
             </ul>
         </header>
@@ -79,6 +80,9 @@
                                 </li>
                                 <li class="list-function-detail">
                                     <ul>
+                                        <a ui-sref="index">
+                                            <li>回到首页 <span class="iconfont icon-icon"></span></li>
+                                        </a>
                                         <a ui-sref="home.user">
                                             <li>账户管理 <span class="iconfont icon-myline"></span></li>
                                         </a>
@@ -92,7 +96,7 @@
                                             <li>交流社区<span class="iconfont icon-index-bubble"></span></li>
                                         </a>
                                         <a>
-                                            <li data-ng-click="navbarCtrl.update()">版本更新
+                                            <li data-ng-click="navbarCtrl.update()" ng-class='{"hidden":!navbarCtrl.check.allowUpdate}'>版本更新
                                                 <span class="iconfont icon-gengxin"></span></li>
                                         </a>
                                         <a>

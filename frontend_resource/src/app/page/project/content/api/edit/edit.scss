@@ -302,6 +302,7 @@
                         background-color: #fff;
                         border: 1px solid #e5e5e5;
                         overflow-y: scroll;
+                        z-index: 11;
                         li {
                             font-size: 13px;
                             margin-right: 0;
@@ -627,6 +628,7 @@
                     background-color: #fff;
                     border: 1px solid #e5e5e5;
                     overflow-y: scroll;
+                    z-index: 11;
                     li {
                         font-size: 13px;
                         margin-right: 0;

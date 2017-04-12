@@ -13,12 +13,11 @@
         }
     }])
 
-    databaseSidebarCtroller.$inject = ['$scope', 'Api', '$state', 'CODE', '$uibModal', '$rootScope','TitleService'];
+    databaseSidebarCtroller.$inject = ['$scope', 'Api', '$state', 'CODE', '$uibModal', '$rootScope'];
 
-    function databaseSidebarCtroller($scope, Api, $state, CODE, $uibModal, $rootScope,TitleService) {
+    function databaseSidebarCtroller($scope, Api, $state, CODE, $uibModal, $rootScope) {
         var vm = this;
         var code = CODE.SUCCESS;
-        var constantTitle = TitleService.get()||'eolinker开源版';
         vm.info = {
             dbID: $state.params.dbID,
             tableID: $state.params.tableID
@@ -32,13 +31,13 @@
                     if (!vm.info.tableID && vm.query.length > 0) {
                         vm.info.tableID = vm.query[0].tableID;
                         vm.query[0].isClick = true;
-                        window.document.title = vm.query[0].tableName + ' - ' + constantTitle;
+                        window.document.title = vm.query[0].tableName + ' - ' + $rootScope.user.title;
                         $state.go('database.list', { 'dbID': vm.info.dbID, 'tableID': vm.info.tableID });
                     } else {
                         angular.forEach(vm.query, function(val, key) {
                             if (val.tableID == vm.info.tableID) {
                                 val.isClick = true;
-                                window.document.title = val.tableName + ' - ' + constantTitle;
+                                window.document.title = val.tableName + ' - ' + $rootScope.user.title;
                             }
                         })
                     }
@@ -53,7 +52,7 @@
             });
             query.isClick = true;
             vm.info.tableID = tableID;
-            window.document.title = query.tableName +  ' - ' + constantTitle;
+            window.document.title = query.tableName +  ' - ' + $rootScope.user.title;
             $state.go('database.list', { 'dbID': vm.info.dbID, 'tableID': tableID });
         }
         vm.edit = function(val) { // 修改/新增表

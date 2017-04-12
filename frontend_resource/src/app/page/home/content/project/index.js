@@ -5,7 +5,7 @@
             $stateProvider
                 .state('home.project', {
                     url: '/project',// url相对路径/home/project
-                    template: '<home-project></home-project>'
+                    template: '<home-project></home-project>' 
                 });
         }])
 })();

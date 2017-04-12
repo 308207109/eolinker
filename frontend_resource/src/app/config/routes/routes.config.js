@@ -17,7 +17,6 @@
 
     function routesConfig($stateProvider, $httpProvider, $locationProvider, $urlRouterProvider, helper) {
 
-
         $httpProvider.interceptors.push([
             '$injector',
             function($injector) {
@@ -34,7 +33,17 @@
     routesRun.$inject = ['$rootScope', '$state', 'AUTH_EVENTS','Api','USER_ROLES'];
 
     function routesRun($rootScope, $state, AUTH_EVENTS,Api,USER_ROLES) {
-
-        
+        $rootScope.user={};
+        $rootScope.$on('$stateChangeSuccess',function(event, current){
+            if (current && (current.$$route || current).redirectTo) {
+                return;
+            }
+            if(!!current.title){
+                window.document.title = current.title+' - '+$rootScope.user.title;
+            }
+            else{
+                window.document.title = $rootScope.user.title;
+            }
+        })
     }
 })();

@@ -50,6 +50,8 @@
                 function _format_string(object) { // 格式化string类型
                     object = object.replace(/\</g, "&lt;");
                     object = object.replace(/\>/g, "&gt;");
+                    object = object.replace(/{/g, "{&nbsp;");
+                    object = object.replace(/}/g, "}&nbsp;");
                     if (0 <= object.search(/^http/)) {
                         object = '<a href="' + object + '" target="_blank" class="json_link">' + object + '</a>'
                     }

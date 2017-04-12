@@ -15,6 +15,7 @@
     function secondCtroller($scope, $timeout, Api, $state, CODE, md5, $cookies, $uibModal, $window, $rootScope) {
         var vm = this;
         var code = CODE.SUCCESS;
+        vm.submited=false;
 
         function init() {// 初始化页面
             vm.info = {};
@@ -64,6 +65,9 @@
                 }
                 window.localStorage.setItem('INSTALLINFO', JSON.stringify(userInfo));
                 $state.go('guide.third_step');
+            }
+            else{
+                vm.submited=true;
             }
         }
     }

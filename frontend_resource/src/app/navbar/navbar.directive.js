@@ -10,19 +10,19 @@
         }
     }])
 
-    navbar.$inject = ['$scope', 'Api', '$state', '$window', 'CODE', '$uibModal', '$timeout'];
+    navbar.$inject = ['$rootScope','$scope', 'Api', '$state', '$window', 'CODE', '$uibModal', '$timeout'];
 
-    function navbar($scope, Api, $state, $window, CODE, $uibModal, $timeout) {
-
+    function navbar($rootScope,$scope, Api, $state, $window, CODE, $uibModal, $timeout) {
         var vm = this;
         var code = CODE.SUCCESS;
         vm.check = {
             hadLogin: false,
             isProject: false,
-            allowregister: true,
+            allowRegister: allowRegister,
+            allowUpdate: allowUpdate,
             currentState: '0'
         }
-
+        
         function initState() {// 根据路由更新视图
             if (/index/.test($state.current.name)) {
                 vm.check.isProject = false;
@@ -59,14 +59,12 @@
                 });
             } else {
                 try {
-                    Api.Logintype.Check().$promise.then(function(data) {
-                        if (data.statusCode == code) {
-                            vm.check.hadLogin = true;
-                            vm.info = JSON.parse(window.localStorage['USER']);
-                        } else {
-                            vm.check.hadLogin = false;
-                        }
-                    });
+                    if ($rootScope.hadLogin) {
+                        vm.check.hadLogin = true;
+                        vm.info = JSON.parse(window.localStorage['USER']);
+                    } else {
+                        vm.check.hadLogin = false;
+                    }
                 } catch (e) {
                     vm.info = {
                         unreadMsgNum: 0,
@@ -76,15 +74,6 @@
                 }
             }
             initState();
-            if(!vm.check.hadLogin){
-                Api.WebName.Allow().$promise.then(function(data) {
-                    if (data.statusCode == code) {
-                        vm.check.allowregister = true;
-                    } else {
-                        vm.check.allowregister = false;
-                    }
-                });
-            }
         }
         init();
         
@@ -147,16 +136,10 @@
                     });
                 } else {
                     try {
-                        Api.Logintype.Check().$promise.then(function(data) {
-                            if (data.statusCode == code) {
+                        if ($rootScope.hadLogin) {
                                 vm.check.hadLogin = true;
                                 vm.info = JSON.parse(window.localStorage['USER']);
-                            } else {
-                                vm.check.hadLogin = false;
-                            }
-                        });
-                        if (vm.check.hadLogin) {
-                            Api.News.UnReadNum().$promise.then(function(data) {
+                                Api.News.UnReadNum().$promise.then(function(data) {
                                 if (data.statusCode == code) {
                                     if (vm.info.unreadMsgNum != data.unreadMsgNum) {
                                         vm.info.unreadMsgNum = data.unreadMsgNum;
@@ -166,7 +149,9 @@
                                     vm.info.unreadMsgNum = 0;
                                 }
                             });
-                        }
+                            } else {
+                                vm.check.hadLogin = false;
+                            }
                     } catch (e) {
                         vm.info = {
                             unreadMsgNum: 0,

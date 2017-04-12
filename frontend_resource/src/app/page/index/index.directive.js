@@ -10,12 +10,11 @@
         }
     }])
 
-    indexCtroller.$inject = ['$scope', '$timeout', 'Api', '$state', 'CODE', 'md5', '$cookies', '$uibModal', '$window', '$rootScope','TitleService'];
+    indexCtroller.$inject = ['$scope', '$timeout', 'Api', '$state', 'CODE', 'md5', '$cookies', '$uibModal', '$window', '$rootScope'];
 
-    function indexCtroller($scope, $timeout, Api, $state, CODE, md5, $cookies, $uibModal, $window, $rootScope,TitleService) {
+    function indexCtroller($scope, $timeout, Api, $state, CODE, md5, $cookies, $uibModal, $window, $rootScope) {
         var vm = this;
         var code = CODE.SUCCESS;
-        var constantTitle = TitleService.get()||'eolinker开源版';
         vm.info = {
             loginName: '',
             loginPassword: ''
@@ -25,7 +24,6 @@
         vm.clock = '';
 
         function init() { // 初始化首页
-            window.document.title = constantTitle;
             // 加载particles-js
             particlesJS.load('particles-js', 'vendor/particles.js/demo/particles.json', function() {
                 console.log('callback - particles.js config loaded');

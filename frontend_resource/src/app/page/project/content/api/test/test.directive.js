@@ -21,20 +21,20 @@
             apiID: $state.params.apiID
         }
         vm.detail = {};
-        vm.message = {
+        vm.env = {
             URL: '',
             headers: [],
             params: [],
             httpHeader: '0'
         };
+        vm.envParam=[];
+        vm.template={
+            env:{}
+        }
         vm.result = {
             httpCodeType: 2,
             hadTest: false
         };
-        vm.send = {
-            countdown: '',
-            disable: false
-        }
         vm.envInfo = {
             envURI: '',
             isShow: false
@@ -92,11 +92,11 @@
                 val.httpCodeType = val.resultInfo.httpCode >= 100 && val.resultInfo.httpCode < 200 ? 1 : val.resultInfo.httpCode >= 200 && val.resultInfo.httpCode < 300 ? 2 : val.resultInfo.httpCode >= 300 && val.resultInfo.httpCode < 400 ? 3 : 4;
                 val.requestInfo.URL = val.requestInfo.URL.replace('http://', '');
             })
-            vm.message.URL = vm.detail.baseInfo.apiURI;
-            vm.message.params = vm.detail.requestInfo != null ? vm.detail.requestInfo : [];
-            vm.message.httpHeader = '' + vm.detail.baseInfo.apiProtocol;
-            vm.message.requestType = '' + vm.detail.baseInfo.apiRequestParamType;
-            vm.message.raw = '' + vm.detail.baseInfo.apiRequestRaw;
+            vm.env.URL = vm.detail.baseInfo.apiURI;
+            vm.env.params = vm.detail.requestInfo != null ? vm.detail.requestInfo : [];
+            vm.env.httpHeader = '' + vm.detail.baseInfo.apiProtocol;
+            vm.env.requestType = '' + vm.detail.baseInfo.apiRequestParamType;
+            vm.env.raw = '' + vm.detail.baseInfo.apiRequestRaw;
             vm.detail.baseInfo.type = '' + vm.detail.baseInfo.apiRequestType;
             angular.forEach(vm.detail.requestInfo, function(val, key) {
                 if(vm.detail.baseInfo.type!='0'&&vm.detail.baseInfo.type!='2'){
@@ -110,7 +110,7 @@
                 })
             });
 
-            $scope.$broadcast('$initReady', { headerQuery: vm.message.headers, URL: vm.message.URL });
+            $scope.$broadcast('$initReady', { headerQuery: vm.env.headers, URL: vm.env.URL });
             $scope.$emit('$tabChange', { apiName: '[测试]' + vm.detail.baseInfo.apiName, type: 3 });
         }
 
@@ -118,7 +118,7 @@
             vm.detail = ApiDetailService.get();
             if (!!vm.detail) {
                 $scope.$emit('$windowTitle', { apiName: '[测试]' + vm.detail.baseInfo.apiName });
-                vm.message.headers = vm.detail.headers != null ? vm.detail.headers : [];
+                vm.env.headers = vm.detail.headerInfo != null ? vm.detail.headerInfo : [];
                 initMessage();
             } else {
                 Api.Api.Detail({ projectHashKey: vm.info.projectHashKey, groupID: vm.info.childGroupID ? vm.info.childGroupID : vm.info.groupID, apiID: vm.info.apiID }).$promise.then(function(data) {
@@ -227,7 +227,7 @@
                                 vm.detail.baseInfo.status = '弃用';
                                 break;
                         }
-                        vm.message.headers = vm.detail.headerInfo != null ? vm.detail.headerInfo : [];
+                        vm.env.headers = vm.detail.headerInfo != null ? vm.detail.headerInfo : [];
                         initMessage();
                     } else {
                         vm.detail = {};
@@ -250,10 +250,10 @@
                 "headerValue": '',
                 "checkbox": true
             }
-            vm.message.headers.push(info);
+            vm.env.headers.push(info);
         }
         vm.deleteHeaderList = function(index) { // 删除请求头部
-            vm.message.headers.splice(index, 1);
+            vm.env.headers.splice(index, 1);
         }
         vm.addRequestList = function() { // 添加请求参数
             var info = {
@@ -263,11 +263,11 @@
                 "checkbox": true,
                 'hasFile': false
             }
-            vm.message.params.push(info);
+            vm.env.params.push(info);
             vm.submited = false;
         }
         vm.deleteRequestList = function(index) { // 删除请求参数
-            vm.message.params.splice(index, 1);
+            vm.env.params.splice(index, 1);
         }
         vm.newWindow = function() { // “新开页面”按钮
             if (vm.format.message) {
@@ -345,20 +345,17 @@
             });
 
         }
-        vm.enterHistory = function(query) { // 查看历史测试详情
+        vm.enterHistory = function(query) {// 查看历史测试详情
             if (checkDeleteTestHistory) {
                 return;
             }
-            vm.message.URL = query.requestInfo.URL;
-            vm.message.headers = [];
-            vm.message.params = [];
-            vm.message.raw = '';
-            vm.message.requestType = query.requestInfo.requestType;
-            vm.message.httpHeader = query.requestInfo.apiProtocol;
-            var message = {
-                headers: query.requestInfo.headers,
-                params: vm.message.requestType == '0' ? query.requestInfo.params : []
-            }
+            vm.env.URL = query.requestInfo.URL;
+            vm.env.headers = [];
+            vm.env.params = [];
+            vm.env.raw = '';
+            vm.env.requestType = query.requestInfo.requestType;
+            vm.env.httpHeader = query.requestInfo.apiProtocol;
+            var info = {};
             vm.result = {
                 testHttpCode: query.resultInfo.httpCode,
                 testDeny: query.resultInfo.testDeny,
@@ -368,32 +365,31 @@
                 httpCodeType: query.httpCodeType,
                 hadTest: true
             };
-            angular.forEach(message.headers, function(val, key) {
+            angular.forEach(query.requestInfo.headers, function(val, key) {
                 info = {
                     headerName: val.name,
                     headerValue: val.value
                 };
-                vm.message.headers.push(info);
+                vm.env.headers.push(info);
             });
-            if (vm.message.requestType == '0') {
-                angular.forEach(message.params, function(val, key) {
+            if (vm.env.requestType == '0') {
+                angular.forEach(query.requestInfo.params, function(val, key) {
                     info = {
                         paramKey: val.key,
-                        paramInfo: val.value,
-                        paramType:val.type
+                        paramInfo: val.value
                     };
-                    vm.message.params.push(info);
+                    vm.env.params.push(info);
                 });
             } else {
-                vm.message.raw = query.requestInfo.params;
+                vm.env.params = [];
+                vm.env.raw = query.requestInfo.params;
             }
             vm.detail.baseInfo.type = '' + query.requestInfo.methodType;
-            //console.log(vm.result)
             vm.format.message = query.resultInfo.body;
         }
         vm.changeType = function() { // 切换请求类型
             if (vm.detail.baseInfo.type != '0') {
-                vm.message.requestType = '0';
+                vm.env.requestType = '0';
             }
         }
 
@@ -401,227 +397,28 @@
             vm.isHeader = !vm.isHeader;
         }
 
-        function CurentTime() { // 获取当前时间
-            var now = new Date();
-
-            var year = now.getFullYear(); //年
-            var month = now.getMonth() + 1; //月
-            var day = now.getDate(); //日
-
-            var hh = now.getHours(); //时
-            var mm = now.getMinutes(); //分
-            var ss = now.getSeconds();
-
-            var clock = year + "-";
-
-            if (month < 10)
-                clock += "0";
-
-            clock += month + "-";
-
-            if (day < 10)
-                clock += "0";
-
-            clock += day + " ";
-
-            if (hh < 10)
-                clock += "0";
-
-            clock += hh + ":";
-            if (mm < 10) clock += '0';
-            clock += mm + ":";
-            if (ss < 10) clock += '0';
-            clock += ss;
-            return (clock);
-        }
-
-        vm.test = function() { // 接口测试
-            var info = {
-                apiProtocol: vm.message.httpHeader,
-                URL: vm.message.URL,
-                headers: {},
-                params: {},
-            }
-
-            //若url中带有http或https，则移除
-            if (/(http:\/\/)/.test(info.URL.substring(0, 7))) {
-                info.URL = info.URL.substring(7);
-            } else if (/(https:\/\/)/.test(info.URL.substring(0, 8))) {
-                info.URL = info.URL.substring(8);
-            }
-            var testHistory = {
-                requestInfo: {
-                    apiProtocol: info.apiProtocol,
-                    URL: info.URL,
-                    headers: [],
-                    params: [],
-                    method: vm.detail.baseInfo.type == '0' ? 'POST' : vm.detail.baseInfo.type == '1' ? 'GET' : vm.detail.baseInfo.type == '2' ? 'PUT' : vm.detail.baseInfo.type == '3' ? 'DELETE' : vm.detail.baseInfo.type == '4' ? 'HEAD' : vm.detail.baseInfo.type == '5' ? 'OPTIONS' : 'PATCH',
-                    methodType: vm.detail.baseInfo.type,
-                    requestType: vm.message.requestType
-                }
-            };
-            if ($scope.testForm.$valid) {
-                angular.forEach(vm.message.headers, function(val, key) {
-                    if (val.checkbox) {
-                        if (!!val.headerName) {
-                            info.headers[val.headerName] = val.headerValue;
-                            var history = {
-                                name: val.headerName,
-                                value: val.headerValue
-                            }
-                            testHistory.requestInfo.headers.push(history);
-                        }
-                    }
-                });
-                if (vm.message.requestType == '0') { 
-                    angular.forEach(vm.message.params, function(val, key) {
-                        if (val.checkbox) {
-                            if (!!val.paramKey) {
-                                if(val.paramType=='0'){
-                                    val.paramKey = '0'+ val.paramKey;
-                                    info.params[val.paramKey] =val.paramInfo;
-                                }
-                                else {
-                                    val.paramKey = '1'+ val.paramKey;
-                                    info.params[val.paramKey] = val.file;
-                                }
-                                // var history = {
-                                //     key: val.paramKey,
-                                //     value: val.paramInfo
-                                // }
-                                // testHistory.requestInfo.params.push(history);
-                            }
-                        }
-                    });
+        $scope.importFile = function($files) {// 导入文件并获取文件名
+            var $index = this.$parent.$index;
+            vm.env.params[$index].paramInfo = '';
+            for (var i = 0; i < $files.length; i++) {
+                var val = $files[i];
+                if (val.size > 2 * 1024 * 1024) {
+                    vm.env.params[$index].paramInfo = '';
+                    vm.env.params[$index.files] = [];
+                    vm.InfoModel('文件大小均需小于2M', 'error');
+                    break;
                 } else {
-                    testHistory.requestInfo.params = vm.message.raw;
-                }
-                var message = {
-                    apiProtocol: info.apiProtocol,
-                    URL: info.URL,
-                    headers: JSON.stringify(info.headers),
-                    params: vm.message.requestType == '0' ? JSON.stringify(info.params) : vm.message.raw,
-                    apiID: vm.info.apiID,
-                    projectID: vm.info.projectID,
-                    requestType: vm.message.requestType
-                }
-
-                var type = vm.detail.baseInfo.type;
-                testHistory.testTime = CurentTime();
-                var result = {};
-                vm.send.countdown = 0;
-                vm.send.disable = true;
-                countdown = setInterval(function() {
-                    vm.send.countdown++;
-                    $scope.$digest(); // 通知视图模型的变化
-                }, 1000);
-                switch (vm.detail.baseInfo.type) {
-                    
-                    case '0':
-                        Api.Test.Post(message).$promise.then(function(data) {
-                            showTestResult(testHistory, data);
-                        })
-                        break;
-                    case '1':
-                        Api.Test.Get(message).$promise.then(function(data) {
-                            showTestResult(testHistory, data);
-                        });
-                        break;
-                    case '2':
-                        Api.Test.Put(message).$promise.then(function(data) {
-                            showTestResult(testHistory, data);
-                        });
-                        break;
-                    case '3':
-                        Api.Test.Delete(message).$promise.then(function(data) {
-                            showTestResult(testHistory, data);
-                        });
-                        break;
-                    case '4':
-                        Api.Test.Head(message).$promise.then(function(data) {
-                            showTestResult(testHistory, data);
-                        });
-                        break;
-                    case '5':
-                        Api.Test.Options(message).$promise.then(function(data) {
-                            showTestResult(testHistory, data);
-                        });
-                        break;
-                    case '6':
-                        Api.Test.Patch(message).$promise.then(function(data) {
-                            showTestResult(testHistory, data);
-                        });
-                        break;
-                }
-                if (vm.message.requestType == '0') { 
-                    angular.forEach(vm.message.params, function(val, key) {
-                        if (val.checkbox) {
-                            if (!!val.paramKey) {
-                                val.paramKey = val.paramKey.substring(1);
-                                var history = {
-                                    key: val.paramKey,
-                                    value: val.paramInfo
-                                }
-                                testHistory.requestInfo.params.push(history);
-                            }
-                        }
-                    });
-                }
-            }
-        }
-
-        var showTestResult = function(testHistory, data) { // 显示测试结果
-            if (vm.send.disable) {
-                if (data.statusCode == code) {
-                    vm.result = {
-                        testHttpCode: data.testHttpCode,
-                        testDeny: data.testDeny,
-                        testResult: data.testResult,
-                        httpCodeType: data.testHttpCode >= 100 && data.testHttpCode < 200 ? 1 : data.testHttpCode >= 200 && data.testHttpCode < 300 ? 2 : data.testHttpCode >= 300 && data.testHttpCode < 400 ? 3 : 4
-                    };
-                    var result = vm.result.testResult.body;
-                    testHistory.resultInfo = {
-                        headers: data.testResult.headers,
-                        body: data.testResult.body,
-                        httpCode: data.testHttpCode,
-                        testDeny: data.testDeny
-                    };
-                    testHistory.testID = data.testID;
-                    testHistory.httpCodeType = data.testHttpCode >= 100 && data.testHttpCode < 200 ? 1 : data.testHttpCode >= 200 && data.testHttpCode < 300 ? 2 : data.testHttpCode >= 300 && data.testHttpCode < 400 ? 3 : 4;
-                    var array = [];
-                    array.push(testHistory);
-                    vm.detail.testHistory = array.concat(vm.detail.testHistory);
-                    vm.format.message = result;
-                } else {
-                    vm.result = {
-                        httpCodeType: 5
-                    };
-                    vm.format.message = '';
-                }
-                vm.result.hadTest = true;
-                clearInterval(countdown);
-                vm.send.countdown = null;
-                vm.send.disable = false;
-            }
-        }
-
-        $scope.importFile = function($file) {// 导入文件并获取文件名
-            var reader = new FileReader();
-            var query = this.$parent.query;
-            vm.message.params[query.$index].paramInfo='';
-            angular.forEach($file, function(val, key) {
-                if(val.size<=2097152){
-                    vm.message.params[query.$index].paramInfo = val.name;
-                    var reader = new FileReader();//new test
+                    vm.env.params[$index].paramInfo = val.name + ',' + vm.env.params[$index].paramInfo;
+                    var reader = new FileReader(); //new test
                     reader.readAsDataURL(val);
+                    vm.env.params[$index].files = [];
                     reader.onload = function(evt) {
-                    vm.message.params[query.$index].file=this.result;
+                        vm.env.params[$index].files.push(this.result);
                     }
                 }
-                else {
-                    vm.InfoModel('上传文件不得超过2M', 'error');
-                }
-            })
+
+            }
+            vm.env.params[$index].paramInfo=vm.env.params[$index].paramInfo.slice(0, vm.env.params[$index].paramInfo.length-1);
             $scope.$digest();
         }
 

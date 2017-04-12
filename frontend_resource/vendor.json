@@ -4,8 +4,6 @@
 "bower_components/clipboard/dist/clipboard.min.js",
 "bower_components/wangEditor/dist/css/wangEditor.css",
 "bower_components/wangEditor/dist/js/wangEditor.min.js",
-"bower_components/wangEditor/dist/js/lib/plupload.full.min.js",
-"bower_components/wangEditor/dist/js/lib/qiniu.min.js",
 "bower_components/editor.md/css/editormd.css",
 "bower_components/editor.md/editormd.min.js",
 "bower_components/editor.md/plugins/link-dialog/link-dialog.js ",

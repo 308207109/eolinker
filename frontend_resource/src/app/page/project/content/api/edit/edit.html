@@ -91,8 +91,7 @@
                                     <li class="pull-left">
                                         <label>头部标签：</label>
                                         <ul class="request-header-icon-form">
-                                            <li ng-mouseover="query.mouseLeave=false" ng-mouseleave="query.mouseLeave=true">
-                                                <input id="{{'headerName_js'+$index}}" auto-complete mouse-leave="query.mouseLeave" model="query.headerName" array="projectApiEditCtrl.requestHeaderArray" query-index="{{'headerName_js'+$index}}" class="eo-input" data-ng-model="query.headerName" data-ng-class="{'eo-input-error':(projectApiEditCtrl.submited&&!query.headerName)}" data-ng-change="query.labelIsClick=false" maxlength="255" required>
+                                            <li auto-complete="{{'headerName_js'+$index}}" model="query.headerName" array="projectApiEditCtrl.requestHeaderArray" data-ng-class="{'eo-had-input-error':(projectApiEditCtrl.submited&&!query.headerName)}">
                                             </li>
                                         </ul>
                                     </li>
@@ -137,7 +136,7 @@
             </header>
            <article>
                 <ul class="request-form-ul form-ul" ng-class="{'hidden':projectApiEditCtrl.detail.apiRequestParamType=='1'}" sv-root sv-part="projectApiEditCtrl.detail.apiRequestParam">
-                    <li class="param-form " data-ng-repeat="query in projectApiEditCtrl.detail.apiRequestParam" sv-element="projectApiEditCtrl.soft.requestParamForm">
+                    <li class="param-form " data-ng-repeat="($outerIndex,query) in projectApiEditCtrl.detail.apiRequestParam" sv-element="projectApiEditCtrl.soft.requestParamForm" ng-init="$outerIndex = $index">
                         <ul>
                             <li class="pull-left nessarity">
                                 <label class="eo-sv-handle iconfont icon-paixu1" sv-handle></label>
@@ -188,8 +187,7 @@
                                             <li class="pull-left">
                                                 <label>参数限制：</label>
                                             </li>
-                                            <li class="input-li" ng-mouseover="query.mouseLeave=false" ng-mouseleave="query.mouseLeave=true">
-                                                <input id="{{'limit_js'+$index}}" class="eo-input" type="text" name="" data-ng-model="query.paramLimit" auto-complete mouse-leave="query.mouseLeave" model="query.paramLimit" array="projectApiEditCtrl.requestParamLimitArray" query-index="{{'limit_js'+$index}}" data-ng-change="query.labelIsClick=false" maxlength="255">
+                                            <li class="input-li" auto-complete="{{'limit_js'+$index}}" model="query.paramLimit" array="projectApiEditCtrl.requestParamLimitArray">
                                             </li>
                                         </ul>
                                     </li>
