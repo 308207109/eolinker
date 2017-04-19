@@ -19,6 +19,10 @@
                     <span class="icon-style"><a class="iconfont" data-ng-class="{'icon-attention':registerContentCtrl.eye,'icon-attentionfill':!registerContentCtrl.eye}" data-ng-click="registerContentCtrl.changeView()" ></a></span>
                 </li>
                 <li>
+                    <label>昵称</label>
+                    <input class="eo-input" name="password" type="text"  data-ng-model="registerContentCtrl.info.userNickName" placeholder="昵称" />
+                </li>
+                <li>
                     <label></label>
                     <button ng-class="{'eo-button-success':registerForm.$valid,'eo-button-default':registerForm.$invalid}" data-ng-click="registerContentCtrl.register()">注册</button>
                 </li>

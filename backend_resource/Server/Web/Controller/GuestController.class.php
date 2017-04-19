@@ -3,7 +3,7 @@
  * @name eolinker open source，eolinker开源版本
  * @link https://www.eolinker.com
  * @package eolinker
- * @author www.eolinker.com 深圳波纹聚联网络科技有限公司 ©2015-2016
+ * @author www.eolinker.com 广州银云信息科技有限公司 ©2015-2016
 
  *  * eolinker，业内领先的Api接口管理及测试平台，为您提供最专业便捷的在线接口管理、测试、维护以及各类性能测试方案，帮助您高效开发、安全协作。
  * 如在使用的过程中有任何问题，欢迎加入用户讨论群进行反馈，我们将会以最快的速度，最好的服务态度为您解决问题。
@@ -69,6 +69,8 @@ class GuestController
 		{
 			$userName = securelyInput('userName');
 			$loginPassword = securelyInput('userPassword');
+			$nickNameLen = mb_strlen(quickInput('userNickName'), 'utf8');
+			$userNickName = securelyInput('userNickName');
 
 			//验证用户名,4~16位非纯数字，英文数字下划线组合，只能以英文开头
 			if (!preg_match('/^[a-zA-Z][0-9a-zA-Z_]{3,59}$/', $userName))
@@ -81,10 +83,15 @@ class GuestController
 				//密码非法
 				$this -> returnJson['statusCode'] = '130002';
 			}
+			elseif (!($nickNameLen == 0 || $nickNameLen <= 16))
+			{
+				//用户名非法
+				$this -> returnJson['statusCode'] = '130014';
+			}
 			else
 			{
 				$server = new GuestModule;
-				$result = $server -> register($userName, $loginPassword);
+				$result = $server -> register($userName, $loginPassword, $userNickName);
 
 				if ($result)
 					//注册成功

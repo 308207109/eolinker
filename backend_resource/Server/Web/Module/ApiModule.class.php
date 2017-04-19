@@ -3,7 +3,7 @@
  * @name eoapi open source，eoapi开源版本
  * @link https://www.eoapi.cn
  * @package eoapi
- * @author www.eoapi.cn 深圳波纹聚联网络科技有限公司 ©2015-2016
+ * @author www.eoapi.cn 广州银云信息科技有限公司 ©2015-2016
 
  * eoapi，业内领先的Api接口管理及测试平台，为您提供最专业便捷的在线接口管理、测试、维护以及各类性能测试方案，帮助您高效开发、安全协作。
  * 如在使用的过程中有任何问题，欢迎加入用户讨论群进行反馈，我们将会以最快的速度，最好的服务态度为您解决问题。
@@ -309,6 +309,21 @@ class ApiModule {
 
 	/**
 	 * 获取api列表并按照名称排序
+	 * @param $groupID 接口分组ID
+	 * @param $asc 排序 [0/1]=>[升序/降序]
+	 */
+	public function getApiListOrderByUri(&$groupID, &$asc = 0) {
+		$apiDao = new ApiDao;
+		$groupDao = new GroupDao;
+		if ($groupDao -> checkGroupPermission($groupID, $_SESSION['userID'])) {
+			$asc = $asc == 0 ? 'ASC' : 'DESC';
+			return $apiDao -> getApiListOrderByUri($groupID, $asc);
+		} else
+			return FALSE;
+	}
+
+	/**
+	 * 获取api列表并按照名称排序
 	 * @param $projectID 项目ID
 	 * @param $asc 排序 [0/1]=>[升序/降序]
 	 */
@@ -348,6 +363,21 @@ class ApiModule {
 		if ($projectDao -> checkProjectPermission($projectID, $_SESSION['userID'])) {
 			$asc = $asc == 0 ? 'ASC' : 'DESC';
 			return $apiDao -> getRecyclingStationApiListOrderByStarred($projectID, $asc);
+		} else
+			return FALSE;
+	}
+
+	/**
+	 * 获取api列表并按照星标排序
+	 * @param $projectID 项目ID
+	 * @param $asc 排序 [0/1]=>[升序/降序]
+	 */
+	public function getRecyclingStationApiListOrderByUri(&$projectID, &$asc = 0) {
+		$apiDao = new ApiDao;
+		$projectDao = new ProjectDao;
+		if ($projectDao -> checkProjectPermission($projectID, $_SESSION['userID'])) {
+			$asc = $asc == 0 ? 'ASC' : 'DESC';
+			return $apiDao -> getRecyclingStationApiListOrderByUri($projectID, $asc);
 		} else
 			return FALSE;
 	}
@@ -395,6 +425,21 @@ class ApiModule {
 		if ($projectDao -> checkProjectPermission($projectID, $_SESSION['userID'])) {
 			$asc = $asc == 0 ? 'ASC' : 'DESC';
 			return $apiDao -> getAllApiListOrderByTime($projectID, $asc);
+		} else
+			return FALSE;
+	}
+
+	/**
+	 * 获取所有分组的api并按照时间排序
+	 * @param $projectID 项目ID
+	 * @param $asc 排序 [0/1]=>[升序/降序]
+	 */
+	public function getAllApiListOrderByUri(&$projectID, &$asc = 0) {
+		$apiDao = new ApiDao;
+		$projectDao = new ProjectDao;
+		if ($projectDao -> checkProjectPermission($projectID, $_SESSION['userID'])) {
+			$asc = $asc == 0 ? 'ASC' : 'DESC';
+			return $apiDao -> getAllApiListOrderByUri($projectID, $asc);
 		} else
 			return FALSE;
 	}

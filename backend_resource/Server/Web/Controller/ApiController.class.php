@@ -3,7 +3,7 @@
  * @name eolinker open source，eolinker开源版本
  * @link https://www.eolinker.com
  * @package eolinker
- * @author www.eolinker.com 深圳波纹聚联网络科技有限公司 ©2015-2016
+ * @author www.eolinker.com 广州银云信息科技有限公司 ©2015-2016
 
  *  * eolinker，业内领先的Api接口管理及测试平台，为您提供最专业便捷的在线接口管理、测试、维护以及各类性能测试方案，帮助您高效开发、安全协作。
  * 如在使用的过程中有任何问题，欢迎加入用户讨论群进行反馈，我们将会以最快的速度，最好的服务态度为您解决问题。
@@ -214,6 +214,10 @@ class ApiController {
 					$result = $service -> getRecyclingStationApiListOrderByStarred($projectID, $asc);
 					break;
 				}
+				//Uri排序
+				case 3 : {
+					$result = $service -> getRecyclingStationApiListOrderByUri($projectID, $asc);
+				}
 			}
 
 			if ($result) {
@@ -254,6 +258,11 @@ class ApiController {
 				case 2 : {
 					$asc = 1;
 					$result = $service -> getApiListOrderByStarred($groupID, $asc);
+					break;
+				}
+				//Uri排序
+				case 3 : {
+					$result = $service -> getApiListOrderByUri($groupID, $asc);
 					break;
 				}
 			}
@@ -320,6 +329,10 @@ class ApiController {
 					$asc = 1;
 					$result = $service -> getAllApiListOrderByStarred($projectID, $asc);
 					break;
+				}
+				//Uri排序
+				case 3 : {
+					$result = $service -> getAllApiListOrderByUri($projectID, $asc);
 				}
 			}
 

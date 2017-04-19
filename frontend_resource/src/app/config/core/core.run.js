@@ -29,6 +29,7 @@
         }
 
         $rootScope.$on('$stateChangeStart', function(event, toState) {// 路由状态开始改变时触发
+
             if (!toState.auth) {// 判断页面权限
                 $rootScope.hadLogin = true;
                 Api.Logintype.Check().$promise.then(function(data) {

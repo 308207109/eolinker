@@ -73,9 +73,11 @@
                     }
                 }
             }
-            initState();
+            initState();                
         }
-        init();
+        var timer = $timeout(function() {
+            init();
+        });
         
         vm.goProject = function() {// 跳转至项目列表页面
             $state.go('home.project.api');

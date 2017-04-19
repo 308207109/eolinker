@@ -25,7 +25,10 @@
                         接口名称
                         <label class="iconfont " ng-class="{'icon-triangledownfill':!projectApiListCtrl.sortInfo.nameAsc,'icon-triangleupfill':projectApiListCtrl.sortInfo.nameAsc}"></label>
                     </th>
-                    <th class="third-th">接口URI</th>
+                    <th class="api-uri third-th" ng-class="{'active':projectApiListCtrl.sortInfo.uri}" data-ng-click="projectApiListCtrl.sort(3)">
+                        接口URI
+                        <label class="iconfont " ng-class="{'icon-triangledownfill':!projectApiListCtrl.sortInfo.uriAsc,'icon-triangleupfill':projectApiListCtrl.sortInfo.uriAsc}"></label>
+                    </th>
                     <th class="forth-th">所在分组</th>
                     <th class="api-time fifth-th" ng-class="{'active':projectApiListCtrl.sortInfo.time}" data-ng-click="projectApiListCtrl.sort(2)">
                         更新日期

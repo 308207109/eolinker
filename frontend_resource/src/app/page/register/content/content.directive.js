@@ -19,6 +19,7 @@
         vm.info = {
             userName: '',
             userPassword: '',
+            userNickName: ''
         }
         vm.template = {
             password: '',

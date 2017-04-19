@@ -282,7 +282,7 @@
             hasNewVersion: false,
             updating: false,
             updateFail: false,
-            version: '当前版本为2.1.5，更新时间为2017年4月12日。',
+            version: '当前版本为2.1.6，更新时间为2017年4月19日。',
             tips: '',
             updateTips: '',
             ok: '确定',

@@ -26,8 +26,10 @@
         vm.sortInfo = {
             name: false,
             time: true,
+            uri: false,
             starAsc: true,
             nameAsc: true,
+            uriAsc: true,
             timeAsc: false
         }
 
@@ -204,6 +206,7 @@
                         }
                         vm.sortInfo.starAsc = !vm.sortInfo.starAsc;
                         vm.sortInfo.name = false;
+                        vm.sortInfo.uri = false;
                         vm.sortInfo.time = false;
                         vm.info.orderBy = 2;
                         init();
@@ -219,6 +222,7 @@
                         }
                         vm.sortInfo.nameAsc = !vm.sortInfo.nameAsc;
                         vm.sortInfo.time = false;
+                        vm.sortInfo.uri = false;
                         vm.sortInfo.name = true;
                         vm.info.orderBy = 0;
                         init();
@@ -234,8 +238,25 @@
                         }
                         vm.info.orderBy = 1;
                         vm.sortInfo.name = false;
+                        vm.sortInfo.uri = false;
                         vm.sortInfo.time = true;
                         vm.sortInfo.timeAsc = !vm.sortInfo.timeAsc;
+                        init();
+                        break;
+                    }
+                case 3:
+                // 按uri排序
+                    {
+                        if (vm.sortInfo.uriAsc) {
+                            vm.info.asc = 1;
+                        } else {
+                            vm.info.asc = 0;
+                        }
+                        vm.info.orderBy = 3;
+                        vm.sortInfo.name = false;
+                        vm.sortInfo.time = false;
+                        vm.sortInfo.uri = true;
+                        vm.sortInfo.uriAsc = !vm.sortInfo.uriAsc;
                         init();
                         break;
                     }

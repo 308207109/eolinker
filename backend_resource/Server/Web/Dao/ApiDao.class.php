@@ -3,7 +3,7 @@
  * @name eolinker open source，eolinker开源版本
  * @link https://www.eolinker.com
  * @package eolinker
- * @author www.eolinker.com 深圳波纹聚联网络科技有限公司 ©2015-2016
+ * @author www.eolinker.com 广州银云信息科技有限公司 ©2015-2016
 
  *  * eolinker，业内领先的Api接口管理及测试平台，为您提供最专业便捷的在线接口管理、测试、维护以及各类性能测试方案，帮助您高效开发、安全协作。
  * 如在使用的过程中有任何问题，欢迎加入用户讨论群进行反馈，我们将会以最快的速度，最好的服务态度为您解决问题。
@@ -364,6 +364,21 @@ class ApiDao {
 	}
 
 	/**
+	 * 获取api列表并按照星标排序
+	 * @param $groupID 接口分组ID
+	 * @param $asc 排序 [0/1]=>[升序/降序]
+	 */
+	public function getApiListOrderByUri(&$groupID, &$asc = 'ASC') {
+		$db = getDatabase();
+		$result = $db -> prepareExecuteAll("SELECT eo_api.apiID,eo_api.apiName,eo_api.apiURI,eo_api.apiStatus,eo_api.apiRequestType,eo_api.apiUpdateTime,eo_api.starred,eo_api_group.groupID,eo_api_group.parentGroupID,eo_api_group.groupName FROM eo_api INNER JOIN eo_api_group ON eo_api.groupID = eo_api_group.groupID WHERE eo_api.groupID = ? AND eo_api.removed = 0 ORDER BY eo_api.apiURI $asc;", array($groupID));
+
+		if (empty($result))
+			return FALSE;
+		else
+			return $result;
+	}
+
+	/**
 	 * 获取api详情
 	 * @param $apiID 接口ID
 	 */
@@ -395,6 +410,21 @@ class ApiDao {
 	public function getAllApiListOrderByName(&$projectID, &$asc = 'ASC') {
 		$db = getDatabase();
 		$result = $db -> prepareExecuteAll("SELECT eo_api.apiID,eo_api.apiName,eo_api.apiURI,eo_api_group.groupID,eo_api_group.parentGroupID,eo_api_group.groupName,eo_api.apiStatus,eo_api.apiRequestType,eo_api.apiUpdateTime,eo_api.starred FROM eo_api INNER JOIN eo_api_group ON eo_api.groupID = eo_api_group.groupID WHERE eo_api_group.projectID = ? AND eo_api.removed = 0 ORDER BY eo_api.apiName $asc;", array($projectID));
+
+		if (empty($result))
+			return FALSE;
+		else
+			return $result;
+	}
+
+	/**
+	 * 获取所有api列表
+	 * @param $projectID 项目ID
+	 * @param $asc 排序 [0/1]=>[升序/降序]
+	 */
+	public function getAllApiListOrderByUri(&$projectID, &$asc = 'ASC') {
+		$db = getDatabase();
+		$result = $db -> prepareExecuteAll("SELECT eo_api.apiID,eo_api.apiName,eo_api.apiURI,eo_api_group.groupID,eo_api_group.parentGroupID,eo_api_group.groupName,eo_api.apiStatus,eo_api.apiRequestType,eo_api.apiUpdateTime,eo_api.starred FROM eo_api INNER JOIN eo_api_group ON eo_api.groupID = eo_api_group.groupID WHERE eo_api_group.projectID = ? AND eo_api.removed = 0 ORDER BY eo_api.apiURI $asc;", array($projectID));
 
 		if (empty($result))
 			return FALSE;
@@ -440,6 +470,21 @@ class ApiDao {
 	public function getRecyclingStationApiListOrderByName(&$projectID, &$asc = 'ASC') {
 		$db = getDatabase();
 		$result = $db -> prepareExecuteAll("SELECT eo_api.apiID,eo_api.apiName,eo_api.apiURI,eo_api_group.groupID,eo_api_group.parentGroupID,eo_api_group.groupName,eo_api.apiStatus,eo_api.apiRequestType,eo_api.apiUpdateTime,eo_api.removeTime,eo_api.starred FROM eo_api INNER JOIN eo_api_group ON eo_api.groupID = eo_api_group.groupID WHERE eo_api_group.projectID = ? AND eo_api.removed = 1 ORDER BY eo_api.apiName $asc;", array($projectID));
+
+		if (empty($result))
+			return FALSE;
+		else
+			return $result;
+	}
+
+	/**
+	 * 获取回收站中所有api列表按名称排序
+	 * @param $projectID 项目ID
+	 * @param $asc 排序 [0/1]=>[升序/降序]
+	 */
+	public function getRecyclingStationApiListOrderByUri(&$projectID, &$asc = 'ASC') {
+		$db = getDatabase();
+		$result = $db -> prepareExecuteAll("SELECT eo_api.apiID,eo_api.apiName,eo_api.apiURI,eo_api_group.groupID,eo_api_group.parentGroupID,eo_api_group.groupName,eo_api.apiStatus,eo_api.apiRequestType,eo_api.apiUpdateTime,eo_api.removeTime,eo_api.starred FROM eo_api INNER JOIN eo_api_group ON eo_api.groupID = eo_api_group.groupID WHERE eo_api_group.projectID = ? AND eo_api.removed = 1 ORDER BY eo_api.apiURI $asc;", array($projectID));
 
 		if (empty($result))
 			return FALSE;
