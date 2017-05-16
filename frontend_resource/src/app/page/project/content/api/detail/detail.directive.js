@@ -218,8 +218,11 @@
                     Api.Api.Delete({ apiID: apiID }).$promise.then(function(data) {
                         if (data.statusCode == code) {
                             vm.back();
-                            vm.InfoModel('Api删除成功，已移入回收站', 'success');
+                            vm.InfoModel('删除Api成功，已移入回收站', 'success');
                             $scope.$emit('$numChange',1);
+                        }
+                        else {
+                            vm.InfoModel('删除Api失败', 'error');
                         }
                     })
                 }
@@ -238,9 +241,9 @@
                     Api.Trash.Delete({ apiID: apiID }).$promise.then(function(data) {
                         if (data.statusCode == code) {
                             vm.back();
-                            vm.InfoModel('Api删除成功', 'success');
+                            vm.InfoModel('删除Api成功', 'success');
                         } else {
-                            vm.InfoModel('删除失败，请稍候再试或到论坛提交bug', 'error');
+                            vm.InfoModel('删除Api失败，请稍候再试或到论坛提交bug', 'error');
                         }
                     })
                 }
@@ -250,6 +253,7 @@
             switch (vm.detail.baseInfo.starred) {
                 case 0:
                 case '0':
+                default:
                 // 添加星标
                     {
                         Api.Star.Add(vm.info).$promise.then(function(data) {

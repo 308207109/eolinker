@@ -448,7 +448,7 @@ project-api-detail {
                     .back-result-content {
                         min-height: 130px;
                         max-height:500px;
-                        overflow-x: hidden;
+                        overflow-x: scroll;
                         overflow-y: scroll;
                         background-color: #f8f8f8;
                         border: 1px solid #e5e5e5;
@@ -460,7 +460,6 @@ project-api-detail {
                         max-width: 100%;
                         @include eo-width(100%, 12px);
                         word-break: break-all;
-                        white-space: normal;
                         .iconfont {
                             color: #ff4400;
                             font-size: 13px;

@@ -133,6 +133,7 @@
             vm.info.isFunction = true;
             switch (query.starred) {
                 case 0:
+                default:
                 //添加星标
                     {
                         Api.Star.Add({ 'apiID': query.apiID }).$promise.then(function(data) {

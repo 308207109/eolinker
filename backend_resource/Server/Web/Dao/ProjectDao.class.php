@@ -299,7 +299,7 @@ class ProjectDao {
 	public function getApiNum(&$projectID) {
 		$db = getDatabase();
 
-		$result = $db -> prepareExecute('SELECT COUNT(*) as num FROM eo_api WHERE eo_api.projectID = ? AND eo_api.removed = 0;', array($projectID));
+		$result = $db -> prepareExecute('SELECT COUNT(*) as num FROM eo_api WHERE eo_api.removed = 0 AND eo_api.groupID IN (SELECT groupID FROM eo_api_group WHERE eo_api.projectID = ?);', array($projectID));
 
 		if (isset($result))
 			return $result;

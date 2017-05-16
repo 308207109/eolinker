@@ -430,7 +430,7 @@
                                 Api.Group.Delete({ groupID: query.groupID }).$promise.then(function(data) {
                                     if (data.statusCode == code) {
                                         vm.query.splice(index, 1);
-                                        vm.InfoModel('分组删除成功', 'success');
+                                        vm.InfoModel('删除分组成功', 'success');
                                         if (vm.query.length > 2) {
                                             vm.apiGroup.groupList.splice(index - 2, 1);
                                             GroupService.set(0, vm.apiGroup);
@@ -438,6 +438,9 @@
                                             GroupService.set(0, null);
                                         }
                                         vm.click(-1, vm.query[0]);
+                                    }
+                                    else {
+                                        vm.InfoModel('删除分组失败', 'error');
                                     }
                                 })
                                 getNum(0);
@@ -449,7 +452,7 @@
                                 Api.CodeGroup.Delete({ groupID: query.groupID }).$promise.then(function(data) {
                                     if (data.statusCode == code) {
                                         vm.query.splice(index, 1);
-                                        vm.InfoModel('分组删除成功', 'success');
+                                        vm.InfoModel('删除分组成功', 'success');
                                         if (vm.query.length > 1) {
                                             vm.codeGroup.groupList.splice(index - 1, 1);
                                             GroupService.set(1, vm.codeGroup);
@@ -457,6 +460,9 @@
                                             GroupService.set(1, null);
                                         }
                                         vm.click(-1, vm.query[0]);
+                                    }
+                                    else {
+                                        vm.InfoModel('删除分组失败', 'error');
                                     }
                                 })
                                 getNum(1);
@@ -502,8 +508,11 @@
                                 Api.Group.Delete({ groupID: list.groupID }).$promise.then(function(data) {
                                     if (data.statusCode == code) {
                                         query.childGroupList.splice(index, 1);
-                                        vm.InfoModel('分组删除成功', 'success');
+                                        vm.InfoModel('删除分组成功', 'success');
                                         vm.click(query.groupID, query);
+                                    }
+                                    else {
+                                        vm.InfoModel('删除分组失败', 'error');
                                     }
                                 })
                                 break;
@@ -514,8 +523,11 @@
                                 Api.CodeGroup.Delete({ groupID: list.groupID }).$promise.then(function(data) {
                                     if (data.statusCode == code) {
                                         query.childGroupList.splice(index, 1);
-                                        vm.InfoModel('分组删除成功', 'success');
+                                        vm.InfoModel('删除分组成功', 'success');
                                         vm.click(query.groupID, query);
+                                    }
+                                    else {
+                                        vm.InfoModel('删除分组失败', 'error');
                                     }
                                 })
                                 break;

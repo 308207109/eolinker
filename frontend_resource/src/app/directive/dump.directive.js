@@ -36,8 +36,9 @@
                                 dumpBtn.href = './server/dump/' + data.fileName;
                                 dumpBtn.download = data.fileName;
                                 dumpBtn.click();
+                                InfoModel('项目导出成功', 'success');
                             } else {
-                                InfoModel('导出失败', 'error');
+                                InfoModel('项目导出失败', 'error');
                             }
                         })
                     })

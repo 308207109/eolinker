@@ -102,10 +102,13 @@
                                     isError = false;
                                     $scope.isJson = true;
                                     document.getElementById(attrs.textareaJson).innerText = text;
-                                    if (text.substr(0, 1) === '<' && text.substr(-1, 1) === '>') {
+                                    if (text.replace(/\s/g,"").substr(0, 1) === '<' && text.replace(/\s/g,"").substr(-1, 1) === '>') {
                                         try {
                                             angular.element(document.getElementById(attrs.arrangeJson)).empty();
+                                            console.log(text)
+                                            console.log($filter('HtmlformatFilter')(text, 5))
                                             document.getElementById(attrs.arrangeJson).innerText = $filter('HtmlformatFilter')(text, 5);
+                                            console.log(document.getElementById(attrs.arrangeJson).innerText)
                                             angular.element(document.getElementById(attrs.arrangeJson)).removeClass('hidden');
                                             angular.element(document.getElementById(attrs.textareaJson)).addClass('hidden');
                                         } catch (e) {
@@ -128,8 +131,10 @@
                                         }
                                     }
                                 }
+                            }else{
+                                angular.element(document.getElementById(attrs.arrangeJson)).empty();
+                                angular.element(document.getElementById(attrs.textareaJson)).empty();
                             }
-
                         };
                     }
                     $scope.hide = function hide(obj) {

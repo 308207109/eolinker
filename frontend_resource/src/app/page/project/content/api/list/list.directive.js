@@ -187,7 +187,10 @@
                         if (data.statusCode == code) {
                             vm.query.splice(index, 1);
                             $scope.$emit('$numChange',1);
-                            vm.InfoModel('Api删除成功，已移入回收站', 'success');
+                            vm.InfoModel('删除Api成功，已移入回收站', 'success');
+                        }
+                        else {
+                            vm.InfoModel('删除Api失败', 'error');
                         }
                     })
                 }
@@ -266,6 +269,7 @@
             vm.info.isFunction = true;
             switch (query.starred) {
                 case 0:
+                default:
                     {
                         Api.Star.Add({ 'apiID': query.apiID }).$promise.then(function(data) {
                             if (code == data.statusCode) {

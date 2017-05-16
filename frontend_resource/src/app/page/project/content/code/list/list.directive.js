@@ -116,7 +116,10 @@
                         if (data.statusCode == code) {
                             vm.query.splice(index, 1);
                             $scope.$emit('$numChange',1);
-                            vm.InfoModel('状态码删除成功', 'success');
+                            vm.InfoModel('删除状态码成功', 'success');
+                        }
+                        else {
+                            vm.InfoModel('删除状态码失败', 'error');
                         }
                     })
                 }

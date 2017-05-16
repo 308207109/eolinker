@@ -155,6 +155,11 @@
                         if (!!vm.detail.parentGroupID) {
                             vm.detail.childGroupID = data.apiInfo.baseInfo.groupID;
                             vm.detail.groupID = vm.detail.parentGroupID;
+                            angular.forEach(vm.group, function(val, key) {
+                                if(vm.detail.groupID==val.groupID){
+                                    vm.childGroupList = initChildGroup.concat(val.childGroupList);
+                                }
+                            });
                         } else {
                             vm.detail.childGroupID = -1;
                         }
@@ -184,6 +189,7 @@
                 vm.detail.apiRequestParamType = '0';
                 vm.detail.apiNoteType = '0';
             }
+
         }
         var checkInitStatus = function() { // 确定初始化状态
             if (!!GroupService.get(0)) {
@@ -214,6 +220,7 @@
             switch (vm.detail.starred) {
                 case 0:
                 case '0':
+                default:
                 // 添加星标
                     {
                         vm.detail.starred = 1;
